@@ -1,0 +1,30 @@
+# Portal BikinKilat.id ⚡
+> Subdomain: `bikinkilat.id`
+
+Satu akun, satu dompet token terpusat untuk seluruh layanan otomasi dokumen Indonesia.
+
+---
+
+## 📌 Deskripsi Layanan
+Portal Utama Ekosistem BikinKilat.id, Showcase 9 Layanan, dan Kasir QRIS Terpadu.
+
+Layanan ini merupakan bagian dari ekosistem **BikinKilat.id**, sebuah platform multi-subdomain micro-SaaS untuk otomasi dokumen dan aset digital Indonesia dengan sistem satu dompet token terintegrasi.
+
+---
+
+## 🚀 Fitur Utama
+- **Otomasi Dokumen Asli:** Menghasilkan berkas dokumen berstandar profesional yang siap unduh dan langsung digunakan.
+- **Dompet Token Terpadu:** Terhubung langsung ke dompet akun terpusat ekosistem BikinKilat.id.
+- **Standar Format Indonesia:** Format dokumen telah disesuaikan dengan regulasi akademik, dunia usaha, dan tata naskah dinas resmi di Indonesia.
+- **Akses Cepat & Aman:** Infrastruktur berkinerja tinggi yang responsif di segala perangkat (komputer, tablet, dan smartphone).
+
+---
+
+## 📁 Spesifikasi Produk
+Informasi detail mengenai alur bisnis, formulir input, dan komponen data dapat dipelajari pada berkas [PRD.md](./PRD.md).
+
+---
+
+## 🔒 Lisensi & Hak Cipta
+Hak Cipta Dilindungi Undang-Undang © 2026 BikinKilat.id.
+Didedikasikan untuk meningkatkan produktivitas masyarakat Indonesia.

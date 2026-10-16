@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Next.js Build
+.next/
+out/
+build/
+dist/
+
+# Cloudflare & Wrangler
+.wrangler/
+
+# Vercel
+.vercel/
+
+# Environment
+.env
+.env.*
+!.env.example
+*.env.local
+
+# Testing & Logs
+*.log
+test-results/
+playwright-report/
