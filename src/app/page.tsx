@@ -83,7 +83,7 @@ export default function PortalHomePage() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
               <a
-                href="https://slide.bikinkilat.id"
+                href="https://slide.bikinkilat.com"
                 className="px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 group"
               >
                 <span>Buka Slide BikinKilat</span>
@@ -174,7 +174,7 @@ export default function PortalHomePage() {
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               Token yang Anda beli di portal utama ini otomatis terbaca di seluruh layanan: 
-              slide.bikinkilat.id, modul.bikinkilat.id, cv.bikinkilat.id, dan lainnya.
+              slide.bikinkilat.com, modul.bikinkilat.com, cv.bikinkilat.com, dan lainnya.
             </p>
           </div>
 
@@ -262,7 +262,7 @@ export default function PortalHomePage() {
         <div className="space-y-4">
           <div className="bg-white p-6 rounded-2xl border border-slate-200">
             <h3 className="font-bold text-slate-900 text-base mb-2">
-              Apakah token yang saya beli di bikinkilat.id bisa dipakai di slide.bikinkilat.id?
+              Apakah token yang saya beli di bikinkilat.com bisa dipakai di slide.bikinkilat.com?
             </h3>
             <p className="text-sm text-slate-600 leading-relaxed">
               Ya, sistem BikinKilat menggunakan satu dompet token terpadu. Token yang Anda beli di kasir otomatis tersinkronisasi langsung ke seluruh layanan tanpa perlu login ulang.

@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: false,
         tokens: 5,
-        user: { id: userId, email: 'demo@bikinkilat.id', name: 'Pengguna Demo', tokens: 5 }
+        user: { id: userId, email: 'demo@bikinkilat.com', name: 'Pengguna Demo', tokens: 5 }
       });
     }
 
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
         .from('users')
         .insert({
           id: userId,
-          email: 'demo@bikinkilat.id',
+          email: 'demo@bikinkilat.com',
           name: 'Pengguna Demo',
           tokens: 5,
         })
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: true,
         tokens: newUser ? newUser.tokens : 5,
-        user: newUser || { id: userId, email: 'demo@bikinkilat.id', name: 'Pengguna Demo', tokens: 5 }
+        user: newUser || { id: userId, email: 'demo@bikinkilat.com', name: 'Pengguna Demo', tokens: 5 }
       });
     }
 

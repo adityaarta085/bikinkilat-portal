@@ -20,7 +20,7 @@ export function Navbar({ tokens, onOpenCashier }: NavbarProps) {
             </div>
             <div>
               <span className="font-extrabold text-xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
-                BikinKilat<span className="text-indigo-600">.id</span>
+                BikinKilat<span className="text-indigo-600">.com</span>
               </span>
               <span className="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                 Portal Ekosistem

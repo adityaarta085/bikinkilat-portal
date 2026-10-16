@@ -2,14 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'BikinKilat.id - Ekosistem Micro-SaaS Otomasi Dokumen & Aset Digital Indonesia',
+  title: 'BikinKilat.com - Ekosistem Micro-SaaS Otomasi Dokumen & Aset Digital Indonesia',
   description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
   keywords: ['BikinKilat', 'slide presentasi', 'makalah otomatis', 'modul ajar kurikulum merdeka', 'cv ats', 'rab excel', 'surat perjanjian'],
   openGraph: {
-    title: 'BikinKilat.id - Ekosistem Micro-SaaS Dokumen Indonesia',
+    title: 'BikinKilat.com - Ekosistem Micro-SaaS Dokumen Indonesia',
     description: 'Satu akun, satu dompet token terpusat untuk 9 layanan otomasi cerdas.',
-    url: 'https://bikinkilat.id',
-    siteName: 'BikinKilat.id',
+    url: 'https://bikinkilat.com',
+    siteName: 'BikinKilat.com',
     locale: 'id_ID',
     type: 'website',
   },

@@ -81,7 +81,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
             </div>
             <div>
               <h2 id="cashier-modal-title" className="text-lg font-bold">Kasir QRIS Terpadu</h2>
-              <p className="text-xs text-indigo-200">BikinKilat.id Centralized Wallet</p>
+              <p className="text-xs text-indigo-200">BikinKilat.com Centralized Wallet</p>
             </div>
           </div>
           <button

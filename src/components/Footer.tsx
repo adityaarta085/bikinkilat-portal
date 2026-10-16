@@ -14,7 +14,7 @@ export function Footer() {
                 <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
               </div>
               <span className="font-extrabold text-xl text-white tracking-tight">
-                BikinKilat<span className="text-indigo-400">.id</span>
+                BikinKilat<span className="text-indigo-400">.com</span>
               </span>
             </div>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed mb-4">
@@ -29,10 +29,10 @@ export function Footer() {
           <div>
             <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Layanan Populer</h4>
             <ul className="space-y-2 text-xs">
-              <li><a href="https://slide.bikinkilat.id" className="hover:text-indigo-400 transition-colors">Slide BikinKilat (.pptx & .docx)</a></li>
-              <li><a href="https://modul.bikinkilat.id" className="hover:text-indigo-400 transition-colors">Modul Kurikulum Merdeka</a></li>
-              <li><a href="https://cv.bikinkilat.id" className="hover:text-indigo-400 transition-colors">CV ATS Friendly & Lamaran</a></li>
-              <li><a href="https://rab.bikinkilat.id" className="hover:text-indigo-400 transition-colors">Kalkulator RAB Excel SNI</a></li>
+              <li><a href="https://slide.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Slide BikinKilat (.pptx & .docx)</a></li>
+              <li><a href="https://modul.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Modul Kurikulum Merdeka</a></li>
+              <li><a href="https://cv.bikinkilat.com" className="hover:text-indigo-400 transition-colors">CV ATS Friendly & Lamaran</a></li>
+              <li><a href="https://rab.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Kalkulator RAB Excel SNI</a></li>
             </ul>
           </div>
 
@@ -48,7 +48,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} BikinKilat.id. Seluruh hak cipta dilindungi undang-undang.</p>
+          <p>© {new Date().getFullYear()} BikinKilat.com. Seluruh hak cipta dilindungi undang-undang.</p>
           <p className="flex items-center gap-1 text-slate-500">
             Dibuat untuk mempercepat produktivitas pelajar, guru, dan profesional di Indonesia.
           </p>
