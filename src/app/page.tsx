@@ -5,6 +5,9 @@ import { Navbar } from '@/components/Navbar';
 import { EcosystemCard } from '@/components/EcosystemCard';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
+import { InteractiveShowcase } from '@/components/InteractiveShowcase';
+import { EnterpriseBento } from '@/components/EnterpriseBento';
+import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
 import { Footer } from '@/components/Footer';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES, EcosystemApp } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
@@ -18,7 +21,8 @@ import {
   Cpu, 
   CheckCircle2, 
   HelpCircle,
-  QrCode
+  QrCode,
+  Flame
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -44,13 +48,16 @@ export default function PortalHomePage() {
       <Navbar tokens={tokens} onOpenCashier={() => setIsCashierOpen(true)} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/60 via-white to-slate-50 pt-16 pb-20 border-b border-slate-200">
+      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 pt-16 pb-20 border-b border-slate-200">
+        {/* Soft Ambient Radial Blur */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-indigo-200/40 via-transparent to-transparent pointer-events-none -z-10" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto space-y-6">
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100/80 border border-indigo-200/80 text-indigo-800 text-xs font-bold shadow-xs">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
-              <span>Ekosistem Micro-SaaS Otomasi Dokumen Indonesia</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-100/90 border border-indigo-200 text-indigo-900 text-xs font-bold shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Semua 9 Subdomain Siap Produksi • Real-Time Database Sync</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
@@ -68,10 +75,10 @@ export default function PortalHomePage() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
               <a
-                href="https://slide.bikinkilat.com"
+                href="#live-preview"
                 className="px-6 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 group"
               >
-                <span>Buka Slide BikinKilat</span>
+                <span>Coba Live Studio Preview</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
 
@@ -107,6 +114,11 @@ export default function PortalHomePage() {
           </div>
         </div>
       </section>
+
+      {/* Flagship Interactive Document Studio Showcase */}
+      <div id="live-preview">
+        <InteractiveShowcase />
+      </div>
 
       {/* Ecosystem Apps Grid */}
       <section id="layanan" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -146,6 +158,12 @@ export default function PortalHomePage() {
           ))}
         </div>
       </section>
+
+      {/* Architecture & Standards Bento Grid */}
+      <EnterpriseBento />
+
+      {/* Interactive Efficiency & Cost Savings Calculator */}
+      <EfficiencyCalculator onOpenCashier={() => setIsCashierOpen(true)} />
 
       {/* Unified Cashier & Token Packages Section */}
       <section id="kasir" className="py-16 bg-slate-100/70 border-y border-slate-200">
