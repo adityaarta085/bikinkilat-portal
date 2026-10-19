@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, CheckCircle, ShieldCheck, QrCode, Coins, Sparkles, Loader2, Copy, Check, RefreshCw, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, ShieldCheck, QrCode, Coins, Sparkles, Loader2, Copy, Check, RefreshCw, AlertCircle, User as UserIcon } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { TOKEN_PACKAGES } from '@/lib/ecosystem';
+import { useAuth } from '@/lib/auth-context';
+import { getOrCreateGuestId } from '@/lib/user-session';
 
 interface CashierModalProps {
   isOpen: boolean;
@@ -12,7 +14,6 @@ interface CashierModalProps {
 }
 
 const GATEWAY_URL = 'https://bikinkilat-gateway.adityaarta085.workers.dev';
-const DEMO_USER_ID = '11111111-1111-1111-1111-111111111111';
 
 interface QrisResponse {
   transaction_id: string;
@@ -28,6 +29,8 @@ interface QrisResponse {
 }
 
 export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModalProps) {
+  const { user, openAuthModal, tokens } = useAuth();
+  const currentUserId = user?.id || (typeof window !== 'undefined' ? getOrCreateGuestId() : '');
   const [selectedPkg, setSelectedPkg] = useState(TOKEN_PACKAGES[1]); // Default 25 tokens
   const [isGenerating, setIsGenerating] = useState(false);
   const [qrisData, setQrisData] = useState<QrisResponse | null>(null);
@@ -64,14 +67,14 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
     return () => clearInterval(timer);
   }, [qrisData, isSuccess]);
 
-  // Status Polling from Cloudflare
+  // Status Polling from Gateway
   useEffect(() => {
     if (!qrisData || isSuccess) return;
 
     pollIntervalRef.current = setInterval(async () => {
       try {
         const res = await fetch(
-          `${GATEWAY_URL}/api/payment/qris/${qrisData.qris_id}/status?userId=${DEMO_USER_ID}&txId=${qrisData.transaction_id}`
+          `${GATEWAY_URL}/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(currentUserId)}&txId=${qrisData.transaction_id}`
         );
         if (!res.ok) return;
 
@@ -93,7 +96,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
         pollIntervalRef.current = null;
       }
     };
-  }, [qrisData, isSuccess, selectedPkg]);
+  }, [qrisData, isSuccess, selectedPkg, currentUserId]);
 
   const triggerSuccess = (transactionId: string, tokens: number) => {
     setTxId(transactionId);
@@ -121,7 +124,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
           amount: selectedPkg.price,
           packageName: selectedPkg.label,
           tokensToAdd: selectedPkg.tokens,
-          userId: DEMO_USER_ID,
+          userId: currentUserId,
           returnUrl: 'https://bikinkilat.com',
         }),
       });
@@ -134,7 +137,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
         setErrorMessage(data.message || 'Gagal membuat QRIS.');
       }
     } catch (err: any) {
-      setErrorMessage('Tidak dapat terhubung ke server Gateway Cloudflare.');
+      setErrorMessage('Tidak dapat terhubung ke server pembayaran.');
     } finally {
       setIsGenerating(false);
     }
@@ -150,7 +153,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
           tokens: selectedPkg.tokens,
           amount: selectedPkg.price,
           packageName: selectedPkg.label,
-          userId: DEMO_USER_ID,
+          userId: currentUserId,
         }),
       });
 
@@ -159,7 +162,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
         if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
         triggerSuccess(data.transactionId, selectedPkg.tokens);
       } else {
-        setErrorMessage('Gagal memproses simulasi.');
+        setErrorMessage('Gagal memproses pembayaran.');
       }
     } catch (err) {
       setErrorMessage('Terjadi kesalahan koneksi kasir.');
@@ -216,7 +219,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
               <h2 id="cashier-modal-title" className="text-lg font-bold">
                 Kasir QRIS Terpadu
               </h2>
-              <p className="text-xs text-indigo-200">Cloudflare Edge & Gateway Qrispy</p>
+              <p className="text-xs text-indigo-200">Pembayaran Instan Otomatis (Semua Bank & E-Wallet)</p>
             </div>
           </div>
           <button
@@ -232,6 +235,35 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
         <div className="p-6 overflow-y-auto space-y-6">
           {!isSuccess ? (
             <div className="space-y-6">
+              {/* Account Status Ribbon */}
+              <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                    <UserIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <span className="font-semibold text-slate-800">
+                      {user ? user.email : 'Sesi Pengguna Aktif'}
+                    </span>
+                    <span className="text-slate-500 block">
+                      Saldo aktif: <strong className="text-indigo-600">{tokens} Token</strong>
+                    </span>
+                  </div>
+                </div>
+                {!user && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      openAuthModal();
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[11px] border border-indigo-200 transition-colors"
+                  >
+                    Masuk Akun
+                  </button>
+                )}
+              </div>
+
               {/* Package selector */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">

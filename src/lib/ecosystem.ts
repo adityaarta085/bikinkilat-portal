@@ -55,7 +55,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Akademik',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
     iconName: 'BookOpen',
     features: ['Format Kurikulum Merdeka', 'Rubrik Asesmen Diagnostik', 'Kisi-kisi Soal HOTS']
@@ -70,7 +70,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Karier',
     tokenCost: 1,
     outputFormats: ['.pdf', '.docx'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200',
     iconName: 'FileText',
     features: ['Skor Lolos ATS 90+', 'Surat Lamaran Bilingual', 'Ekspor PDF Siap Kirim']
@@ -85,7 +85,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Bisnis',
     tokenCost: 3,
     outputFormats: ['.xlsx', '.pdf'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
     iconName: 'Calculator',
     features: ['Database Harga Satuan SNI', 'Format Tabel Excel Otomatis', 'Ringkasan Kurva S']
@@ -100,7 +100,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Legal',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
     iconName: 'Scale',
     features: ['Klausul KUHPerdata Sah', 'Slot E-Meterai Standar', 'Draf Somasi & MoU']
@@ -115,7 +115,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Legal',
     tokenCost: 2,
     outputFormats: ['.pdf', '.png'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
     iconName: 'GitFork',
     features: ['Hitungan Dzawil Furudh Presisi', 'Diagram Silsilah Keluarga', 'Tabel Pembagian Harta Bersih']
@@ -130,7 +130,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Bisnis',
     tokenCost: 3,
     outputFormats: ['.docx', '.pdf'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
     iconName: 'TrendingUp',
     features: ['Format Pengajuan KUR Bank', 'Paket Sponsorship Bertingkat', 'Proyeksi Laba Rugi 3 Tahun']
@@ -145,7 +145,7 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     category: 'Kreatif',
     tokenCost: 1,
     outputFormats: ['.png', '.jpg', '.pdf'],
-    status: 'beta',
+    status: 'live',
     badgeColor: 'bg-orange-50 text-orange-700 border-orange-200',
     iconName: 'Camera',
     features: ['Ganti Jas dan Dasi Otomatis', 'Latar Merah dan Biru Standar', 'Lembar Cetak Multi Ukuran']

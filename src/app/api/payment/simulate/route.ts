@@ -2,12 +2,14 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import crypto from 'crypto';
 
-const DEMO_USER_ID = '11111111-1111-1111-1111-111111111111';
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { packageId, tokens, amount, packageName, userId = DEMO_USER_ID } = body;
+    let { packageId, tokens, amount, packageName, userId } = body;
+
+    if (!userId) {
+      userId = crypto.randomUUID();
+    }
 
     const txId = crypto.randomUUID();
 
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
 
     const { error: updateError } = await supabaseAdmin
       .from('users')
-      .update({ tokens: newTokens })
+      .update({ tokens: newTokens, updated_at: new Date().toISOString() })
       .eq('id', userId);
 
     if (updateError) {

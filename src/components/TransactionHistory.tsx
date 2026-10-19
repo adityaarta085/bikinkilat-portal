@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { History, CheckCircle2, Clock, RefreshCw, ArrowUpRight } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
+import { getOrCreateGuestId } from '@/lib/user-session';
 
 export interface Transaction {
   id: string;
@@ -18,13 +20,15 @@ interface TransactionHistoryProps {
 }
 
 export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
+  const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/transactions');
+      const activeUid = user?.id || (typeof window !== 'undefined' ? getOrCreateGuestId() : '');
+      const res = await fetch(`/api/transactions?userId=${encodeURIComponent(activeUid)}`);
       const data = await res.json();
       if (data.success) {
         setTransactions(data.transactions || []);

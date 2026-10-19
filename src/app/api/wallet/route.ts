@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
-
-const DEMO_USER_ID = '11111111-1111-1111-1111-111111111111';
+import crypto from 'crypto';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId') || DEMO_USER_ID;
-    const email = searchParams.get('email') || (userId === DEMO_USER_ID ? 'demo@bikinkilat.com' : 'pengguna@bikinkilat.com');
-    const name = searchParams.get('name') || (userId === DEMO_USER_ID ? 'Pengguna Demo' : 'Pengguna BikinKilat');
+    let userId = searchParams.get('userId');
+    
+    if (!userId || userId === 'null' || userId === 'undefined') {
+      userId = crypto.randomUUID();
+    }
+    
+    const email = searchParams.get('email') || `user-${userId.slice(0, 8)}@bikinkilat.com`;
+    const name = searchParams.get('name') || 'Pengguna BikinKilat';
 
     const { data: user, error } = await supabaseAdmin
       .from('users')
@@ -26,7 +30,7 @@ export async function GET(request: Request) {
     }
 
     if (!user) {
-      // Create user with 5 free initial tokens if absent
+      // Create user with 5 free initial tokens
       const { data: newUser, error: insertErr } = await supabaseAdmin
         .from('users')
         .insert({
@@ -71,10 +75,10 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { userId, email, name, tokens } = body;
+    let { userId, email, name, tokens } = body;
 
     if (!userId) {
-      return NextResponse.json({ success: false, error: 'User ID is required' }, { status: 400 });
+      userId = crypto.randomUUID();
     }
 
     const { data: user, error } = await supabaseAdmin
@@ -92,7 +96,7 @@ export async function POST(request: Request) {
         .from('users')
         .insert({
           id: userId,
-          email: email || 'pengguna@bikinkilat.com',
+          email: email || `user-${userId.slice(0, 8)}@bikinkilat.com`,
           name: name || 'Pengguna BikinKilat',
           tokens: typeof tokens === 'number' ? tokens : 5,
         })
