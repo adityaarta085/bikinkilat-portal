@@ -41,19 +41,19 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   const avatarUrl = profile?.avatar_url || user?.user_metadata?.avatar_url;
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-slate-200/70 shadow-[0_4px_24px_rgba(15,23,42,0.02)] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-indigo-100 group-hover:scale-105 transition-transform duration-200">
-              <Zap className="w-5 h-5 text-amber-300 fill-amber-300" />
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200/50 group-hover:scale-105 transition-transform duration-200 ring-1 ring-indigo-400/30">
+              <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
             </div>
             <div>
-              <span className="font-extrabold text-xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
+              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
                 BikinKilat<span className="text-indigo-600">.com</span>
               </span>
-              <span className="hidden sm:inline-block ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              <span className="hidden sm:inline-block ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100/90 text-slate-600 border border-slate-200/80">
                 Portal Ekosistem
               </span>
             </div>
@@ -61,32 +61,35 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
         </div>
 
         {/* Center Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-          <Link href="/#layanan" className="hover:text-indigo-600 transition-colors">
+        <nav className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-semibold text-slate-600">
+          <Link href="/#layanan" className="hover:text-slate-900 transition-colors">
             9 Layanan
           </Link>
-          <Link href="/#kasir" className="hover:text-indigo-600 transition-colors">
+          <Link href="/#live-preview" className="hover:text-slate-900 transition-colors">
+            Live Studio
+          </Link>
+          <Link href="/#kasir" className="hover:text-slate-900 transition-colors">
             Tarif & Paket Token
           </Link>
-          <Link href="/#riwayat" className="hover:text-indigo-600 transition-colors">
+          <Link href="/#riwayat" className="hover:text-slate-900 transition-colors">
             Riwayat Transaksi
           </Link>
         </nav>
 
         {/* Right Section: Tokens & Auth */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           {/* User Wallet Badge */}
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-full text-indigo-900 text-xs sm:text-sm font-bold shadow-sm">
-            <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/90 border border-slate-200/80 rounded-full text-slate-800 text-xs sm:text-sm font-bold shadow-xs">
+            <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
             <span>{activeTokens} Token</span>
           </div>
 
           {/* Top-up Button */}
           <button
             onClick={handleOpenCashier}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-200"
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="w-3.5 h-3.5" />
             <span>Top-Up QRIS</span>
           </button>
 
@@ -95,7 +98,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 border border-slate-200 transition"
+                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100/80 border border-slate-200/80 transition"
                 aria-expanded={isDropdownOpen}
               >
                 {avatarUrl ? (

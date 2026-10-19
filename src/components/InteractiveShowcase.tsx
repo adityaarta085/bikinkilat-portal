@@ -262,74 +262,84 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
 
 export function InteractiveShowcase() {
   const [selectedId, setSelectedId] = useState<string>('slide');
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  
   const activeItem = SHOWCASE_ITEMS.find((item) => item.id === selectedId) || SHOWCASE_ITEMS[0];
   const IconComponent = activeItem.icon;
 
+  const triggerSimulation = () => {
+    setIsSimulating(true);
+    setTimeout(() => {
+      setIsSimulating(false);
+    }, 600);
+  };
+
   return (
-    <section className="py-24 scroll-mt-16 bg-slate-900 text-white relative overflow-hidden border-y border-slate-800">
-      {/* Subtle Ambient Radial Lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
-      
+    <section className="py-24 scroll-mt-16 bg-gradient-to-b from-white via-slate-50/50 to-white text-slate-900 relative overflow-hidden border-y border-slate-200/80">
+      {/* Apple Refraction Ambient Aura */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-gradient-to-r from-indigo-100/40 via-sky-100/30 to-violet-100/30 blur-3xl rounded-full pointer-events-none -z-10" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-900/60 border border-indigo-700/50 text-indigo-300 text-xs font-semibold mb-4">
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100/90 border border-slate-200/80 text-slate-800 text-xs font-bold shadow-2xs mb-4">
+            <Zap className="w-3.5 h-3.5 text-indigo-600" />
             <span>Interactive Live Studio Preview</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-4">
-            Lihat Standar Kualitas Dokumen yang Dihasilkan
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">
+            Lihat Standar Mutu Dokumen Resmi
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-            Bukan sekadar teks generik. Sistem BikinKilat menghasilkan file dokumen asli yang telah disesuaikan dengan regulasi hukum, kurikulum, dan tata naskah resmi Indonesia.
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+            Bukan sekadar teks generik tanpa format. Sistem BikinKilat langsung menyusun dokumen berstruktur lengkap yang siap pakai, taat regulasi hukum, kurikulum nasional, dan tata naskah dinas Indonesia.
           </p>
         </div>
 
-        {/* Tab Selector Pills */}
-        <div className="flex items-center justify-start lg:justify-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
-          {SHOWCASE_ITEMS.map((item) => {
-            const ItemIcon = item.icon;
-            const isSelected = item.id === selectedId;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setSelectedId(item.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
-                  isSelected
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 ring-1 ring-indigo-400'
-                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/60'
-                }`}
-              >
-                <ItemIcon className="w-4 h-4 shrink-0" />
-                <span>{item.shortTitle}</span>
-              </button>
-            );
-          })}
+        {/* Apple Segmented Control Tab Bar */}
+        <div className="flex items-center justify-start lg:justify-center gap-1.5 overflow-x-auto pb-2 mb-8 scrollbar-none">
+          <div className="inline-flex p-1.5 rounded-2xl bg-slate-200/60 backdrop-blur-md border border-slate-300/60 shadow-inner">
+            {SHOWCASE_ITEMS.map((item) => {
+              const ItemIcon = item.icon;
+              const isSelected = item.id === selectedId;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setSelectedId(item.id);
+                    triggerSimulation();
+                  }}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                    isSelected
+                      ? 'bg-white text-slate-900 shadow-sm border border-slate-200/80 ring-1 ring-slate-900/5'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
+                  }`}
+                >
+                  <ItemIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-600' : 'text-slate-500'}`} />
+                  <span>{item.shortTitle}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Interactive Workspace Box */}
-        <div className="bg-slate-800/90 rounded-3xl border border-slate-700/80 shadow-2xl overflow-hidden backdrop-blur-md">
-          {/* Top Bar Window Mockup */}
-          <div className="px-6 py-4 bg-slate-900/80 border-b border-slate-700/80 flex items-center justify-between">
+        {/* Liquid Glass Studio Workspace Container */}
+        <div className="bg-white/85 backdrop-blur-2xl rounded-3xl border border-slate-200/90 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.06)] overflow-hidden ring-1 ring-slate-900/[0.03]">
+          
+          {/* Top Window Bar - macOS / VisionOS Frosted Style */}
+          <div className="px-6 py-3.5 bg-slate-50/80 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+              <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white border border-slate-200/80 text-xs font-mono text-slate-700 shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span>https://{activeItem.subdomain}</span>
               </div>
-              <span className="text-xs font-mono text-slate-400 pl-2 border-l border-slate-700">
-                {activeItem.subdomain}
-              </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-indigo-950 border border-indigo-700/60 text-indigo-300">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-700 font-mono">
                 {activeItem.format}
               </span>
-              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-emerald-950 border border-emerald-700/60 text-emerald-300 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Produksi Aktif
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 flex items-center gap-1.5">
+                <span>Siap Produksi</span>
               </span>
             </div>
           </div>
@@ -340,35 +350,45 @@ export function InteractiveShowcase() {
             {/* Left Column: Input Prompt Simulation & Metadata (5 Cols) */}
             <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
               <div>
-                <div className="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-2">
+                <div className="flex items-center gap-2 text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">
                   <IconComponent className="w-4 h-4" />
                   <span>{activeItem.appName}</span>
                 </div>
 
-                <h3 className="text-2xl font-bold text-white mb-2">
+                <h3 className="text-2xl font-extrabold text-slate-900 mb-2">
                   {activeItem.title}
                 </h3>
 
-                <p className="text-xs text-slate-400 mb-6 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <p className="text-xs text-slate-600 mb-6 flex items-center gap-1.5 font-medium">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>{activeItem.standard}</span>
                 </p>
 
                 {/* Simulated Input Query Box */}
-                <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-700/80 mb-6">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                    Contoh Topik / Permintaan Input
-                  </label>
-                  <p className="text-xs sm:text-sm font-mono text-indigo-200 bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+                <div className="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/80 mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                      Simulasi Topik Masukan Pengguna
+                    </label>
+                    <button
+                      type="button"
+                      onClick={triggerSimulation}
+                      className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 transition flex items-center gap-1"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      <span>Uji Respons</span>
+                    </button>
+                  </div>
+                  <div className="text-xs sm:text-sm font-sans font-medium text-slate-800 bg-white p-3.5 rounded-xl border border-slate-200/90 shadow-2xs leading-relaxed">
                     "{activeItem.previewPrompt}"
-                  </p>
+                  </div>
                 </div>
 
                 {/* Key Checklist Features */}
                 <div className="space-y-2.5">
                   {activeItem.previewResult.metaList.map((meta, index) => (
-                    <div key={index} className="flex items-start gap-2.5 text-xs text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div key={index} className="flex items-start gap-2.5 text-xs text-slate-700 font-medium">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                       <span>{meta}</span>
                     </div>
                   ))}
@@ -376,12 +396,12 @@ export function InteractiveShowcase() {
               </div>
 
               {/* Direct Launch CTA */}
-              <div className="pt-4 border-t border-slate-700/60">
+              <div className="pt-4 border-t border-slate-200/80">
                 <a
                   href={activeItem.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all duration-200 flex items-center justify-center gap-2 group"
+                  className="w-full py-3.5 px-6 rounded-2xl bg-slate-900 hover:bg-slate-800 active:bg-black text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center justify-center gap-2 group ring-1 ring-slate-900/10"
                 >
                   <span>Buka {activeItem.appName}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -389,41 +409,48 @@ export function InteractiveShowcase() {
               </div>
             </div>
 
-            {/* Right Column: High-Fidelity Output Renderer Mockup (7 Cols) */}
-            <div className="lg:col-span-7 bg-slate-900/95 rounded-2xl border border-slate-700/80 p-6 flex flex-col justify-between shadow-inner">
+            {/* Right Column: High-Fidelity Output Document Paper (7 Cols) */}
+            <div className={`lg:col-span-7 bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-7 flex flex-col justify-between shadow-[0_8px_30px_rgba(15,23,42,0.04)] transition-all duration-300 ${
+              isSimulating ? 'opacity-50 scale-[0.99]' : 'opacity-100 scale-100'
+            }`}>
               
               <div>
                 {/* Header of the simulated document */}
-                <div className="border-b border-slate-800 pb-4 mb-4">
-                  <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest font-bold">
-                    [Keluaran Terkompilasi Otomatis]
-                  </span>
-                  <h4 className="text-lg sm:text-xl font-bold text-white mt-1">
+                <div className="border-b border-slate-100 pb-4 mb-4">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md uppercase tracking-wider font-bold">
+                      Keluaran Dokumen Sah
+                    </span>
+                    <span className="text-[11px] font-medium text-slate-400">
+                      Format Binary Siap Unduh
+                    </span>
+                  </div>
+                  <h4 className="text-lg sm:text-xl font-bold text-slate-900 mt-1">
                     {activeItem.previewResult.heading}
                   </h4>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-slate-600 mt-1 font-medium">
                     {activeItem.previewResult.subheading}
                   </p>
                 </div>
 
-                {/* Simulated Content Snippet */}
-                <div className="bg-slate-950/80 rounded-xl p-4 border border-slate-800 text-slate-300 text-xs sm:text-sm font-sans leading-relaxed mb-6">
-                  <div className="text-[11px] text-slate-500 font-mono mb-2 flex items-center gap-1.5">
-                    <FileCheck className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Kutipan Isi Dokumen Resmi:</span>
+                {/* Simulated Content Snippet Paper Card */}
+                <div className="bg-slate-50/70 rounded-xl p-4 border border-slate-200/70 text-slate-700 text-xs sm:text-sm font-sans leading-relaxed mb-6">
+                  <div className="text-[11px] text-slate-500 font-semibold mb-2 flex items-center gap-1.5">
+                    <FileCheck className="w-3.5 h-3.5 text-indigo-600" />
+                    <span>Petikan Struktur Naskah Resmi:</span>
                   </div>
-                  <p className="italic text-slate-300">
+                  <p className="italic text-slate-800 bg-white/80 p-3 rounded-lg border border-slate-200/50">
                     "{activeItem.previewResult.sampleSnippet}"
                   </p>
                 </div>
               </div>
 
               {/* Verified Metrics Strip */}
-              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-800">
+              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100">
                 {activeItem.previewResult.stats.map((stat, i) => (
-                  <div key={i} className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 text-center">
-                    <div className="text-[10px] text-slate-400 font-medium">{stat.label}</div>
-                    <div className="text-sm font-extrabold text-indigo-300 mt-0.5">{stat.value}</div>
+                  <div key={i} className="bg-slate-50 p-3 rounded-xl border border-slate-200/60 text-center">
+                    <div className="text-[10px] text-slate-500 font-medium">{stat.label}</div>
+                    <div className="text-xs sm:text-sm font-extrabold text-slate-900 mt-0.5">{stat.value}</div>
                   </div>
                 ))}
               </div>
