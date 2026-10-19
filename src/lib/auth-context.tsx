@@ -97,6 +97,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (session?.user && mounted) {
           setUser(session.user);
           await syncUserProfile(session.user);
+        } else if (typeof window !== "undefined" && window.localStorage.getItem("bikinkilat_auth_user")) {
+          try {
+            const cachedUser = JSON.parse(window.localStorage.getItem("bikinkilat_auth_user") || "null");
+            if (cachedUser?.id && mounted) {
+              setUser(cachedUser);
+              await syncUserProfile(cachedUser);
+            }
+          } catch (e) {
+            console.warn("Failed parsing cached auth user:", e);
+          }
         } else {
           // Check shared cookie for guest/demo cached tokens
           const shared = getSharedSessionCookie();
@@ -178,6 +188,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await supabase.auth.signOut();
     } catch (e) {
       console.warn("Sign out exception:", e);
+    }
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("bikinkilat_auth_user");
     }
     clearSharedSessionCookie();
     setUser(null);

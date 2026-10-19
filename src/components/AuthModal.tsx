@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { Zap, X, Mail, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, Sparkles, Loader2 } from "lucide-react";
+import { Zap, X, Mail, CheckCircle2, AlertCircle, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 
 export function AuthModal() {
   const { isAuthModalOpen, closeAuthModal, signInWithGoogle, signInWithEmailOtp } = useAuth();
@@ -56,15 +56,15 @@ export function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-200 transition-colors">
         {/* Decorative Top Accent */}
         <div className="h-2 w-full bg-gradient-to-r from-indigo-600 via-sky-500 to-amber-400" />
 
         {/* Close Button */}
         <button
           onClick={closeAuthModal}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition"
           aria-label="Tutup jendela login"
         >
           <X className="w-5 h-5" />
@@ -73,40 +73,40 @@ export function AuthModal() {
         <div className="p-6 sm:p-8 space-y-6">
           {/* Header */}
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center mx-auto shadow-md shadow-indigo-100">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center mx-auto shadow-md shadow-indigo-100 dark:shadow-none">
               <Zap className="w-6 h-6 text-amber-300 fill-amber-300" />
             </div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-              Masuk ke BikinKilat<span className="text-indigo-600">.com</span>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              Masuk ke BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
             </h2>
-            <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
               Satu akun terpadu untuk 9 layanan otomasi cerdas dokumen, makalah, dan presentasi Indonesia.
             </p>
           </div>
 
           {/* Welcome Promo Badge */}
-          <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-700 flex items-center justify-center shrink-0">
-              <Sparkles className="w-4 h-4 text-amber-600" />
+          <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/60 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+              <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="text-xs">
-              <span className="font-bold text-amber-950 block">Bonus Pengguna Baru</span>
-              <span className="text-amber-800">Dapatkan langsung 5 Token Gratis saat pertama kali masuk!</span>
+              <span className="font-bold text-amber-950 dark:text-amber-200 block">Bonus Pengguna Baru</span>
+              <span className="text-amber-800 dark:text-amber-300">Dapatkan langsung 5 Token Gratis saat pertama kali masuk!</span>
             </div>
           </div>
 
           {/* Error Alert */}
           {errorMessage && (
-            <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-xs text-rose-800">
-              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 flex items-start gap-2.5 text-xs text-rose-800 dark:text-rose-300">
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {/* Email Success Alert */}
           {emailSuccess && (
-            <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5 text-xs text-emerald-800">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900 flex items-start gap-2.5 text-xs text-emerald-800 dark:text-emerald-300">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <span>{emailSuccess}</span>
             </div>
           )}
@@ -116,7 +116,7 @@ export function AuthModal() {
             <button
               onClick={handleGoogleLogin}
               disabled={isSubmittingGoogle}
-              className="w-full py-3 px-4 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-slate-300 text-slate-800 font-bold text-sm shadow-sm flex items-center justify-center gap-3 transition active:scale-[0.99] disabled:opacity-70"
+              className="w-full py-3 px-4 rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 hover:border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold text-sm shadow-sm flex items-center justify-center gap-3 transition active:scale-[0.99] disabled:opacity-70"
             >
               {isSubmittingGoogle ? (
                 <>
@@ -149,11 +149,11 @@ export function AuthModal() {
             </button>
 
             <div className="relative flex py-2 items-center">
-              <div className="flex-grow border-t border-slate-200"></div>
-              <span className="flex-shrink mx-4 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+              <span className="flex-shrink mx-4 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                 atau via email
               </span>
-              <div className="flex-grow border-t border-slate-200"></div>
+              <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
             </div>
 
             {/* Email OTP Form */}
@@ -166,14 +166,14 @@ export function AuthModal() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="nama@email.com"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 text-xs text-slate-900 outline-none transition"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/40 outline-none transition"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmittingEmail}
-                className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-70"
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-70"
               >
                 {isSubmittingEmail ? (
                   <>
@@ -191,12 +191,12 @@ export function AuthModal() {
           </div>
 
           {/* Legal Compliance Footer */}
-          <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-500 text-center leading-relaxed">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 text-center leading-relaxed">
             Dengan melanjutkan, Anda menyetujui{" "}
             <Link
               href="/syarat-ketentuan"
               onClick={closeAuthModal}
-              className="text-indigo-600 hover:underline font-semibold"
+              className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
             >
               Syarat & Ketentuan
             </Link>
@@ -204,7 +204,7 @@ export function AuthModal() {
             <Link
               href="/kebijakan-privasi"
               onClick={closeAuthModal}
-              className="text-indigo-600 hover:underline font-semibold"
+              className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
             >
               Kebijakan Privasi
             </Link>
@@ -212,7 +212,7 @@ export function AuthModal() {
             <Link
               href="/etika-akademik"
               onClick={closeAuthModal}
-              className="text-indigo-600 hover:underline font-semibold"
+              className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
             >
               Pedoman Etika AI
             </Link>{" "}
@@ -223,3 +223,5 @@ export function AuthModal() {
     </div>
   );
 }
+
+export default AuthModal;

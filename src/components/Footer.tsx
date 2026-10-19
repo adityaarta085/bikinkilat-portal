@@ -2,84 +2,84 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Zap, ShieldCheck, Heart, ExternalLink, Lock } from 'lucide-react';
+import { Zap, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-white text-slate-600 py-16 border-t border-slate-200/80 relative overflow-hidden">
+    <footer className="bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 py-16 border-t border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
       {/* Subtle Bottom Ambient Aura */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-48 bg-gradient-to-t from-slate-100/50 to-transparent pointer-events-none -z-10" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-48 bg-gradient-to-t from-slate-100/50 dark:from-indigo-950/20 to-transparent pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200 dark:shadow-none">
                 <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
               </div>
-              <span className="font-extrabold text-xl text-slate-900 tracking-tight">
-                BikinKilat<span className="text-indigo-600">.com</span>
+              <span className="font-extrabold text-xl text-slate-900 dark:text-white tracking-tight">
+                BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
               </span>
             </div>
-            <p className="text-sm text-slate-600 max-w-sm leading-relaxed mb-4 font-normal">
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm leading-relaxed mb-4 font-normal">
               Ekosistem otomasi cerdas dokumen, makalah akademik, presentasi, dan instrumen legal Indonesia dengan 1 dompet token terintegrasi.
             </p>
-            <div className="flex items-center gap-2 text-xs text-slate-600 font-medium">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>Infrastruktur Edge Network Global & Enkripsi Data TLS 1.3</span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Layanan Populer</h4>
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3">Layanan Populer</h4>
             <ul className="space-y-2.5 text-xs font-medium">
               <li>
-                <a href="https://slide.bikinkilat.com" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                <a href="https://slide.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Slide & Makalah (.pptx & .docx)</span>
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                  <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://modul.bikinkilat.com" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                <a href="https://modul.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Modul Kurikulum Merdeka</span>
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                  <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://cv.bikinkilat.com" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                <a href="https://cv.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>CV ATS Friendly & Lamaran</span>
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                  <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://rab.bikinkilat.com" className="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                <a href="https://rab.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Kalkulator RAB Excel SNI</span>
-                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                  <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Legal & Kepatuhan</h4>
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3">Legal & Kepatuhan</h4>
             <ul className="space-y-2.5 text-xs font-medium">
               <li>
-                <Link href="/syarat-ketentuan" className="hover:text-indigo-600 transition-colors">
+                <Link href="/syarat-ketentuan" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Syarat & Ketentuan Layanan
                 </Link>
               </li>
               <li>
-                <Link href="/kebijakan-privasi" className="hover:text-indigo-600 transition-colors">
+                <Link href="/kebijakan-privasi" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Kebijakan Privasi (UU PDP)
                 </Link>
               </li>
               <li>
-                <Link href="/kebijakan-pengembalian-dana" className="hover:text-indigo-600 transition-colors">
+                <Link href="/kebijakan-pengembalian-dana" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Kebijakan Pengembalian Dana
                 </Link>
               </li>
               <li>
-                <Link href="/etika-akademik" className="hover:text-indigo-600 transition-colors">
+                <Link href="/etika-akademik" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Integritas Akademik & Etika AI
                 </Link>
               </li>
@@ -87,9 +87,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-slate-200/80 text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-600">© {new Date().getFullYear()} BikinKilat.com. Seluruh hak cipta dilindungi undang-undang.</p>
-          <p className="flex items-center gap-1 text-slate-500 font-medium">
+        <div className="pt-8 border-t border-slate-200/80 dark:border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} BikinKilat.com. Seluruh hak cipta dilindungi undang-undang.</p>
+          <p className="flex items-center gap-1 text-slate-500 dark:text-slate-400 font-medium">
             Dibuat untuk akselerasi produktivitas pelajar, guru, dan profesional di Indonesia.
           </p>
         </div>
