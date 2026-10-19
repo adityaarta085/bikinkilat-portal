@@ -7,7 +7,10 @@ import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { InteractiveShowcase } from '@/components/InteractiveShowcase';
 import { EnterpriseBento } from '@/components/EnterpriseBento';
+import { QuickWorkflow } from '@/components/QuickWorkflow';
+import { InteractiveComparison } from '@/components/InteractiveComparison';
 import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
+import { MobileQuickDock } from '@/components/MobileQuickDock';
 import { Footer } from '@/components/Footer';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES, EcosystemApp } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
@@ -22,7 +25,9 @@ import {
   CheckCircle2, 
   HelpCircle,
   QrCode,
-  Flame
+  Flame,
+  Search,
+  X
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -30,6 +35,7 @@ export default function PortalHomePage() {
   const [isCashierOpen, setIsCashierOpen] = useState(false);
   const [lastTxUpdated, setLastTxUpdated] = useState<number>(Date.now());
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handlePaymentSuccess = (addedTokens: number) => {
     setTokens((prev) => prev + addedTokens);
@@ -39,9 +45,20 @@ export default function PortalHomePage() {
 
   const categories = ['Semua', 'Akademik', 'Karier', 'Bisnis', 'Legal', 'Kreatif'];
 
-  const filteredApps = activeCategory === 'Semua' 
-    ? ECOSYSTEM_APPS 
-    : ECOSYSTEM_APPS.filter(app => app.category === activeCategory);
+  const filteredApps = ECOSYSTEM_APPS.filter((app) => {
+    const matchesCategory = activeCategory === 'Semua' || app.category === activeCategory;
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return matchesCategory;
+
+    const matchesSearch = 
+      app.name.toLowerCase().includes(q) ||
+      app.tagline.toLowerCase().includes(q) ||
+      app.subdomain.toLowerCase().includes(q) ||
+      app.outputFormats.some(f => f.toLowerCase().includes(q)) ||
+      app.features.some(f => f.toLowerCase().includes(q));
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="flex-1 flex flex-col">
@@ -123,7 +140,7 @@ export default function PortalHomePage() {
       {/* Ecosystem Apps Grid */}
       <section id="layanan" className="py-20 bg-slate-50/50 border-b border-slate-200/80 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
             <div>
               <div className="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-wider mb-1.5">
                 <Layers className="w-4 h-4" />
@@ -134,35 +151,106 @@ export default function PortalHomePage() {
               </h2>
             </div>
 
-            {/* Category Filter Pills (Apple Segmented Group) */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 p-1 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                    activeCategory === cat
-                      ? 'bg-slate-900 text-white shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+            {/* Search Input & Category Filter */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              {/* Search Bar */}
+              <div className="relative min-w-[240px] sm:min-w-[280px]">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Cari layanan (slide, cv, modul)..."
+                  className="w-full pl-9 pr-8 py-2 bg-white rounded-xl border border-slate-200/90 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition shadow-2xs"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-md text-slate-400 hover:text-slate-600"
+                    title="Hapus pencarian"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Category Filter Pills (Apple Segmented Group) */}
+              <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 p-1 bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                      activeCategory === cat
+                        ? 'bg-slate-900 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
+          {/* Search Result Count or Feedback */}
+          {searchQuery && (
+            <div className="mb-6 flex items-center justify-between text-xs text-slate-500 px-1">
+              <span>
+                Menampilkan hasil untuk &ldquo;<strong className="text-slate-800">{searchQuery}</strong>&rdquo; ({filteredApps.length} layanan ditemukan)
+              </span>
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="text-indigo-600 hover:underline font-semibold"
+              >
+                Reset pencarian
+              </button>
+            </div>
+          )}
+
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredApps.map((app) => (
-              <EcosystemCard key={app.id} app={app} />
-            ))}
-          </div>
+          {filteredApps.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredApps.map((app) => (
+                <EcosystemCard key={app.id} app={app} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-white/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 p-8 max-w-lg mx-auto">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mx-auto mb-4 text-indigo-600">
+                <Search className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-slate-900 mb-1">
+                Layanan Tidak Ditemukan
+              </h3>
+              <p className="text-xs text-slate-500 mb-6">
+                Tidak ada layanan yang cocok dengan kata kunci &ldquo;{searchQuery}&rdquo; dalam kategori {activeCategory}.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveCategory('Semua');
+                }}
+                className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition shadow-xs"
+              >
+                Tampilkan Semua 9 Layanan
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* Architecture & Standards Bento Grid */}
       <EnterpriseBento />
+
+      {/* 3-Step Simple Workflow */}
+      <QuickWorkflow />
+
+      {/* Interactive Comparison: Cara Lama vs BikinKilat */}
+      <InteractiveComparison />
 
       {/* Interactive Efficiency & Cost Savings Calculator */}
       <EfficiencyCalculator onOpenCashier={() => setIsCashierOpen(true)} />
@@ -298,6 +386,9 @@ export default function PortalHomePage() {
       </section>
 
       <Footer />
+
+      {/* Mobile Floating Quick Dock for 1-Thumb Fast Access */}
+      <MobileQuickDock tokens={tokens} onOpenCashier={() => setIsCashierOpen(true)} />
 
       {/* Cashier Modal */}
       <CashierModal

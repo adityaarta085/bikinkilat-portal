@@ -48,8 +48,80 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
           {/* Left Column: Sliders Controller (7 Cols) */}
           <div className="lg:col-span-7 bg-white/85 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-[0_12px_32px_rgba(15,23,42,0.03)] space-y-6 ring-1 ring-slate-900/[0.02]">
             
-            {/* Slider 1: Hours */}
+            {/* Quick Persona Presets */}
             <div>
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">
+                Pilih Profil Penggunaan (1-Klik):
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHoursPerWeek(4);
+                    setCostPerDoc(50000);
+                  }}
+                  className={`p-2.5 rounded-xl border text-left text-xs transition ${
+                    hoursPerWeek === 4 && costPerDoc === 50000
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-900 font-bold shadow-2xs'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="font-bold">Mahasiswa</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">4 Jam / Mgg</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHoursPerWeek(10);
+                    setCostPerDoc(100000);
+                  }}
+                  className={`p-2.5 rounded-xl border text-left text-xs transition ${
+                    hoursPerWeek === 10 && costPerDoc === 100000
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-900 font-bold shadow-2xs'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="font-bold">Guru / Dosen</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">10 Jam / Mgg</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHoursPerWeek(16);
+                    setCostPerDoc(150000);
+                  }}
+                  className={`p-2.5 rounded-xl border text-left text-xs transition ${
+                    hoursPerWeek === 16 && costPerDoc === 150000
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-900 font-bold shadow-2xs'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="font-bold">Profesional</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">16 Jam / Mgg</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHoursPerWeek(22);
+                    setCostPerDoc(200000);
+                  }}
+                  className={`p-2.5 rounded-xl border text-left text-xs transition ${
+                    hoursPerWeek === 22 && costPerDoc === 200000
+                      ? 'bg-indigo-50 border-indigo-300 text-indigo-900 font-bold shadow-2xs'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  <div className="font-bold">Bisnis / UKM</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">22 Jam / Mgg</div>
+                </button>
+              </div>
+            </div>
+
+            {/* Slider 1: Hours */}
+            <div className="pt-2 border-t border-slate-100">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs sm:text-sm font-bold text-slate-900">
                   Waktu Manual Membuat Dokumen per Minggu
