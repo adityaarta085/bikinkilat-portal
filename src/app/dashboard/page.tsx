@@ -25,6 +25,7 @@ import { useAuth } from '@/lib/auth-context';
 import { CashierModal } from '@/components/CashierModal';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Footer } from '@/components/Footer';
+import { BrandLogo } from '@/components/BrandLogo';
 import { ECOSYSTEM_APPS } from '@/lib/ecosystem';
 
 interface TransactionItem {
@@ -110,14 +111,7 @@ export default function UserDashboardPage() {
       <div className="min-h-screen bg-white dark:bg-slate-950 flex flex-col justify-between">
         {/* Minimal Nav */}
         <header className="h-16 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
-              <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
-            </div>
-            <span className="font-extrabold text-base text-slate-900 dark:text-white">
-              BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
-            </span>
-          </Link>
+          <BrandLogo variant="horizontal" size="sm" href="/" />
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <Link
@@ -172,19 +166,7 @@ export default function UserDashboardPage() {
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-b border-slate-200/80 dark:border-slate-800 shadow-[0_4px_24px_rgba(15,23,42,0.02)] transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200/50 dark:shadow-none group-hover:scale-105 transition-transform">
-                <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
-              </div>
-              <div>
-                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">
-                  BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
-                </span>
-                <span className="hidden sm:inline-block ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                  Dashboard
-                </span>
-              </div>
-            </Link>
+            <BrandLogo variant="horizontal" badge="Dashboard" size="md" href="/" />
           </div>
 
           <div className="flex items-center gap-3">

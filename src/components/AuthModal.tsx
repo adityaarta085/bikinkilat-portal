@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Zap, X, Mail, CheckCircle2, AlertCircle, ArrowRight, Sparkles, Loader2 } from "lucide-react";
 
 export function AuthModal() {
@@ -72,9 +73,9 @@ export function AuthModal() {
 
         <div className="p-6 sm:p-8 space-y-6">
           {/* Header */}
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white flex items-center justify-center mx-auto shadow-md shadow-indigo-100 dark:shadow-none">
-              <Zap className="w-6 h-6 text-amber-300 fill-amber-300" />
+          <div className="text-center space-y-3">
+            <div className="flex justify-center">
+              <BrandLogo variant="icon" size="xl" href="" />
             </div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Masuk ke BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>

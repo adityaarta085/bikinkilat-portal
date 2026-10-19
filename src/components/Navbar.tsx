@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { BrandLogo } from '@/components/BrandLogo';
 
 interface NavbarProps {
   tokens?: number;
@@ -56,19 +57,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-b from-indigo-500 to-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200/50 dark:shadow-none group-hover:scale-105 transition-transform duration-200 ring-1 ring-indigo-400/30">
-              <Zap className="w-4 h-4 text-amber-300 fill-amber-300" />
-            </div>
-            <div>
-              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
-              </span>
-              <span className="hidden sm:inline-block ml-2 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100/90 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
-                Portal Ekosistem
-              </span>
-            </div>
-          </Link>
+          <BrandLogo variant="horizontal" badge="Portal Ekosistem" size="md" href="/" />
         </div>
 
         {/* Center Nav Links */}
