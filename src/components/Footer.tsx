@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Zap, Shield, Heart } from 'lucide-react';
+import Link from 'next/link';
+import { Zap, ShieldCheck, Heart, ExternalLink, Lock } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -21,7 +22,7 @@ export function Footer() {
               Ekosistem otomasi cerdas dokumen, makalah akademik, presentasi, dan instrumen legal Indonesia dengan 1 dompet token terintegrasi.
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Shield className="w-4 h-4 text-emerald-500" />
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
               <span>Infrastruktur Berkecepatan Tinggi & Keamanan Terenkripsi 24 Jam</span>
             </div>
           </div>
@@ -29,20 +30,56 @@ export function Footer() {
           <div>
             <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Layanan Populer</h4>
             <ul className="space-y-2 text-xs">
-              <li><a href="https://slide.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Slide BikinKilat (.pptx & .docx)</a></li>
-              <li><a href="https://modul.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Modul Kurikulum Merdeka</a></li>
-              <li><a href="https://cv.bikinkilat.com" className="hover:text-indigo-400 transition-colors">CV ATS Friendly & Lamaran</a></li>
-              <li><a href="https://rab.bikinkilat.com" className="hover:text-indigo-400 transition-colors">Kalkulator RAB Excel SNI</a></li>
+              <li>
+                <a href="https://slide.bikinkilat.com" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <span>Slide & Makalah (.pptx & .docx)</span>
+                  <ExternalLink className="w-3 h-3 text-slate-600" />
+                </a>
+              </li>
+              <li>
+                <a href="https://modul.bikinkilat.com" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <span>Modul Kurikulum Merdeka</span>
+                  <ExternalLink className="w-3 h-3 text-slate-600" />
+                </a>
+              </li>
+              <li>
+                <a href="https://cv.bikinkilat.com" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <span>CV ATS Friendly & Lamaran</span>
+                  <ExternalLink className="w-3 h-3 text-slate-600" />
+                </a>
+              </li>
+              <li>
+                <a href="https://rab.bikinkilat.com" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+                  <span>Kalkulator RAB Excel SNI</span>
+                  <ExternalLink className="w-3 h-3 text-slate-600" />
+                </a>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Legal & Keamanan</h4>
+            <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Legal & Kepatuhan</h4>
             <ul className="space-y-2 text-xs">
-              <li><a href="#kebijakan-privasi" className="hover:text-indigo-400 transition-colors">Kebijakan Privasi</a></li>
-              <li><a href="#syarat-ketentuan" className="hover:text-indigo-400 transition-colors">Syarat & Ketentuan Layanan</a></li>
-              <li><a href="#keamanan" className="hover:text-indigo-400 transition-colors">Keamanan Data & Webhook</a></li>
-              <li><a href="#kontak" className="hover:text-indigo-400 transition-colors">Bantuan WhatsApp / Email</a></li>
+              <li>
+                <Link href="/syarat-ketentuan" className="hover:text-indigo-400 transition-colors">
+                  Syarat & Ketentuan Layanan
+                </Link>
+              </li>
+              <li>
+                <Link href="/kebijakan-privasi" className="hover:text-indigo-400 transition-colors">
+                  Kebijakan Privasi (UU PDP)
+                </Link>
+              </li>
+              <li>
+                <Link href="/kebijakan-pengembalian-dana" className="hover:text-indigo-400 transition-colors">
+                  Kebijakan Pengembalian Dana
+                </Link>
+              </li>
+              <li>
+                <Link href="/etika-akademik" className="hover:text-indigo-400 transition-colors">
+                  Integritas Akademik & Etika AI
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -57,3 +94,5 @@ export function Footer() {
     </footer>
   );
 }
+
+export default Footer;

@@ -7,6 +7,7 @@ import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { Footer } from '@/components/Footer';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES, EcosystemApp } from '@/lib/ecosystem';
+import { useAuth } from '@/lib/auth-context';
 import { 
   Zap, 
   Coins, 
@@ -21,31 +22,15 @@ import {
 } from 'lucide-react';
 
 export default function PortalHomePage() {
-  const [tokens, setTokens] = useState<number>(5);
+  const { tokens, setTokens, user, refreshTokens } = useAuth();
   const [isCashierOpen, setIsCashierOpen] = useState(false);
   const [lastTxUpdated, setLastTxUpdated] = useState<number>(Date.now());
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
 
-  // Load user wallet
-  const fetchWallet = async () => {
-    try {
-      const res = await fetch('/api/wallet');
-      const data = await res.json();
-      if (data.success && typeof data.tokens === 'number') {
-        setTokens(data.tokens);
-      }
-    } catch (e) {
-      console.warn('Fallback to local wallet token state', e);
-    }
-  };
-
-  useEffect(() => {
-    fetchWallet();
-  }, []);
-
   const handlePaymentSuccess = (addedTokens: number) => {
     setTokens((prev) => prev + addedTokens);
     setLastTxUpdated(Date.now());
+    refreshTokens();
   };
 
   const categories = ['Semua', 'Akademik', 'Karier', 'Bisnis', 'Legal', 'Kreatif'];
