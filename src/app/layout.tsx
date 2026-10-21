@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://bikinkilat.web.id',
   },
+  verification: {
+    google: 'IE6K_wmJRTxnzlyWsPxgUYzbqogvTAvpLtW9zJhjviY',
+  },
   robots: {
     index: true,
     follow: true,
