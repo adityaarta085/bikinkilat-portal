@@ -78,7 +78,7 @@ export function AuthModal() {
               <BrandLogo variant="icon" size="xl" href="" />
             </div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              Masuk ke BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.com</span>
+              Masuk ke BikinKilat<span className="text-indigo-600 dark:text-indigo-400">.web.id</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
               Satu akun terpadu untuk 9 layanan otomasi cerdas dokumen, makalah, dan presentasi Indonesia.

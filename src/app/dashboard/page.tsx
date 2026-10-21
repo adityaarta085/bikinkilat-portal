@@ -139,13 +139,13 @@ export default function UserDashboardPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            <button
-              onClick={openAuthModal}
+            <Link
+              href="/auth?returnUrl=/dashboard"
               className="w-full py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2"
             >
               <span>Masuk Akun Sekarang</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
             <Link
               href="/"
               className="inline-block text-xs font-semibold text-slate-500 dark:text-slate-400 hover:underline"

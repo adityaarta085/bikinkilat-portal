@@ -22,7 +22,7 @@ interface AuthContextType {
   openAuthModal: () => void;
   closeAuthModal: () => void;
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: any }>;
-  signInWithEmailOtp: (email: string) => Promise<{ error: any; message?: string }>;
+  signInWithEmailOtp: (email: string, customRedirect?: string) => Promise<{ error: any; message?: string }>;
   signOut: () => Promise<void>;
   setTokens: React.Dispatch<React.SetStateAction<number>>;
   refreshTokens: () => Promise<void>;
@@ -187,10 +187,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signInWithEmailOtp = async (email: string) => {
+  const signInWithEmailOtp = async (email: string, customRedirect?: string) => {
     try {
       const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.web.id";
-      const redirectUrl = `${origin}/auth/callback`;
+      const redirectUrl = `${origin}/auth/callback${customRedirect ? `?returnUrl=${encodeURIComponent(customRedirect)}` : ""}`;
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -231,7 +231,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         tokens,
         isLoading,
         isAuthModalOpen,
-        openAuthModal: () => setIsAuthModalOpen(true),
+        openAuthModal: () => {
+          if (typeof window !== "undefined") {
+            const current = window.location.pathname + window.location.search;
+            window.location.href = `/auth?returnUrl=${encodeURIComponent(current)}`;
+          }
+        },
         closeAuthModal: () => setIsAuthModalOpen(false),
         signInWithGoogle,
         signInWithEmailOtp,

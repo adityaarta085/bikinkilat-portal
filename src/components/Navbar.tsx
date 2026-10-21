@@ -23,7 +23,7 @@ interface NavbarProps {
 }
 
 export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
-  const { user, profile, tokens: authTokens, openAuthModal, signOut } = useAuth();
+  const { user, profile, tokens: authTokens, signOut } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -192,8 +192,8 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               )}
             </div>
           ) : (
-            <button
-              onClick={openAuthModal}
+            <Link
+              href="/auth"
               className="flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition active:scale-95"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -215,7 +215,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
                 />
               </svg>
               <span>Masuk</span>
-            </button>
+            </Link>
           )}
         </div>
       </div>
