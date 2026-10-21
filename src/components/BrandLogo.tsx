@@ -65,7 +65,7 @@ export function BrandLogo({
             height={95}
             priority
             className={`h-full w-auto object-contain transition-opacity duration-300 ${
-              isColor ? "opacity-0" : "opacity-90 dark:opacity-75"
+              isColor ? "opacity-0" : "opacity-90 dark:invert dark:opacity-90"
             }`}
           />
 
@@ -99,7 +99,7 @@ export function BrandLogo({
             height={iconSizes[size]}
             priority
             className={`w-full h-full object-contain transition-opacity duration-300 ${
-              isColor ? "opacity-0" : "opacity-90 dark:opacity-75"
+              isColor ? "opacity-0" : "opacity-90 dark:invert dark:opacity-90"
             }`}
           />
 
@@ -129,7 +129,7 @@ export function BrandLogo({
             height={362}
             priority
             className={`h-full w-auto max-h-40 object-contain transition-opacity duration-300 ${
-              isColor ? "opacity-0" : "opacity-90 dark:opacity-75"
+              isColor ? "opacity-0" : "opacity-90 dark:invert dark:opacity-90"
             }`}
           />
           <Image
