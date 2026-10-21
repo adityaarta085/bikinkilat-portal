@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.transactions (
     created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
--- 3. Table slide_projects (slide.bikinkilat.com)
+-- 3. Table slide_projects (slide.bikinkilat.web.id)
 CREATE TABLE IF NOT EXISTS public.slide_projects (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
@@ -55,6 +55,6 @@ CREATE POLICY "Public slide_projects access" ON public.slide_projects FOR ALL US
 
 -- Seed Demo Account with 5 Free Tokens
 INSERT INTO public.users (id, email, name, tokens)
-VALUES ('11111111-1111-1111-1111-111111111111', 'demo@bikinkilat.com', 'Demo User BikinKilat', 5)
+VALUES ('11111111-1111-1111-1111-111111111111', 'demo@bikinkilat.web.id', 'Demo User BikinKilat', 5)
 ON CONFLICT (id) DO UPDATE 
 SET tokens = 5, name = 'Demo User BikinKilat';

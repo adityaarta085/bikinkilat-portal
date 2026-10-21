@@ -21,7 +21,7 @@ export default function CookieBanner() {
   const handleAcceptAll = () => {
     localStorage.setItem("bikinkilat_cookie_consent", "all");
     localStorage.setItem("bikinkilat_cookie_consent_date", new Date().toISOString());
-    // Set cross-domain cookie for .bikinkilat.com if on production domain
+    // Set cross-domain cookie for .bikinkilat.web.id if on production domain
     if (typeof document !== "undefined") {
       document.cookie = "bk_consent=all; path=/; max-age=31536000; SameSite=Lax";
     }
@@ -76,7 +76,7 @@ export default function CookieBanner() {
         {/* Content Body */}
         <div className="text-xs text-slate-300 leading-relaxed space-y-2">
           <p>
-            BikinKilat.com menggunakan cookie esensial untuk menjaga keamanan otentikasi login akun terpusat Anda di seluruh subdomain dan memastikan sinkronisasi saldo token berlangsung secara real-time.
+            BikinKilat.web.id menggunakan cookie esensial untuk menjaga keamanan otentikasi login akun terpusat Anda di seluruh subdomain dan memastikan sinkronisasi saldo token berlangsung secara real-time.
           </p>
 
           {showPreferences ? (

@@ -6,8 +6,8 @@ import { PRIVACY_POLICY, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
 import { ShieldCheck, ArrowLeft, Lock, Calendar } from "lucide-react";
 
 export const metadata = {
-  title: "Kebijakan Privasi & Perlindungan Data Pribadi • BikinKilat.com",
-  description: "Kebijakan Privasi resmi ekosistem BikinKilat.com sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP).",
+  title: "Kebijakan Privasi & Perlindungan Data Pribadi • BikinKilat.web.id",
+  description: "Kebijakan Privasi resmi ekosistem BikinKilat.web.id sesuai UU No. 27 Tahun 2022 tentang Perlindungan Data Pribadi (UU PDP).",
 };
 
 export default function PrivacyPage() {

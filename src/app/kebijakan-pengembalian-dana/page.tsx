@@ -6,8 +6,8 @@ import { REFUND_POLICY, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
 import { ArrowLeft, RefreshCw, Calendar, Mail } from "lucide-react";
 
 export const metadata = {
-  title: "Kebijakan Pengembalian Dana (Refund) • BikinKilat.com",
-  description: "Ketentuan pengembalian dana dan rekonsiliasi transaksi pembayaran QRIS BikinKilat.com.",
+  title: "Kebijakan Pengembalian Dana (Refund) • BikinKilat.web.id",
+  description: "Ketentuan pengembalian dana dan rekonsiliasi transaksi pembayaran QRIS BikinKilat.web.id.",
 };
 
 export default function RefundPage() {

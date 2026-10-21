@@ -6,8 +6,8 @@ import { TERMS_OF_SERVICE, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
 import { ShieldCheck, ArrowLeft, FileText, Calendar } from "lucide-react";
 
 export const metadata = {
-  title: "Syarat dan Ketentuan Layanan • BikinKilat.com",
-  description: "Syarat dan Ketentuan resmi penggunaan layanan ekosistem BikinKilat.com sesuai hukum Republik Indonesia.",
+  title: "Syarat dan Ketentuan Layanan • BikinKilat.web.id",
+  description: "Syarat dan Ketentuan resmi penggunaan layanan ekosistem BikinKilat.web.id sesuai hukum Republik Indonesia.",
 };
 
 export default function TermsPage() {

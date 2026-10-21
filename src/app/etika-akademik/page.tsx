@@ -6,7 +6,7 @@ import { ACADEMIC_INTEGRITY_POLICY, LEGAL_COMPANY_INFO } from "@/lib/legalConten
 import { GraduationCap, ArrowLeft, Calendar, Sparkles } from "lucide-react";
 
 export const metadata = {
-  title: "Pedoman Integritas Akademik & Etika AI • BikinKilat.com",
+  title: "Pedoman Integritas Akademik & Etika AI • BikinKilat.web.id",
   description: "Pedoman etis pemanfaatan asisten otomasi dokumen dan kecerdasan buatan bagi pelajar, mahasiswa, dan pendidik.",
 };
 

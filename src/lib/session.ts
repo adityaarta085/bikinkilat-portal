@@ -1,5 +1,5 @@
 /**
- * Cross-Subdomain Session & Token Sync Helper for *.bikinkilat.com
+ * Cross-Subdomain Session & Token Sync Helper for *.bikinkilat.web.id
  */
 
 const SESSION_COOKIE_NAME = "bikinkilat_session";
@@ -8,8 +8,8 @@ const TOKEN_COOKIE_NAME = "bikinkilat_token_cache";
 export function getCookieDomain(): string | undefined {
   if (typeof window === "undefined") return undefined;
   const hostname = window.location.hostname;
-  if (hostname.endsWith("bikinkilat.com")) {
-    return ".bikinkilat.com";
+  if (hostname.endsWith("bikinkilat.web.id")) {
+    return ".bikinkilat.web.id";
   }
   return undefined; // Localhost development
 }

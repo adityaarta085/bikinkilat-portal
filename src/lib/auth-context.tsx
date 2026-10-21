@@ -143,7 +143,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async (customRedirect?: string) => {
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.com";
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.web.id";
       const redirectUrl = `${origin}/auth/callback${customRedirect ? `?returnUrl=${encodeURIComponent(customRedirect)}` : ""}`;
       
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -164,7 +164,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithEmailOtp = async (email: string) => {
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.com";
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.web.id";
       const redirectUrl = `${origin}/auth/callback`;
       const { error } = await supabase.auth.signInWithOtp({
         email,

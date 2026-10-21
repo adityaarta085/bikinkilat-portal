@@ -1,7 +1,7 @@
-# PRD: 01-PORTAL-BIKINKILAT (`bikinkilat.com`)
+# PRD: 01-PORTAL-BIKINKILAT (`bikinkilat.web.id`)
 
 ## 1. Ikhtisar Produk
-- **Nama Subdomain:** `bikinkilat.com`
+- **Nama Subdomain:** `bikinkilat.web.id`
 - **Fungsi Utama:** Portal Utama Ekosistem, Showcase 9 Layanan, Single Sign-On (SSO), Dashboard Pengguna, dan Kasir Top-Up Token QRIS Terpusat.
 - **Target Pengguna:** Seluruh pengguna aktif ekosistem BikinKilat (Pelajar, Mahasiswa, Guru, Freelancer, Kontraktor, UMKM).
 
@@ -23,7 +23,7 @@
   - `token_usage_logs`: ID log, user_id, subdomain_source, tokens_deducted, project_id, timestamp.
 
 ## 4. Alur Bisnis (User Journey)
-1. Pengguna mengunjungi `bikinkilat.com` -> Melihat seluruh katalog produk dan sisa token.
+1. Pengguna mengunjungi `bikinkilat.web.id` -> Melihat seluruh katalog produk dan sisa token.
 2. Pengguna klik "Top-Up Token" -> Memilih paket -> Muncul QRIS dinamis.
 3. Pengguna memindai QRIS via GoPay/OVO/Dana/BCA/ShopeePay -> Webhook masuk -> Saldo token di database `users` bertambah seketika.
-4. Pengguna langsung dapat meluncur ke subdomain pilihan (misal: `slide.bikinkilat.com`) dan saldo sudah sinkron.
+4. Pengguna langsung dapat meluncur ke subdomain pilihan (misal: `slide.bikinkilat.web.id`) dan saldo sudah sinkron.

@@ -136,7 +136,7 @@ export function InteractiveComparison() {
                     Otomasi Terverifikasi
                   </span>
                   <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">
-                    BikinKilat.com Ekosistem
+                    BikinKilat.web.id Ekosistem
                   </h3>
                 </div>
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400">

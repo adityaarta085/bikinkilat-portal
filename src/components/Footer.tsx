@@ -30,25 +30,25 @@ export function Footer() {
             <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-3">Layanan Populer</h4>
             <ul className="space-y-2.5 text-xs font-medium">
               <li>
-                <a href="https://slide.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                <a href="https://slide.bikinkilat.web.id" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Slide & Makalah (.pptx & .docx)</span>
                   <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://modul.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                <a href="https://modul.bikinkilat.web.id" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Modul Kurikulum Merdeka</span>
                   <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://cv.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                <a href="https://cv.bikinkilat.web.id" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>CV ATS Friendly & Lamaran</span>
                   <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
               </li>
               <li>
-                <a href="https://rab.bikinkilat.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                <a href="https://rab.bikinkilat.web.id" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5">
                   <span>Kalkulator RAB Excel SNI</span>
                   <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                 </a>
@@ -84,7 +84,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-slate-200/80 dark:border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} BikinKilat.com. Seluruh hak cipta dilindungi undang-undang.</p>
+          <p className="text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} BikinKilat.web.id. Seluruh hak cipta dilindungi undang-undang.</p>
           <p className="flex items-center gap-1 text-slate-500 dark:text-slate-400 font-medium">
             Dibuat untuk akselerasi produktivitas pelajar, guru, dan profesional di Indonesia.
           </p>

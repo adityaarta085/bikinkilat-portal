@@ -158,7 +158,7 @@ export function BrandLogo({
 
   if (href) {
     return (
-      <Link href={href} aria-label="BikinKilat.com Beranda" className="inline-flex items-center">
+      <Link href={href} aria-label="BikinKilat.web.id Beranda" className="inline-flex items-center">
         {content}
       </Link>
     );

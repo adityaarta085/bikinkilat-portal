@@ -25,7 +25,7 @@ interface CashierModalProps {
   onPaymentSuccess: (addedTokens: number) => void;
 }
 
-const GATEWAY_URL = 'https://bikinkilat-gateway.adityaarta085.workers.dev';
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://bikinkilat-gateway.adityaarta085.workers.dev';
 
 interface QrisResponse {
   transaction_id: string;
@@ -143,7 +143,7 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
           tokensToAdd: selectedPkg.tokens,
           userId: user.id,
           userEmail: user.email,
-          returnUrl: 'https://bikinkilat.com',
+          returnUrl: 'https://bikinkilat.web.id',
         }),
       });
 

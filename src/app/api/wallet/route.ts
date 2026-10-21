@@ -13,7 +13,7 @@ export async function GET(request: Request) {
       userId = crypto.randomUUID();
     }
     
-    const email = searchParams.get('email') || `user-${userId.slice(0, 8)}@bikinkilat.com`;
+    const email = searchParams.get('email') || `user-${userId.slice(0, 8)}@bikinkilat.web.id`;
     const name = searchParams.get('name') || 'Pengguna BikinKilat';
 
     const { data: user, error } = await supabaseAdmin
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
         .from('users')
         .insert({
           id: userId,
-          email: email || `user-${userId.slice(0, 8)}@bikinkilat.com`,
+          email: email || `user-${userId.slice(0, 8)}@bikinkilat.web.id`,
           name: name || 'Pengguna BikinKilat',
           tokens: typeof tokens === 'number' ? tokens : 5,
         })
