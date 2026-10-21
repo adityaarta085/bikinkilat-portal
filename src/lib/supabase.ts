@@ -1,10 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
+import { crossSubdomainStorage } from './session';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://oonozobspxhvztoikakt.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy_anon_key';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9vbm96b2JzcHhodnp0b2lrYWt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMTg3ODUsImV4cCI6MjEwNzY5NDc4NX0.s2pJ8Fe4vrrXa2tlEcw5iRLTin7MvderFzCSsLLnbR4';
 const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: crossSubdomainStorage,
+    storageKey: 'bikinkilat_auth_session',
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+  },
+});
 
 export const supabaseAdmin = supabaseServiceRole
   ? createClient(supabaseUrl, supabaseServiceRole, {

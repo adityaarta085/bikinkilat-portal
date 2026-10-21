@@ -108,9 +108,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             console.warn("Failed parsing cached auth user:", e);
           }
         } else {
-          // Check shared cookie for guest/demo cached tokens
+          // Check shared cookie for cross-subdomain SSO session
           const shared = getSharedSessionCookie();
-          if (shared.cachedTokens !== null && mounted) {
+          if (shared.userId && mounted) {
+            try {
+              const res = await fetch(`/api/wallet?userId=${encodeURIComponent(shared.userId)}`);
+              const data = await res.json();
+              if (data.user && mounted) {
+                setUser({
+                  id: data.user.id,
+                  email: data.user.email,
+                  user_metadata: { full_name: data.user.name },
+                } as any);
+                setProfile({
+                  id: data.user.id,
+                  email: data.user.email,
+                  name: data.user.name,
+                  tokens: typeof data.tokens === "number" ? data.tokens : 5,
+                });
+                setTokens(typeof data.tokens === "number" ? data.tokens : 5);
+              } else if (shared.cachedTokens !== null && mounted) {
+                setTokens(shared.cachedTokens);
+              }
+            } catch (e) {
+              if (shared.cachedTokens !== null && mounted) {
+                setTokens(shared.cachedTokens);
+              }
+            }
+          } else if (shared.cachedTokens !== null && mounted) {
             setTokens(shared.cachedTokens);
           }
         }
