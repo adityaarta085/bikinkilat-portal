@@ -9,8 +9,8 @@ export function QuickWorkflow() {
   const steps = [
     {
       step: 1,
-      title: 'Pilih Platform Micro-SaaS',
-      desc: 'Tersedia 9 platform terpisah yang diprogram spesifik: Slide PowerPoint, Modul Kemendikbud, CV ATS, RAB Konstruksi SNI, Surat Kontrak KUHPerdata, Waris Faraidh, Proposal Riset, dan Pasfoto SSCASN.',
+      title: 'Pilih Format Dokumen',
+      desc: 'Tersedia 9 layanan terpisah yang diprogram spesifik: Slide PowerPoint, Modul Kemendikbud, CV ATS, RAB Konstruksi SNI, Surat Kontrak KUHPerdata, Waris Faraidh, Proposal Riset, dan Pasfoto SSCASN.',
       badge: 'Langkah 1: Spesialisasi',
       icon: Layers,
       highlight: 'Satu akun dan saldo token otomatis tersinkronisasi di semua layanan tanpa login ulang.'

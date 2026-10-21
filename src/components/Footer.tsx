@@ -7,7 +7,7 @@ import { BrandLogo } from '@/components/BrandLogo';
 
 export function Footer() {
   return (
-    <footer className="bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 py-16 border-t border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
+    <footer className="bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 pt-16 pb-28 md:pb-16 border-t border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
       {/* Subtle Bottom Ambient Aura */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-48 bg-gradient-to-t from-slate-100/50 dark:from-indigo-950/20 to-transparent pointer-events-none -z-10" />
 
@@ -22,7 +22,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Infrastruktur Edge Network Global & Enkripsi Data TLS 1.3</span>
+              <span>Keamanan Terenkripsi & Akses Cepat Nasional</span>
             </div>
           </div>
 

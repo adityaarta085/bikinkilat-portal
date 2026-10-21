@@ -2,38 +2,43 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ShieldCheck, Cookie, X, Check, Settings } from "lucide-react";
+import { Cookie, X, Check } from "lucide-react";
+import { getCookieDomain } from "@/lib/session";
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
 
   useEffect(() => {
-    // Check if user already made a choice
-    const savedConsent = localStorage.getItem("bikinkilat_cookie_consent");
-    if (!savedConsent) {
-      // Delay showing banner slightly for smooth UX
+    // Check cross-subdomain cookie first
+    const hasCookieConsent =
+      typeof document !== "undefined" &&
+      document.cookie.match(/(?:^|;\s*)bk_consent=([^;]+)/);
+    const hasLocalConsent =
+      typeof localStorage !== "undefined" &&
+      localStorage.getItem("bikinkilat_cookie_consent");
+
+    if (!hasCookieConsent && !hasLocalConsent) {
       const timer = setTimeout(() => setIsVisible(true), 1200);
       return () => clearTimeout(timer);
     }
   }, []);
 
-  const handleAcceptAll = () => {
-    localStorage.setItem("bikinkilat_cookie_consent", "all");
-    localStorage.setItem("bikinkilat_cookie_consent_date", new Date().toISOString());
-    // Set cross-domain cookie for .bikinkilat.web.id if on production domain
-    if (typeof document !== "undefined") {
-      document.cookie = "bk_consent=all; path=/; max-age=31536000; SameSite=Lax";
-    }
-    setIsVisible(false);
-  };
+  const saveConsent = (level: "all" | "essential") => {
+    const domain = getCookieDomain();
+    const domainStr = domain ? `; Domain=${domain}` : "";
+    const isSecure = typeof window !== "undefined" && window.location.protocol === "https:";
+    const secureStr = isSecure ? "; Secure" : "";
+    const maxAge = 60 * 60 * 24 * 365;
 
-  const handleAcceptEssential = () => {
-    localStorage.setItem("bikinkilat_cookie_consent", "essential");
-    localStorage.setItem("bikinkilat_cookie_consent_date", new Date().toISOString());
     if (typeof document !== "undefined") {
-      document.cookie = "bk_consent=essential; path=/; max-age=31536000; SameSite=Lax";
+      document.cookie = `bk_consent=${level}; Path=/; Max-Age=${maxAge}; SameSite=Lax${domainStr}${secureStr}`;
     }
+    try {
+      localStorage.setItem("bikinkilat_cookie_consent", level);
+      localStorage.setItem("bikinkilat_cookie_consent_date", new Date().toISOString());
+    } catch (e) {}
+
     setIsVisible(false);
   };
 
@@ -65,8 +70,8 @@ export default function CookieBanner() {
           </div>
 
           <button
-            onClick={handleAcceptEssential}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+            onClick={() => saveConsent("essential")}
+            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition min-h-[32px] min-w-[32px] flex items-center justify-center"
             aria-label="Tutup pemberitahuan"
           >
             <X className="w-4 h-4" />
@@ -76,7 +81,7 @@ export default function CookieBanner() {
         {/* Content Body */}
         <div className="text-xs text-slate-300 leading-relaxed space-y-2">
           <p>
-            BikinKilat.web.id menggunakan cookie esensial untuk menjaga keamanan otentikasi login akun terpusat Anda di seluruh subdomain dan memastikan sinkronisasi saldo token berlangsung secara real-time.
+            BikinKilat.web.id menggunakan cookie esensial agar sesi akun Anda tetap aman dan saldo token tersinkronisasi otomatis saat berpindah antar layanan.
           </p>
 
           {showPreferences ? (
@@ -84,16 +89,16 @@ export default function CookieBanner() {
               <div className="flex items-center justify-between">
                 <div>
                   <span className="font-bold text-white block">Cookie Esensial (Wajib)</span>
-                  <span className="text-slate-400">Diperlukan untuk otentikasi sesi & saldo token.</span>
+                  <span className="text-slate-400">Diperlukan untuk keamanan login dan saldo token.</span>
                 </div>
                 <span className="text-emerald-400 font-bold">Selalu Aktif</span>
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-slate-800">
                 <div>
-                  <span className="font-bold text-white block">Cookie Preferensi & Analitik</span>
-                  <span className="text-slate-400">Mengingat pilihan tema dan kecepatan render dokumen.</span>
+                  <span className="font-bold text-white block">Cookie Preferensi</span>
+                  <span className="text-slate-400">Mengingat setelan mode gelap/terang di seluruh layanan.</span>
                 </div>
-                <span className="text-indigo-400 font-bold">Opsional</span>
+                <span className="text-indigo-400 font-bold">Aktif</span>
               </div>
             </div>
           ) : null}
@@ -114,6 +119,7 @@ export default function CookieBanner() {
             </Link>
             <span className="text-slate-600">•</span>
             <button
+              type="button"
               onClick={() => setShowPreferences(!showPreferences)}
               className="text-slate-400 hover:text-slate-200 underline font-medium"
             >
@@ -125,16 +131,18 @@ export default function CookieBanner() {
         {/* Action Buttons */}
         <div className="flex items-center flex-col sm:flex-row gap-2 pt-1">
           <button
-            onClick={handleAcceptAll}
-            className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs shadow-md shadow-indigo-500/20 flex items-center justify-center gap-1.5 transition active:scale-95"
+            type="button"
+            onClick={() => saveConsent("all")}
+            className="w-full sm:flex-1 min-h-[44px] py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-bold text-xs shadow-md shadow-indigo-500/20 flex items-center justify-center gap-1.5 transition active:scale-95"
           >
             <Check className="w-3.5 h-3.5" />
-            <span>Terima Semua Cookie</span>
+            <span>Terima Semua</span>
           </button>
 
           <button
-            onClick={handleAcceptEssential}
-            className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-xs border border-slate-700 transition"
+            type="button"
+            onClick={() => saveConsent("essential")}
+            className="w-full sm:w-auto min-h-[44px] py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-semibold text-xs border border-slate-700 transition"
           >
             Hanya Esensial
           </button>

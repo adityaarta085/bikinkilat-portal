@@ -295,7 +295,7 @@ export default function UserDashboardPage() {
                 <span className="text-sm font-semibold text-indigo-200">Token</span>
               </div>
               <p className="text-[11px] text-slate-300 leading-relaxed font-normal">
-                Bisa digunakan di seluruh 9 platform micro-SaaS tanpa batas kedaluwarsa.
+                Bisa digunakan di seluruh 9 layanan BikinKilat tanpa batas kedaluwarsa.
               </p>
             </div>
 
@@ -318,7 +318,7 @@ export default function UserDashboardPage() {
             <div>
               <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-1">
                 <Layers className="w-4 h-4" />
-                <span>Pusat Layanan Micro-SaaS</span>
+                <span>Pusat 9 Layanan Dokumen</span>
               </div>
               <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                 9 Studio Dokumen Siap Pakai

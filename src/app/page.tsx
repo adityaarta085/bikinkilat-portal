@@ -79,7 +79,7 @@ export default function PortalHomePage() {
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs">
               <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400" />
-              <span>Semua 9 Subdomain Siap Produksi • Real-Time Database Sync</span>
+              <span>9 Layanan Cerdas Aktif • Terhubung &amp; Sinkron Otomatis</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
@@ -129,7 +129,7 @@ export default function PortalHomePage() {
             <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800">
               <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">9</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Subdomain Micro-SaaS</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Layanan Spesialis</div>
               </div>
               <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">1 Dompet</div>
@@ -395,7 +395,7 @@ export default function PortalHomePage() {
               Bagaimana jika proses pembayaran QRIS mengalami kendala?
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Sistem kasir kami dilengkapi perlindungan idempoten dan webhook otomatis. Jika status pembayaran sudah sukses di aplikasi perbankan atau e-wallet Anda, saldo token akan langsung bertambah dalam hitungan detik.
+              Pembayaran diproses secara instan dan aman. Begitu transfer berhasil diverifikasi oleh bank atau e-wallet Anda, saldo token langsung bertambah otomatis dalam hitungan detik.
             </p>
           </div>
         </div>

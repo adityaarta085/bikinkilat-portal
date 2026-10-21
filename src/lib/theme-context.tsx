@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { getCookieDomain } from './session';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
@@ -12,38 +13,73 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const THEME_COOKIE_NAME = 'bikinkilat_theme';
+
+function getInitialTheme(): Theme {
+  if (typeof document === 'undefined') return 'light';
+
+  // 1. Check cross-subdomain cookie
+  const match = document.cookie.match(
+    new RegExp('(?:^|;\\s*)' + THEME_COOKIE_NAME + '=([^;]*)')
+  );
+  if (match && (match[1] === 'dark' || match[1] === 'light')) {
+    return match[1] as Theme;
+  }
+
+  // 2. Check localStorage
+  try {
+    const saved = localStorage.getItem(THEME_COOKIE_NAME);
+    if (saved === 'dark' || saved === 'light') return saved as Theme;
+  } catch (e) {}
+
+  // 3. System preference
+  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+
+  return 'light';
+}
+
+function saveThemeToStorage(theme: Theme): void {
+  if (typeof document === 'undefined') return;
+  const domain = getCookieDomain();
+  const domainStr = domain ? `; Domain=${domain}` : '';
+  const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const secureStr = isSecure ? '; Secure' : '';
+  const maxAge = 60 * 60 * 24 * 365; // 1 year
+
+  document.cookie = `${THEME_COOKIE_NAME}=${theme}; Path=/; Max-Age=${maxAge}; SameSite=Lax${domainStr}${secureStr}`;
+  try {
+    localStorage.setItem(THEME_COOKIE_NAME, theme);
+  } catch (e) {}
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check saved preference or system preference
-    const saved = localStorage.getItem('bikinkilat_theme') as Theme | null;
-    if (saved === 'dark' || saved === 'light') {
-      setThemeState(saved);
-      applyTheme(saved);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-      applyTheme('dark');
-    } else {
-      setThemeState('light');
-      applyTheme('light');
-    }
+    const initial = getInitialTheme();
+    setThemeState(initial);
+    applyTheme(initial);
     setMounted(true);
   }, []);
 
   const applyTheme = (t: Theme) => {
+    if (typeof document === 'undefined') return;
     const root = document.documentElement;
     if (t === 'dark') {
       root.classList.add('dark');
+      root.style.colorScheme = 'dark';
     } else {
       root.classList.remove('dark');
+      root.style.colorScheme = 'light';
     }
   };
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('bikinkilat_theme', newTheme);
+    saveThemeToStorage(newTheme);
     applyTheme(newTheme);
   };
 

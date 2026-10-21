@@ -4,7 +4,7 @@ import { ClientProviders } from '@/components/ClientProviders';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://bikinkilat.web.id'),
-  title: 'BikinKilat.web.id - Ekosistem Micro-SaaS Otomasi Dokumen & Aset Digital Indonesia',
+  title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
   description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
   keywords: ['BikinKilat', 'slide presentasi', 'makalah otomatis', 'modul ajar kurikulum merdeka', 'cv ats', 'rab excel', 'surat perjanjian'],
   alternates: {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'BikinKilat.web.id - Ekosistem Micro-SaaS Otomasi Dokumen & Aset Digital Indonesia',
+    title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
     description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
     url: 'https://bikinkilat.web.id',
     siteName: 'BikinKilat.web.id',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BikinKilat.web.id - Ekosistem Micro-SaaS Otomasi Dokumen & Aset Digital Indonesia',
+    title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
     description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
     creator: '@bikinkilat',
   },
@@ -52,35 +52,35 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "@id": "https://bikinkilat.web.id/#webapp",
-      "name": "BikinKilat.web.id",
-      "url": "https://bikinkilat.web.id",
-      "description": "Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript. Requires HTML5.",
-      "inLanguage": "id-ID",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "IDR",
-        "availability": "https://schema.org/InStock"
-      }
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://bikinkilat.web.id/#website",
-      "url": "https://bikinkilat.web.id",
-      "name": "BikinKilat.web.id",
-      "description": "Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.",
-      "inLanguage": "id-ID"
-    }
-  ]
-})
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebApplication",
+                  "@id": "https://bikinkilat.web.id/#webapp",
+                  "name": "BikinKilat.web.id",
+                  "url": "https://bikinkilat.web.id",
+                  "description": "Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.",
+                  "applicationCategory": "BusinessApplication",
+                  "operatingSystem": "All",
+                  "browserRequirements": "Requires JavaScript. Requires HTML5.",
+                  "inLanguage": "id-ID",
+                  "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "IDR",
+                    "availability": "https://schema.org/InStock"
+                  }
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://bikinkilat.web.id/#website",
+                  "url": "https://bikinkilat.web.id",
+                  "name": "BikinKilat.web.id",
+                  "description": "Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.",
+                  "inLanguage": "id-ID"
+                }
+              ]
+            })
           }}
         />
         <script
@@ -88,12 +88,18 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('bikinkilat_theme');
+                  var match = document.cookie.match(/(?:^|;\\s*)bikinkilat_theme=([^;]+)/);
+                  var theme = match ? match[1] : null;
+                  if (!theme) {
+                    theme = localStorage.getItem('bikinkilat_theme');
+                  }
                   var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
                   if (theme === 'dark' || (!theme && supportDarkMode)) {
                     document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
                   } else {
                     document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
                   }
                 } catch (e) {}
               })();
@@ -101,7 +107,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
+      <body className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200 overflow-x-hidden antialiased">
         <ClientProviders>
           {children}
         </ClientProviders>
