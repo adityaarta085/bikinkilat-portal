@@ -83,23 +83,20 @@ export default function RootLayout({
             })
           }}
         />
-        <script
+                <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var match = document.cookie.match(/(?:^|;\\s*)bikinkilat_theme=([^;]+)/);
+                  var match = document.cookie.match(/(?:^|;\s*)bikinkilat_theme=([^;]+)/);
                   var theme = match ? match[1] : null;
                   if (!theme) {
                     theme = localStorage.getItem('bikinkilat_theme');
                   }
-                  var supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (theme === 'dark' || (!theme && supportDarkMode)) {
+                  if (theme === 'dark') {
                     document.documentElement.classList.add('dark');
-                    document.documentElement.style.colorScheme = 'dark';
                   } else {
                     document.documentElement.classList.remove('dark');
-                    document.documentElement.style.colorScheme = 'light';
                   }
                 } catch (e) {}
               })();

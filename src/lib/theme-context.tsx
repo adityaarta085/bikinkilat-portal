@@ -22,21 +22,21 @@ function getInitialTheme(): Theme {
   const match = document.cookie.match(
     new RegExp('(?:^|;\\s*)' + THEME_COOKIE_NAME + '=([^;]*)')
   );
-  if (match && (match[1] === 'dark' || match[1] === 'light')) {
-    return match[1] as Theme;
+  if (match && match[1] === 'dark') {
+    return 'dark';
+  }
+  if (match && match[1] === 'light') {
+    return 'light';
   }
 
   // 2. Check localStorage
   try {
     const saved = localStorage.getItem(THEME_COOKIE_NAME);
-    if (saved === 'dark' || saved === 'light') return saved as Theme;
+    if (saved === 'dark') return 'dark';
+    if (saved === 'light') return 'light';
   } catch (e) {}
 
-  // 3. System preference
-  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-
+  // DEFAULT IS ALWAYS LIGHT
   return 'light';
 }
 
@@ -48,6 +48,9 @@ function saveThemeToStorage(theme: Theme): void {
   const secureStr = isSecure ? '; Secure' : '';
   const maxAge = 60 * 60 * 24 * 365; // 1 year
 
+  // Clear any existing host-only cookie first
+  document.cookie = `${THEME_COOKIE_NAME}=; Path=/; Max-Age=0; SameSite=Lax`;
+  // Write cross-subdomain cookie
   document.cookie = `${THEME_COOKIE_NAME}=${theme}; Path=/; Max-Age=${maxAge}; SameSite=Lax${domainStr}${secureStr}`;
   try {
     localStorage.setItem(THEME_COOKIE_NAME, theme);
@@ -70,10 +73,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const root = document.documentElement;
     if (t === 'dark') {
       root.classList.add('dark');
-      root.style.colorScheme = 'dark';
     } else {
       root.classList.remove('dark');
-      root.style.colorScheme = 'light';
     }
   };
 
@@ -102,3 +103,5 @@ export function useTheme() {
   }
   return context;
 }
+
+export default ThemeProvider;
