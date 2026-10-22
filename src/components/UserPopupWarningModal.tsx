@@ -8,12 +8,43 @@ import {
   Info, 
   Check, 
   Coins, 
-  ArrowRight,
-  ExternalLink 
+  ExternalLink,
+  X
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAuth } from '@/lib/auth-context';
 import { NotificationItem } from './NotificationCenter';
+
+/**
+ * Helper to check if a popup notification has already been shown to this user/browser.
+ * Each popup notification should ONLY BE SHOWN ONCE.
+ */
+function isPopupAlreadyShown(id: string): boolean {
+  if (typeof window === 'undefined' || !id) return false;
+  try {
+    const shown: string[] = JSON.parse(localStorage.getItem('bk_shown_popup_ids') || '[]');
+    const dismissed: string[] = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
+    return shown.includes(id) || dismissed.includes(id);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Record that a popup notification has been displayed once in this browser.
+ */
+function markPopupAsShown(id: string) {
+  if (typeof window === 'undefined' || !id) return;
+  try {
+    const shown: string[] = JSON.parse(localStorage.getItem('bk_shown_popup_ids') || '[]');
+    if (!shown.includes(id)) {
+      shown.push(id);
+      localStorage.setItem('bk_shown_popup_ids', JSON.stringify(shown));
+    }
+  } catch (e) {
+    console.warn('Error marking popup as shown:', e);
+  }
+}
 
 export function UserPopupWarningModal() {
   const { user, refreshTokens } = useAuth();
@@ -30,16 +61,19 @@ export function UserPopupWarningModal() {
       const res = await fetch(url, { cache: 'no-store' });
       const data = await res.json();
       if (data.success && data.pendingPopup) {
-        // Check if guest dismissed via localStorage
-        if (!user?.id && typeof window !== 'undefined') {
-          const dismissedGuests = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
-          if (dismissedGuests.includes(data.pendingPopup.id)) return;
+        const popup = data.pendingPopup as NotificationItem;
+
+        // CRITICAL: If this popup was ALREADY shown or dismissed -> DO NOT SHOW AGAIN!
+        if (isPopupAlreadyShown(popup.id)) {
+          return;
         }
 
-        setActivePopup(data.pendingPopup);
+        // Mark as shown immediately so even an instant page refresh will not show it again
+        markPopupAsShown(popup.id);
+        setActivePopup(popup);
 
-        // If it's a token gift, trigger confetti
-        if (data.pendingPopup.type === 'success' || (data.pendingPopup.tokens_granted && data.pendingPopup.tokens_granted > 0)) {
+        // If it's a token gift or success, trigger confetti
+        if (popup.type === 'success' || (popup.tokens_granted && popup.tokens_granted > 0)) {
           try {
             confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
           } catch (e) {}
@@ -56,12 +90,19 @@ export function UserPopupWarningModal() {
     return () => clearTimeout(t);
   }, [user?.id]);
 
-  // 2. Realtime listener for live dispatched popup notifications
+  // 2. Realtime listener for live dispatched popup notifications (e.g. from WebSocket INSERT)
   useEffect(() => {
     const handleLivePopup = (e: any) => {
-      if (e.detail) {
-        setActivePopup(e.detail);
-        if (e.detail.type === 'success' || (e.detail.tokens_granted && e.detail.tokens_granted > 0)) {
+      if (e.detail && e.detail.id) {
+        const popup = e.detail as NotificationItem;
+        // Check if already shown once
+        if (isPopupAlreadyShown(popup.id)) return;
+
+        // Mark as shown immediately
+        markPopupAsShown(popup.id);
+        setActivePopup(popup);
+
+        if (popup.type === 'success' || (popup.tokens_granted && popup.tokens_granted > 0)) {
           try {
             confetti({ particleCount: 80, spread: 65, origin: { y: 0.6 } });
           } catch (err) {}
@@ -76,6 +117,19 @@ export function UserPopupWarningModal() {
   // Handle dismiss / acknowledge
   const handleAcknowledge = async () => {
     if (!activePopup) return;
+    const popupId = activePopup.id;
+
+    // Immediately record into dismissed lists so it never shows again
+    markPopupAsShown(popupId);
+    if (typeof window !== 'undefined') {
+      try {
+        const dismissedGuests: string[] = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
+        if (!dismissedGuests.includes(popupId)) {
+          dismissedGuests.push(popupId);
+          localStorage.setItem('bk_dismissed_popups', JSON.stringify(dismissedGuests));
+        }
+      } catch (e) {}
+    }
 
     setIsDismissing(true);
     try {
@@ -85,14 +139,10 @@ export function UserPopupWarningModal() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: user.id,
-            notificationId: activePopup.id,
+            notificationId: popupId,
             dismissPopup: true,
           }),
         });
-      } else if (typeof window !== 'undefined') {
-        const dismissedGuests = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
-        dismissedGuests.push(activePopup.id);
-        localStorage.setItem('bk_dismissed_popups', JSON.stringify(dismissedGuests));
       }
 
       // Refresh user tokens if any bonus was granted
@@ -119,6 +169,16 @@ export function UserPopupWarningModal() {
         aria-modal="true"
         className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden space-y-6"
       >
+        {/* Top-Right Quick Close Button */}
+        <button
+          type="button"
+          onClick={handleAcknowledge}
+          aria-label="Tutup notifikasi"
+          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors z-10"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
         {/* Ambient Top Glow */}
         {isUrgent ? (
           <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose-500 via-red-600 to-rose-500" />
@@ -131,7 +191,7 @@ export function UserPopupWarningModal() {
         )}
 
         {/* Modal Header */}
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4 pr-6">
           <div className="shrink-0">
             {isUrgent ? (
               <div className="w-14 h-14 rounded-2xl bg-rose-100 dark:bg-rose-950/80 border border-rose-200 dark:border-rose-900 text-rose-600 dark:text-rose-400 flex items-center justify-center shadow-inner">

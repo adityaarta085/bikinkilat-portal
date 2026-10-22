@@ -94,13 +94,6 @@ export function NotificationCenter() {
       if (data.success && Array.isArray(data.notifications)) {
         setNotifications(data.notifications);
         setUnreadCount(data.unreadCount || 0);
-
-        // If there's a pending popup, dispatch event to trigger modal
-        if (data.pendingPopup) {
-          window.dispatchEvent(
-            new CustomEvent('bk:new_popup_notification', { detail: data.pendingPopup })
-          );
-        }
       }
     } catch (e) {
       console.warn('Gagal memuat notifikasi:', e);
