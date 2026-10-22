@@ -13,6 +13,7 @@ import { InteractiveComparison } from '@/components/InteractiveComparison';
 import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
 import { MobileQuickDock } from '@/components/MobileQuickDock';
 import { Footer } from '@/components/Footer';
+import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
 import { 
@@ -298,65 +299,15 @@ export default function PortalHomePage() {
             </p>
           </div>
 
-          {/* Pricing Cards (Apple Liquid Glass Cards) */}
+          {/* Pricing Cards (Apple Liquid Glass Cards with Strike-Through Animation) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
-            {TOKEN_PACKAGES.map((pkg) => (
-              <div
+            {TOKEN_PACKAGES.map((pkg, idx) => (
+              <AnimatedPricingCard
                 key={pkg.id}
-                className={`relative rounded-3xl p-8 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between ${
-                  pkg.popular
-                    ? 'border-indigo-600/90 dark:border-indigo-500 ring-4 ring-indigo-500/10 shadow-[0_20px_50px_rgba(79,70,229,0.1)] -translate-y-1'
-                    : 'border-slate-200/90 dark:border-slate-800 shadow-[0_10px_30px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.06)] hover:-translate-y-1'
-                }`}
-              >
-                {pkg.popular && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm tracking-wide">
-                    {pkg.badge}
-                  </span>
-                )}
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">{pkg.label}</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 font-medium">{pkg.desc}</p>
-
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">
-                      Rp {pkg.price.toLocaleString('id-ID')}
-                    </span>
-                  </div>
-
-                  <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800 mb-8">
-                    <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-slate-200">
-                      <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
-                      <span>{pkg.tokens} Token Terkredit Instan</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span>Berlaku permanen tanpa batas kedaluwarsa</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span>Bisa digunakan di seluruh 9 subdomain</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span>Download format asli (.pptx, .docx, .xlsx, .pdf)</span>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleOpenCashier}
-                  className={`w-full py-3.5 px-4 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${
-                    pkg.popular
-                      ? 'bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-xs ring-1 ring-slate-900/10'
-                      : 'bg-slate-100 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200'
-                  }`}
-                >
-                  <QrCode className="w-4 h-4" />
-                  <span>Pilih Paket {pkg.tokens} Token</span>
-                </button>
-              </div>
+                pkg={pkg}
+                index={idx}
+                onSelect={handleOpenCashier}
+              />
             ))}
           </div>
 

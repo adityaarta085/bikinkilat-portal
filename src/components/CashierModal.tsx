@@ -382,21 +382,35 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
                             : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-800/40'
                         }`}
                       >
-                        {pkg.popular && (
+                        {pkg.popular ? (
                           <span className="absolute -top-2.5 right-2 px-1.5 py-0.5 rounded-md bg-indigo-600 text-white text-[10px] font-bold">
                             Populer
                           </span>
-                        )}
+                        ) : (pkg as any).discountPercent ? (
+                          <span className="absolute -top-2.5 right-2 px-1.5 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-bold">
+                            -{(pkg as any).discountPercent}%
+                          </span>
+                        ) : null}
                         <div className="flex items-center gap-1 text-slate-900 dark:text-white font-extrabold text-base mb-1">
                           <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
                           <span>{pkg.tokens}</span>
                         </div>
-                        <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-0.5">
+                        <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-0.5">
                           Rp {pkg.price.toLocaleString('id-ID')}
                         </div>
+                        {(pkg as any).originalPrice && (
+                          <div className="text-[10px] text-slate-400 dark:text-slate-500 line-through">
+                            Rp {(pkg as any).originalPrice.toLocaleString('id-ID')}
+                          </div>
+                        )}
                         <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
                           {pkg.label}
                         </div>
+                        {(pkg as any).discountPercent && (
+                          <span className="text-[9px] font-extrabold text-rose-600 dark:text-rose-400 mt-1 block">
+                            Diskon {(pkg as any).discountPercent}%
+                          </span>
+                        )}
                       </button>
                     );
                   })}

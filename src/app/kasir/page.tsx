@@ -917,7 +917,14 @@ export default function KasirPage() {
                                 <span className="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400">
                                   {pkg.name}
                                 </span>
-                                {isSelected && <CheckCircle className="w-5 h-5 text-indigo-600 shrink-0" />}
+                                <div className="flex items-center gap-1.5">
+                                  {(pkg as any).discountPercent && (
+                                    <span className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-600 dark:bg-rose-950/80 dark:text-rose-400 font-extrabold text-[10px] border border-rose-200 dark:border-rose-900">
+                                      -{(pkg as any).discountPercent}%
+                                    </span>
+                                  )}
+                                  {isSelected && <CheckCircle className="w-5 h-5 text-indigo-600 shrink-0" />}
+                                </div>
                               </div>
 
                               <div>
@@ -932,6 +939,16 @@ export default function KasirPage() {
                               </p>
 
                               <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                {(pkg as any).originalPrice && (
+                                  <div className="flex items-center gap-1.5 mb-0.5">
+                                    <span className="text-xs text-slate-400 dark:text-slate-500 line-through font-semibold font-mono">
+                                      {formatRupiah((pkg as any).originalPrice)}
+                                    </span>
+                                    <span className="text-[10px] font-black text-rose-600 dark:text-rose-400">
+                                      Diskon {(pkg as any).discountPercent}%
+                                    </span>
+                                  </div>
+                                )}
                                 <span className="text-xl font-black text-slate-900 dark:text-white block">
                                   {formatRupiah(pkg.price)}
                                 </span>
