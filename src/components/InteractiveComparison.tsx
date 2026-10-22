@@ -1,10 +1,12 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { Check, X, Sparkles, ArrowRight } from 'lucide-react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 export function InteractiveComparison() {
   const [activeTab, setActiveTab] = useState<'ringkas' | 'detail'>('ringkas');
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
 
   const comparisonPoints = [
     {
@@ -41,8 +43,12 @@ export function InteractiveComparison() {
 
   return (
     <section className="py-20 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+      <div 
+        ref={ref}
+        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-3.5 py-1 rounded-full shadow-2xs">
@@ -55,14 +61,14 @@ export function InteractiveComparison() {
             Lihat perbedaan nyata antara mengerjakan dokumen secara konvensional dengan memanfaatkan otomasi cerdas BikinKilat.
           </p>
 
-          {/* Toggle Tab */}
-          <div className="inline-flex p-1 rounded-xl bg-slate-200/70 dark:bg-slate-800 border border-slate-300/60 dark:border-slate-700 mt-6 shadow-inner">
+          {/* Dynamic Sliding Toggle Tab */}
+          <div className="relative inline-flex p-1 rounded-2xl bg-slate-200/80 dark:bg-slate-800 border border-slate-300/70 dark:border-slate-700 mt-6 shadow-inner">
             <button
               type="button"
               onClick={() => setActiveTab('ringkas')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`relative z-10 px-5 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
                 activeTab === 'ringkas'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
+                  ? 'text-slate-900 dark:text-white shadow-2xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -71,14 +77,21 @@ export function InteractiveComparison() {
             <button
               type="button"
               onClick={() => setActiveTab('detail')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`relative z-10 px-5 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
                 activeTab === 'detail'
-                  ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xs'
+                  ? 'text-slate-900 dark:text-white shadow-2xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               Semua Metrik
             </button>
+
+            {/* Sliding backdrop pill */}
+            <div
+              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-xl bg-white dark:bg-slate-900 shadow-sm transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                activeTab === 'detail' ? 'translate-x-[calc(100%+8px)]' : 'translate-x-0'
+              }`}
+            />
           </div>
         </div>
 
@@ -86,7 +99,7 @@ export function InteractiveComparison() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
           
           {/* Card Cara Lama */}
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] flex flex-col justify-between transition-colors">
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
                 <div>
@@ -104,7 +117,7 @@ export function InteractiveComparison() {
 
               <div className="space-y-4">
                 {(activeTab === 'ringkas' ? comparisonPoints.slice(0, 3) : comparisonPoints).map((pt, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+                  <div key={i} className="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs sm:text-sm text-slate-600 dark:text-slate-400 hover:border-slate-200 dark:hover:border-slate-700 transition-colors">
                     <X className="w-4 h-4 text-rose-500 dark:text-rose-400 shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-slate-800 dark:text-slate-200 block text-xs mb-0.5">{pt.metric}</span>
@@ -121,11 +134,11 @@ export function InteractiveComparison() {
           </div>
 
           {/* Card BikinKilat Ekosistem */}
-          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border-2 border-indigo-600/90 dark:border-indigo-500 shadow-[0_20px_50px_rgba(79,70,229,0.08)] dark:shadow-[0_20px_50px_rgba(79,70,229,0.15)] flex flex-col justify-between relative transition-colors">
+          <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border-2 border-indigo-600/90 dark:border-indigo-500 shadow-[0_20px_50px_rgba(79,70,229,0.08)] dark:shadow-[0_20px_50px_rgba(79,70,229,0.15)] hover:shadow-[0_24px_60px_rgba(79,70,229,0.14)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative">
             
             {/* Top Badge */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm flex items-center gap-1.5 ring-2 ring-white dark:ring-slate-950">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
               <span>Solusi Cerdas BikinKilat</span>
             </div>
 
@@ -139,17 +152,17 @@ export function InteractiveComparison() {
                     BikinKilat.web.id Ekosistem
                   </h3>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-2xs">
                   <Check className="w-5 h-5" />
                 </div>
               </div>
 
               <div className="space-y-4">
                 {(activeTab === 'ringkas' ? comparisonPoints.slice(0, 3) : comparisonPoints).map((pt, i) => (
-                  <div key={i} className={`flex items-start gap-3 p-3 rounded-xl border text-xs sm:text-sm ${
+                  <div key={i} className={`flex items-start gap-3 p-3.5 rounded-2xl border text-xs sm:text-sm transition-all duration-200 ${
                     pt.highlight 
-                      ? 'bg-indigo-50/70 dark:bg-indigo-950/50 border-indigo-200/80 dark:border-indigo-800/80 text-indigo-950 dark:text-indigo-200 font-medium'
-                      : 'bg-white dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                      ? 'bg-indigo-50/70 dark:bg-indigo-950/50 border-indigo-200/80 dark:border-indigo-800/80 text-indigo-950 dark:text-indigo-200 font-medium shadow-2xs'
+                      : 'bg-white dark:bg-slate-800/50 border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-200 dark:hover:border-indigo-800'
                   }`}>
                     <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                     <div>
@@ -167,10 +180,10 @@ export function InteractiveComparison() {
               </span>
               <a
                 href="#live-preview"
-                className="text-xs font-extrabold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 transition"
+                className="text-xs font-extrabold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 transition group"
               >
                 <span>Uji Langsung</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
           </div>

@@ -29,9 +29,20 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   const { user, profile, tokens: authTokens, signOut } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const activeTokens = typeof propTokens === 'number' ? propTokens : authTokens;
+
+  // Track scroll position for dynamic glass navbar blur
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -57,7 +68,11 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   const avatarUrl = profile?.avatar_url || user?.user_metadata?.avatar_url;
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-b border-slate-200/70 dark:border-slate-800 shadow-[0_4px_24px_rgba(15,23,42,0.02)] transition-all">
+    <header className={`sticky top-0 z-40 backdrop-blur-2xl transition-all duration-300 ${
+      isScrolled
+        ? 'bg-white/95 dark:bg-slate-900/95 border-b border-slate-200/90 dark:border-slate-800 shadow-[0_4px_24px_rgba(15,23,42,0.06)]'
+        : 'bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-800/60 shadow-none'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand & Desktop Navigation */}
         <div className="flex items-center gap-6 lg:gap-8">
@@ -94,18 +109,19 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
           {/* User Wallet Badge: hidden on phone, visible on sm+ */}
           <Link
             href={user ? "/kasir" : "/auth?returnUrl=/kasir"}
-            className="hidden sm:flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 transition whitespace-nowrap"
+            className="hidden sm:flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 active:scale-95 transition-all duration-200 whitespace-nowrap"
             title={user ? "Saldo Token Anda - Klik untuk Isi Ulang" : "Masuk Akun untuk Klaim 5 Token Gratis"}
           >
-            <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+            <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500 hover:rotate-12 transition-transform" />
             <span>{user ? `${activeTokens} Token` : '0 Token'}</span>
           </Link>
 
           {/* Top-up Button: hidden on small screens, visible on lg+ */}
           <button
             onClick={handleOpenCashier}
-            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs lg:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20 whitespace-nowrap"
+            className="relative overflow-hidden hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white rounded-xl text-xs lg:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20 whitespace-nowrap"
           >
+            <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
             <PlusCircle className="w-3.5 h-3.5" />
             <span>{user ? "Top-Up QRIS" : "Klaim Token"}</span>
           </button>

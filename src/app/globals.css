@@ -121,6 +121,81 @@ body {
   background: radial-gradient(circle at 50% 30%, rgba(129, 140, 248, 0.14) 0%, rgba(56, 189, 248, 0.07) 40%, rgba(2, 6, 23, 0) 70%);
 }
 
+/* ========================================================
+   HIGH-PERFORMANCE MOTION & KINETIC UTILITIES (60 FPS)
+   ======================================================== */
+@keyframes aurora-drift {
+  0% { transform: translate3d(-1%, -1%, 0) scale(1); }
+  50% { transform: translate3d(2%, 2%, 0) scale(1.05); }
+  100% { transform: translate3d(-1%, 1%, 0) scale(0.98); }
+}
+
+@keyframes float-subtle {
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes float-subtle-delayed {
+  0% { transform: translate3d(0, -5px, 0); }
+  50% { transform: translate3d(0, 5px, 0); }
+  100% { transform: translate3d(0, -5px, 0); }
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-150%); }
+  50%, 100% { transform: translateX(200%); }
+}
+
+@keyframes beam-travel {
+  0% { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes gradient-x {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-aurora {
+  animation: aurora-drift 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.animate-float-subtle {
+  animation: float-subtle 6s ease-in-out infinite;
+}
+
+.animate-float-subtle-delayed {
+  animation: float-subtle-delayed 7s ease-in-out infinite;
+}
+
+.animate-shimmer-sweep {
+  animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-beam-travel {
+  stroke-dasharray: 6 6;
+  animation: beam-travel 1.2s linear infinite;
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 6s ease infinite;
+}
+
+/* Tactile Spring transition utility */
+.spring-transition {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gpu-accel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* UI/UX Pro Max: Clickable elements must have cursor pointer */
 button, a, select, input[type="submit"], input[type="button"] {
   cursor: pointer;

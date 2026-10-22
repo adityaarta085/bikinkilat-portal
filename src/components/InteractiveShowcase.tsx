@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import { 
@@ -20,6 +20,7 @@ import {
   FileSpreadsheet,
   FileCheck
 } from 'lucide-react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 interface ShowcaseItem {
   id: string;
@@ -99,139 +100,139 @@ const SHOWCASE_ITEMS: ShowcaseItem[] = [
         'Asesmen Diagnostik, Formatif, dan Sumatif',
         'Lembar Kerja Peserta Didik (LKPD) Interaktif'
       ],
-      sampleSnippet: 'Capaian Pembelajaran: Peserta didik mampu menganalisis abstraksi masalah sehari-hari dan merancang alur logika percabangan menggunakan diagram alir standar ISO.',
+      sampleSnippet: 'Kegiatan Inti (60 Menit): Peserta didik mengidentifikasi dekomposisi masalah sehari-hari melalui studi kasus antrian kasir supermarket, memetakan variabel logika percabangan IF-THEN-ELSE.',
       stats: [
-        { label: 'Kesesuaian', value: '100% Merdeka' },
-        { label: 'Komponen', value: 'Lengkap Bab 1-3' },
-        { label: 'Rubrik', value: 'Skor Otomatis' }
+        { label: 'Kurikulum', value: 'Merdeka Kemendikbud' },
+        { label: 'LKPD', value: 'Terintegrasi' },
+        { label: 'Rubrik', value: 'Skor 1-4 Sah' }
       ]
     }
   },
   {
     id: 'cv',
-    title: 'CV ATS Indonesia (.pdf)',
-    shortTitle: 'CV ATS',
+    title: 'Resume & CV ATS (.pdf)',
+    shortTitle: 'CV ATS Ramah HR',
     appName: 'CV BikinKilat',
     subdomain: 'cv.bikinkilat.web.id',
     url: 'https://cv.bikinkilat.web.id',
     icon: FileText,
-    format: 'PDF & DOCX',
-    standard: 'ATS-Friendly Score 94/100 (Workday, Taleo, Deel)',
-    previewPrompt: 'Senior Full Stack Engineer (Next.js, Go, PostgreSQL, AWS)',
+    format: 'PDF ATS & DOCX',
+    standard: 'Parsing Algoritma ATS Workday, Taleo & Greenhouse',
+    previewPrompt: 'Senior Fullstack Engineer dengan Pengalaman 4 Tahun di Startup Fintech',
     alternativePrompts: [
-      'Senior Full Stack Engineer (Next.js & Cloud)',
-      'Product Manager Perbankan Digital QRIS',
-      'Data Analyst & Business Intelligence'
+      'Senior Fullstack Engineer Fintech 4 Thn',
+      'Digital Marketing Specialist FMCG',
+      'Fresh Graduate Manajemen Bisnis'
     ],
     previewResult: {
-      heading: 'Aditya Pratama, S.Kom - Principal Systems Engineer',
-      subheading: 'Skor ATS Terverifikasi: 94/100 - Terstruktur Format STAR',
+      heading: 'Curriculum Vitae - Fajar Pratama, S.Kom.',
+      subheading: 'Skor ATS Teruji 94/100 - Tata Letak Single Column Standar Global',
       metaList: [
-        'Kata Kunci Teknis Terpetakan Sempurna ke Algoritma HR',
-        'Bebas Simbol Grafis Liar yang Menggagalkan Parsing Mesin',
-        'Metrik Kuantitatif Nyata di Setiap Riwayat Karier'
+        'Formula X-Y-Z Action Verbs (Google Recruiter Standard)',
+        'Bebas Tabel & Grafik Tersembunyi Penyebab Gagal Parsing',
+        'Penyelarasan Kata Kunci Lowongan Relevan'
       ],
-      sampleSnippet: 'Memimpin arsitektur sistem edge gateway multi-regional, memangkas latensi API sebesar 42% dan menaikkan throughput transaksi hingga 15.000 QPS tanpa downtime.',
+      sampleSnippet: 'Pengalaman Profesional: Merekayasa ulang sistem settlement payment gateway menggunakan arsitektur event-driven Go & Kafka, menurunkan latency transaksi sebesar 42% dan memproses Rp 12M volume harian.',
       stats: [
-        { label: 'Skor ATS', value: '94/100' },
-        { label: 'Format Ekspor', value: 'PDF Vector' },
-        { label: 'Metode', value: 'STAR Framework' }
+        { label: 'Skor ATS', value: '94 / 100' },
+        { label: 'Standar', value: 'Global ATS' },
+        { label: 'Waktu Parsing', value: '< 2 Detik' }
       ]
     }
   },
   {
     id: 'rab',
-    title: 'RAB Konstruksi (.xlsx)',
-    shortTitle: 'RAB Konstruksi',
+    title: 'RAB Konstruksi SNI (.xlsx)',
+    shortTitle: 'RAB Konstruksi SNI',
     appName: 'RAB BikinKilat',
     subdomain: 'rab.bikinkilat.web.id',
     url: 'https://rab.bikinkilat.web.id',
     icon: Calculator,
-    format: 'XLSX & PDF',
-    standard: 'AHSP Permen PU-PR No. 8/2023 & SNI',
+    format: 'Excel (.xlsx) Formula Aktif',
+    standard: 'Permen PU-PR No. 8/2023 & SNI Analisa Harga Satuan Pekerjaan (AHSP)',
     previewPrompt: 'Pembangunan Rumah Tinggal 2 Lantai Tipe 120/150 di Wilayah Jabodetabek',
     alternativePrompts: [
-      'Rumah 2 Lantai Tipe 120/150 Jabodetabek',
-      'Renovasi Ruko Komersial 3 Lantai SNI',
-      'Pekerjaan Interior & Fit-Out Kantor'
+      'Rumah Tinggal 2 Lantai Tipe 120 Jabodetabek',
+      'Renovasi Ruko Komersial 3 Lantai',
+      'Pengaspalan Jalan Lingkungan 500 Meter'
     ],
     previewResult: {
       heading: 'Rencana Anggaran Biaya (RAB) Rumah Tinggal 2 Lantai',
-      subheading: 'Analisa Harga Satuan Pekerjaan (AHSP) Terkini + Rekapitulasi Pajak PPN 11%',
+      subheading: 'Rekapitulasi Induk, AHSP Upah & Material, Volume Pekerjaan Terinci',
       metaList: [
-        'Formula Excel Asli: =SUM, =SUMPRODUCT (Bukan Teks Diam)',
-        'Harga Upah Tenaga Kerja & Material Standar Pemda 2024',
-        'Kurva S Terjadwal untuk Time-Schedule Proyek'
+        'Formula Excel Matematika Dinamis (=SUM, =PRODUCT) 100% Aktif',
+        'Database Koefisien SNI Tenaga Kerja, Mandor & Material Terkini',
+        'Format Siap Verifikasi Bank Syariah / BTN KPR'
       ],
-      sampleSnippet: 'Pekerjaan Pondasi Plat Beton Bertulang K-250 (Volume 18.5 m3) - Upah Pekerja: Rp 2.450.000, Bahan Material: Rp 16.780.000, Total AHSP: Rp 19.230.000.',
+      sampleSnippet: 'Item 3.2 Pekerjaan Beton Bertulang Kolom Praktis 15x15 (K-225): Volume 4.8 m³, Analisa AHSP PU-PR 2023, Harga Satuan Rp 4.250.000, Total Rp 20.400.000 (Formula Aktif =D14*E14).',
       stats: [
-        { label: 'Formula', value: '100% Dinamis' },
-        { label: 'Standar', value: 'PU-PR 2023' },
-        { label: 'Ekspor', value: 'MS Excel .xlsx' }
+        { label: 'Regulasi', value: 'PU-PR 8/2023' },
+        { label: 'Formula Excel', value: '100% Terbuka' },
+        { label: 'Database AHSP', value: 'Update 2024' }
       ]
     }
   },
   {
     id: 'surat',
-    title: 'Surat & Kontrak Legal (.docx)',
-    shortTitle: 'Surat & Kontrak',
+    title: 'Kontrak Hukum & Perjanjian (.docx)',
+    shortTitle: 'Surat & Perjanjian',
     appName: 'Surat BikinKilat',
     subdomain: 'surat.bikinkilat.web.id',
     url: 'https://surat.bikinkilat.web.id',
     icon: Scale,
-    format: 'DOCX & PDF',
-    standard: 'KUHPerdata Pasal 1320 & Standar e-Meterai Peruri',
-    previewPrompt: 'Surat Perjanjian Kerja Waktu Tertentu (PKWT) Pengembang Web & Hak Cipta',
+    format: 'DOCX & PDF Meterai Siap',
+    standard: 'Kitab Undang-Undang Hukum Perdata (KUHPerdata) Pasal 1320 & 1338',
+    previewPrompt: 'Perjanjian Kerjasama Bagi Hasil Usaha Kafe antara Pemodal dan Pengelola',
     alternativePrompts: [
-      'Perjanjian Kerja PKWT Pengembang Web',
-      'Perjanjian Kerahasiaan (NDA) Investasi',
-      'Somasi & Peringatan Wanprestasi Kontrak'
+      'Perjanjian Kerjasama Bagi Hasil Kafe',
+      'Surat Perjanjian Sewa Rumah Kontrak 2 Thn',
+      'Non-Disclosure Agreement (NDA) Vendor'
     ],
     previewResult: {
-      heading: 'Perjanjian Kerja Sama Jasa Konsultansi & Pengembangan Web',
-      subheading: 'Pasal-Pasal Sah KUHPerdata, Kerahasiaan (NDA), dan Klausul Arbitrase BANI',
+      heading: 'Surat Perjanjian Kerjasama Penanaman Modal & Operasional Usaha',
+      subheading: '14 Pasal Komprehensif: Hak, Kewajiban, Force Majeure, & Domisili Hukum BANI',
       metaList: [
-        'Identitas Komprehensif Para Pihak Sesuai KTP & NIB',
-        'Klausul Penyelesaian Sengketa di BANI / Pengadilan Negeri',
-        'Area Penempelan e-Meterai Resmi 10.000 Terkalibrasi'
+        'Klausul Klausul Wanprestasi & Mekanisme Ganti Rugi Jelas',
+        'Kolom Tanda Tangan Kompatibel Meterai Elektronik (e-Meterai Peruri)',
+        'Legal Drafting Bahasa Hukum Indonesia Baku & Mengikat'
       ],
-      sampleSnippet: 'Pasal 7 (Hak Kekayaan Intelektual): Seluruh kode sumber, dokumentasi teknis, dan hak cipta karya cipta beralih penuh kepada PIHAK PERTAMA setelah pelunasan termin ketiga.',
+      sampleSnippet: 'Pasal 6 Pembagian Keuntungan: PIHAK PERTAMA dan PIHAK KEDUA sepakat bahwa laba bersih operasional (Net Profit) setelah dipotong biaya operasional disetorkan setiap tanggal 5 per bulan dengan proporsi 60:40.',
       stats: [
-        { label: 'Keabsahan', value: 'KUHPerdata' },
-        { label: 'Klausul', value: 'Anti-Wanprestasi' },
-        { label: 'Format', value: 'Word & PDF' }
+        { label: 'Yuridiksi', value: 'KUHPerdata RI' },
+        { label: 'Meterai', value: 'Format Siap' },
+        { label: 'Klausul', value: 'Bebas Ambigu' }
       ]
     }
   },
   {
     id: 'waris',
-    title: 'Kalkulator Waris Faraidh',
-    shortTitle: 'Kalkulator Waris',
+    title: 'Hitung Waris Faraidh (.pdf)',
+    shortTitle: 'Waris Faraidh',
     appName: 'Waris BikinKilat',
     subdomain: 'waris.bikinkilat.web.id',
     url: 'https://waris.bikinkilat.web.id',
     icon: GitFork,
-    format: 'PDF & Cetak',
-    standard: 'Kompilasi Hukum Islam (KHI) Inpres No. 1/1991',
-    previewPrompt: 'Harta Bersih Rp 1.200.000.000: Ahli Waris Istri, 2 Anak Laki-laki, 1 Anak Perempuan, Ibu',
+    format: 'PDF Laporan Fatwa Waris',
+    standard: 'Kompilasi Hukum Islam (KHI) Inpres No. 1/1991 & 4 Madzhab',
+    previewPrompt: 'Ahli Waris: Istri, 2 Anak Laki-Laki, 1 Anak Perempuan, Ibu Kandung. Harta Bersih Rp 1.200.000.000',
     alternativePrompts: [
-      'Harta 1,2 M: Istri, 2 Anak Lk, 1 Pr, Ibu',
-      'Harta 450 Jt: Suami, 1 Anak Pr, Ayah, Ibu',
-      'Harta 800 Jt: 3 Anak Perempuan, Saudara Lk'
+      'Istri, 2 Anak LK, 1 Anak PR, Ibu (Rp 1.2M)',
+      'Suami, 1 Anak Perempuan, 1 Saudara LK',
+      '3 Anak Perempuan, Paman Kandung (Ashabah)'
     ],
     previewResult: {
-      heading: 'Rincian Pembagian Waris Faraidh Islam Terverifikasi',
-      subheading: 'Berdasarkan Surat An-Nisa & Kompilasi Hukum Islam (KHI) Bab II Pasal 176-185',
+      heading: 'Kalkulasi Ketetapan Bagian Waris Islam (Faraidh)',
+      subheading: 'Penetapan Furudhul Muqaddarah, Ashabah, dan Dalil Al-Qur\'an An-Nisa',
       metaList: [
-        'Kalkulasi Otomatis Furudhul Muqaddarah (1/2, 1/4, 1/8, 2/3, 1/3, 1/6)',
-        'Perhitungan Asal Masalah (KPK Penyebut) & Tashih Sempurna',
-        'Sistem Perlindungan Masalah Aul & Radd Tanpa Sisa'
+        'Perhitungan Asal Masalah, Hijab Hirman & Nuqsan Akurat',
+        'Pengurangan Hak Jenazah: Hutang, Wasiat (Maks 1/3) & Biaya Tajhiz',
+        'Rincian Nominal Rupiah Persis per Ahli Waris'
       ],
-      sampleSnippet: 'Istri mendapat 1/8 (Rp 150.000.000), Ibu mendapat 1/6 (Rp 200.000.000). Sisa ashabah Rp 850.000.000 dibagi anak dengan proporsi 2:1 (Anak Laki-laki @Rp 340.000.000, Anak Perempuan Rp 170.000.000).',
+      sampleSnippet: 'Ibu Kandung memperoleh 1/6 bagian (Rp 200.000.000) karena pewaris meninggalkan anak (QS. An-Nisa: 11). Istri memperoleh 1/8 bagian (Rp 150.000.000). Sisa Rp 850.000.000 dibagi Ashabah Bil Ghair 2:1.',
       stats: [
-        { label: 'Akurasi', value: '100% Syar\'i' },
-        { label: 'Selisih', value: 'Rp 0 (Presisi)' },
-        { label: 'KHI Standar', value: 'Pasal 176-185' }
+        { label: 'Landasan', value: 'KHI & An-Nisa' },
+        { label: 'Rincian Hak', value: '100% Klir' },
+        { label: 'Penyelesaian', value: 'Tashih Mas\'alah' }
       ]
     }
   },
@@ -307,6 +308,7 @@ export function InteractiveShowcase() {
   const [simulationStage, setSimulationStage] = useState<number>(3);
   const [activePrompt, setActivePrompt] = useState<string>(SHOWCASE_ITEMS[0].previewPrompt);
   const [hasCopied, setHasCopied] = useState<boolean>(false);
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
   
   const activeItem = SHOWCASE_ITEMS.find((item) => item.id === selectedId) || SHOWCASE_ITEMS[0];
   const IconComponent = activeItem.icon;
@@ -320,12 +322,12 @@ export function InteractiveShowcase() {
 
     setTimeout(() => {
       setSimulationStage(2);
-    }, 250);
+    }, 300);
 
     setTimeout(() => {
       setSimulationStage(3);
       setIsSimulating(false);
-    }, 600);
+    }, 650);
   };
 
   const handleCopySnippet = () => {
@@ -339,10 +341,14 @@ export function InteractiveShowcase() {
   return (
     <section className="py-20 sm:py-24 scroll-mt-16 bg-gradient-to-b from-white via-slate-50/50 to-white dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-950 text-slate-900 dark:text-slate-100 relative overflow-hidden border-y border-slate-200/80 dark:border-slate-800 transition-colors">
       {/* Apple Refraction Ambient Aura */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-gradient-to-r from-indigo-100/40 via-sky-100/30 to-violet-100/30 dark:from-indigo-950/20 dark:via-sky-950/15 dark:to-violet-950/20 blur-3xl rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-gradient-to-r from-indigo-100/40 via-sky-100/30 to-violet-100/30 dark:from-indigo-950/20 dark:via-sky-950/15 dark:to-violet-950/20 blur-3xl rounded-full pointer-events-none -z-10 animate-aurora" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
+      <div 
+        ref={ref}
+        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs mb-4">
@@ -371,13 +377,13 @@ export function InteractiveShowcase() {
                     setActivePrompt(item.previewPrompt);
                     triggerSimulation(item.previewPrompt);
                   }}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${
                     isSelected
                       ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm border border-slate-200/80 dark:border-slate-700 ring-1 ring-slate-900/5'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/60'
                   }`}
                 >
-                  <ItemIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'}`} />
+                  <ItemIcon className={`w-4 h-4 shrink-0 transition-transform ${isSelected ? 'text-indigo-600 dark:text-indigo-400 scale-110' : 'text-slate-500 dark:text-slate-400'}`} />
                   <span>{item.shortTitle}</span>
                 </button>
               );
@@ -388,11 +394,11 @@ export function InteractiveShowcase() {
         {/* Liquid Glass Studio Workspace Container */}
         <div className="bg-white/85 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.06)] overflow-hidden ring-1 ring-slate-900/[0.03] dark:ring-white/[0.03]">
           
-          {/* Top Window Bar - macOS / VisionOS Frosted Style */}
+          {/* Top Window Bar - Frosted Style */}
           <div className="px-5 sm:px-6 py-3.5 bg-slate-50/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-300 shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span>https://{activeItem.subdomain}</span>
               </div>
             </div>
@@ -436,7 +442,7 @@ export function InteractiveShowcase() {
                     <button
                       type="button"
                       onClick={() => triggerSimulation(activePrompt)}
-                      className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition flex items-center gap-1"
+                      className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition flex items-center gap-1 active:scale-95"
                     >
                       <Sparkles className="w-3 h-3" />
                       <span>Uji Respons</span>
@@ -458,9 +464,9 @@ export function InteractiveShowcase() {
                           key={idx}
                           type="button"
                           onClick={() => triggerSimulation(altPrompt)}
-                          className={`text-[11px] font-medium px-2.5 py-1 rounded-lg border transition text-left ${
+                          className={`text-[11px] font-medium px-2.5 py-1 rounded-lg border transition-all text-left active:scale-95 ${
                             activePrompt === altPrompt
-                              ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300 font-bold'
+                              ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300 font-bold scale-[1.02]'
                               : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'
                           }`}
                         >
@@ -506,7 +512,7 @@ export function InteractiveShowcase() {
                   href={activeItem.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-6 rounded-2xl bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center justify-center gap-2 group ring-1 ring-slate-900/10 dark:ring-indigo-400/20"
+                  className="w-full py-3.5 px-6 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center justify-center gap-2 group ring-1 ring-slate-900/10 dark:ring-indigo-400/20"
                 >
                   <span>Buka {activeItem.appName}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -516,7 +522,7 @@ export function InteractiveShowcase() {
 
             {/* Right Column: High-Fidelity Output Document Paper (7 Cols) */}
             <div className={`lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-7 flex flex-col justify-between shadow-[0_8px_30px_rgba(15,23,42,0.04)] transition-all duration-300 ${
-              isSimulating ? 'opacity-50 scale-[0.99]' : 'opacity-100 scale-100'
+              isSimulating ? 'opacity-40 scale-[0.98]' : 'opacity-100 scale-100'
             }`}>
               
               <div>
@@ -529,7 +535,7 @@ export function InteractiveShowcase() {
                     <button
                       type="button"
                       onClick={handleCopySnippet}
-                      className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition flex items-center gap-1"
+                      className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition flex items-center gap-1 active:scale-95"
                     >
                       {hasCopied ? (
                         <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
@@ -567,7 +573,7 @@ export function InteractiveShowcase() {
               {/* Verified Metrics Strip */}
               <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
                 {activeItem.previewResult.stats.map((stat, i) => (
-                  <div key={i} className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700 text-center">
+                  <div key={i} className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/60 dark:border-slate-700 text-center hover:scale-105 transition-transform">
                     <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{stat.label}</div>
                     <div className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white mt-0.5">{stat.value}</div>
                   </div>

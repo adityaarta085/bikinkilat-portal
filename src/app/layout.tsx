@@ -4,9 +4,9 @@ import { ClientProviders } from '@/components/ClientProviders';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://bikinkilat.web.id'),
-  title: 'BikinKilat — Platform Dokumen & Presentasi Standar Indonesia',
-  description: 'Kompilasi berkas asli siap cetak berstandar Indonesia: slide presentasi 16:9 (.pptx), modul ajar Kurikulum Merdeka (.docx), kalkulasi anggaran SNI (.xlsx), dan surat resmi berkekuatan hukum.',
-  keywords: ['BikinKilat', 'slide presentasi pptx', 'makalah otomatis', 'modul ajar kurikulum merdeka', 'cv ats indonesia', 'rab excel sni', 'surat perjanjian dinas'],
+  title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
+  description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
+  keywords: ['BikinKilat', 'slide presentasi', 'makalah otomatis', 'modul ajar kurikulum merdeka', 'cv ats', 'rab excel', 'surat perjanjian'],
   alternates: {
     canonical: 'https://bikinkilat.web.id',
   },
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'BikinKilat — Platform Dokumen & Presentasi Standar Indonesia',
-    description: 'Kompilasi berkas asli siap cetak berstandar Indonesia: slide presentasi 16:9 (.pptx), modul ajar Kurikulum Merdeka (.docx), kalkulasi anggaran SNI (.xlsx), dan surat resmi berkekuatan hukum.',
+    title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
+    description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
     url: 'https://bikinkilat.web.id',
     siteName: 'BikinKilat.web.id',
     locale: 'id_ID',
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BikinKilat — Platform Dokumen & Presentasi Standar Indonesia',
-    description: 'Kompilasi berkas asli siap cetak berstandar Indonesia: slide presentasi 16:9 (.pptx), modul ajar Kurikulum Merdeka (.docx), kalkulasi anggaran SNI (.xlsx), dan surat resmi berkekuatan hukum.',
+    title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
+    description: 'Portal terpusat untuk 9 layanan otomasi cerdas: slide presentasi PPTX, makalah akademik DOCX, modul ajar kurikulum merdeka, resume ATS, RAB SNI, dan surat legal.',
     creator: '@bikinkilat',
   },
 };
