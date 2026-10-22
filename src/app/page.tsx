@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -76,11 +76,17 @@ export default function PortalHomePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto space-y-6">
-            {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400" />
-              <span>9 Layanan Cerdas Aktif • Terhubung &amp; Sinkron Otomatis</span>
-            </div>
+            {/* Pill Badge Announcement */}
+            <Link
+              href="/catatan-rilis"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs transition group"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
+              <span>Rilis v2.4: PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
+              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center">
+                Log Rilis →
+              </span>
+            </Link>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
               Selesaikan Tugas & Dokumen{' '}

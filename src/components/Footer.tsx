@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React from 'react';
 import Link from 'next/link';
@@ -77,6 +77,14 @@ export function Footer() {
               <li>
                 <Link href="/etika-akademik" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Integritas Akademik & Etika AI
+                </Link>
+              </li>
+              <li>
+                <Link href="/catatan-rilis" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200">
+                  <span>Catatan Rilis & Log Pembaruan</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.2 rounded">
+                    Baru
+                  </span>
                 </Link>
               </li>
             </ul>
