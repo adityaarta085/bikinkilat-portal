@@ -59,66 +59,68 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-b border-slate-200/70 dark:border-slate-800 shadow-[0_4px_24px_rgba(15,23,42,0.02)] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand */}
-        <div className="flex items-center gap-3">
+        {/* Brand & Desktop Navigation */}
+        <div className="flex items-center gap-6 lg:gap-8">
           <BrandLogo variant="horizontal" badge="Portal Ekosistem" size="md" href="/" />
-        </div>
 
-        {/* Center Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">
-          <Link href="/#layanan" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-            9 Layanan
-          </Link>
-          <Link href="/#live-preview" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-            Live Studio
-          </Link>
-          <Link href="/kasir" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-            Tarif & Paket Token
-          </Link>
-          <Link href="/#riwayat" className="hover:text-slate-900 dark:hover:text-white transition-colors">
-            Riwayat Transaksi
-          </Link>
-          {user && (
-            <Link 
-              href="/dashboard" 
-              className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-bold px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/80 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              <span>Dashboard Saya</span>
+          {/* Center Nav Links */}
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-xs lg:text-sm font-semibold text-slate-600 dark:text-slate-300">
+            <Link href="/#layanan" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              9 Layanan
             </Link>
-          )}
-        </nav>
+            <Link href="/#live-preview" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              Live Studio
+            </Link>
+            <Link href="/kasir" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              Tarif & Token
+            </Link>
+            <Link href="/#riwayat" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              Riwayat
+            </Link>
+            {user && (
+              <Link 
+                href="/dashboard" 
+                className="hidden xl:flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-bold px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/80 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition whitespace-nowrap"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
+              </Link>
+            )}
+          </nav>
+        </div>
 
         {/* Right Section: Tokens, Theme & Auth */}
         <div className="flex items-center gap-2 sm:gap-2.5">
-          {/* User Wallet Badge */}
+          {/* User Wallet Badge: hidden on phone, visible on sm+ */}
           <Link
             href={user ? "/kasir" : "/auth?returnUrl=/kasir"}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 transition"
+            className="hidden sm:flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 transition whitespace-nowrap"
             title={user ? "Saldo Token Anda - Klik untuk Isi Ulang" : "Masuk Akun untuk Klaim 5 Token Gratis"}
           >
             <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-            <span>{user ? `${activeTokens} Token` : '0 Token (Klaim 5)'}</span>
+            <span>{user ? `${activeTokens} Token` : '0 Token'}</span>
           </Link>
 
-          {/* Top-up Button */}
+          {/* Top-up Button: hidden on small screens, visible on lg+ */}
           <button
             onClick={handleOpenCashier}
-            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20"
+            className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs lg:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20 whitespace-nowrap"
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            <span>{user ? "Top-Up QRIS" : "Klaim 5 Token"}</span>
+            <span>{user ? "Top-Up QRIS" : "Klaim Token"}</span>
           </button>
 
-          {/* Notification Center */}
+          {/* Notification Center: visible on all viewports */}
           <NotificationCenter />
 
-          {/* Global Dark Mode Switch */}
-          <ThemeToggle />
+          {/* Global Dark Mode Switch (Desktop only; mobile uses bottom dock) */}
+          <div className="hidden md:flex items-center">
+            <ThemeToggle />
+          </div>
 
-          {/* User Auth Section */}
+          {/* User Auth Section (Desktop only; mobile uses drawer) */}
           {user ? (
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative hidden md:block" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100/80 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700 transition"
@@ -128,19 +130,16 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
                   <img
                     src={avatarUrl}
                     alt={displayName}
-                    className="w-8 h-8 rounded-full object-cover border border-indigo-200 dark:border-indigo-800"
+                    className="w-7 h-7 lg:w-8 lg:h-8 rounded-full object-cover border border-indigo-200 dark:border-indigo-800"
                   />
                 ) : (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold text-xs flex items-center justify-center">
+                  <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold text-xs flex items-center justify-center">
                     {displayName.charAt(0).toUpperCase()}
                   </div>
                 )}
-                <div className="hidden lg:flex flex-col text-left">
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-none truncate max-w-[120px]">
+                <div className="hidden xl:flex flex-col text-left">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-none truncate max-w-[100px]">
                     {displayName}
-                  </span>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500 leading-none mt-0.5 truncate max-w-[120px]">
-                    {displayEmail}
                   </span>
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
@@ -205,7 +204,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
           ) : (
             <Link
               href="/auth"
-              className="flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition active:scale-95"
+              className="hidden md:flex items-center gap-2 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white rounded-xl text-xs sm:text-sm font-bold shadow-sm transition active:scale-95 whitespace-nowrap"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path
@@ -244,8 +243,64 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
 
       {/* Mobile Drawer Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl px-4 py-4 space-y-3 animate-in fade-in slide-in-from-top-2">
-          <nav className="flex flex-col space-y-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+        <div className="md:hidden border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl px-4 py-4 space-y-4 animate-in fade-in slide-in-from-top-2">
+          {/* User Profile Card (if logged in) or Login Action (if guest) */}
+          {user ? (
+            <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80">
+              <div className="flex items-center gap-3">
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt={displayName}
+                    className="w-10 h-10 rounded-full object-cover border border-indigo-200 dark:border-indigo-800"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold text-sm flex items-center justify-center">
+                    {displayName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="flex flex-col text-left">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white truncate max-w-[160px]">
+                    {displayName}
+                  </span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[160px]">
+                    {displayEmail}
+                  </span>
+                  <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 dark:text-amber-400">
+                    <Coins className="w-3 h-3 fill-amber-500" />
+                    <span>{activeTokens} Token Aktif</span>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  signOut();
+                }}
+                className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition"
+                title="Keluar dari akun"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/auth"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2.5 p-3 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold text-xs shadow-sm transition"
+            >
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+              </svg>
+              <span>Masuk Akun Google (Klaim 5 Token)</span>
+            </Link>
+          )}
+
+          {/* Mobile Nav Links */}
+          <nav className="flex flex-col space-y-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
             <Link
               href="/#layanan"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -290,6 +345,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             )}
           </nav>
 
+          {/* Mobile CTA */}
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
             <button
               onClick={() => {

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -149,7 +149,7 @@ export function BrandLogo({
 
       {/* Optional Subdomain / Context Badge */}
       {badge && (
-        <span className="hidden sm:inline-block ml-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100/90 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors">
+        <span className="hidden sm:inline-block ml-2.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100/90 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors whitespace-nowrap">
           {badge}
         </span>
       )}
