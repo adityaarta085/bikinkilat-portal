@@ -20,14 +20,22 @@ export function UserPopupWarningModal() {
   const [activePopup, setActivePopup] = useState<NotificationItem | null>(null);
   const [isDismissing, setIsDismissing] = useState(false);
 
-  // Check for pending popup on load
+  // Check for pending popup on load (supports authenticated & guest)
   const checkPendingPopup = async () => {
-    if (!user?.id) return;
-
     try {
-      const res = await fetch(`/api/notifications?userId=${encodeURIComponent(user.id)}`);
+      const url = user?.id
+        ? `/api/notifications?userId=${encodeURIComponent(user.id)}&_t=${Date.now()}`
+        : `/api/notifications?_t=${Date.now()}`;
+
+      const res = await fetch(url, { cache: 'no-store' });
       const data = await res.json();
       if (data.success && data.pendingPopup) {
+        // Check if guest dismissed via localStorage
+        if (!user?.id && typeof window !== 'undefined') {
+          const dismissedGuests = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
+          if (dismissedGuests.includes(data.pendingPopup.id)) return;
+        }
+
         setActivePopup(data.pendingPopup);
 
         // If it's a token gift, trigger confetti
@@ -42,29 +50,50 @@ export function UserPopupWarningModal() {
     }
   };
 
+  // 1. Initial check on mount
   useEffect(() => {
-    if (user?.id) {
-      // Small timeout to allow page layout to settle
-      const t = setTimeout(checkPendingPopup, 800);
-      return () => clearTimeout(t);
-    }
+    const t = setTimeout(checkPendingPopup, 800);
+    return () => clearTimeout(t);
   }, [user?.id]);
+
+  // 2. Realtime listener for live dispatched popup notifications
+  useEffect(() => {
+    const handleLivePopup = (e: any) => {
+      if (e.detail) {
+        setActivePopup(e.detail);
+        if (e.detail.type === 'success' || (e.detail.tokens_granted && e.detail.tokens_granted > 0)) {
+          try {
+            confetti({ particleCount: 80, spread: 65, origin: { y: 0.6 } });
+          } catch (err) {}
+        }
+      }
+    };
+
+    window.addEventListener('bk:new_popup_notification', handleLivePopup);
+    return () => window.removeEventListener('bk:new_popup_notification', handleLivePopup);
+  }, []);
 
   // Handle dismiss / acknowledge
   const handleAcknowledge = async () => {
-    if (!user?.id || !activePopup) return;
+    if (!activePopup) return;
 
     setIsDismissing(true);
     try {
-      await fetch('/api/notifications/read', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: user.id,
-          notificationId: activePopup.id,
-          dismissPopup: true,
-        }),
-      });
+      if (user?.id) {
+        await fetch('/api/notifications/read', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            notificationId: activePopup.id,
+            dismissPopup: true,
+          }),
+        });
+      } else if (typeof window !== 'undefined') {
+        const dismissedGuests = JSON.parse(localStorage.getItem('bk_dismissed_popups') || '[]');
+        dismissedGuests.push(activePopup.id);
+        localStorage.setItem('bk_dismissed_popups', JSON.stringify(dismissedGuests));
+      }
 
       // Refresh user tokens if any bonus was granted
       refreshTokens();

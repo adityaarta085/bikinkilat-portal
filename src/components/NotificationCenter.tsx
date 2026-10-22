@@ -15,6 +15,7 @@ import {
   Radio
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
+import { supabase } from '@/lib/supabase';
 
 export interface NotificationItem {
   id: string;
@@ -27,6 +28,41 @@ export interface NotificationItem {
   tokens_granted?: number;
   created_at: string;
   is_read: boolean;
+}
+
+// Synthesized notification audio chime (Web Audio API)
+function playNotificationChime() {
+  if (typeof window === 'undefined') return;
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const ctx = new AudioContextClass();
+    const now = ctx.currentTime;
+
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(659.25, now);
+    gain1.gain.setValueAtTime(0.12, now);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+    osc1.start(now);
+    osc1.stop(now + 0.3);
+
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(880.0, now + 0.12);
+    gain2.gain.setValueAtTime(0.15, now + 0.12);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+    osc2.start(now + 0.12);
+    osc2.stop(now + 0.55);
+  } catch (e) {
+    // Autoplay policy fallback
+  }
 }
 
 export function NotificationCenter() {
@@ -46,29 +82,95 @@ export function NotificationCenter() {
     }
   }, []);
 
-  // Fetch notifications
+  // Fetch notifications with strict no-store cache busting
   const fetchNotifications = async () => {
-    if (!user?.id) return;
     try {
-      const res = await fetch(`/api/notifications?userId=${encodeURIComponent(user.id)}`);
+      const url = user?.id 
+        ? `/api/notifications?userId=${encodeURIComponent(user.id)}&_t=${Date.now()}`
+        : `/api/notifications?_t=${Date.now()}`;
+
+      const res = await fetch(url, { cache: 'no-store' });
       const data = await res.json();
       if (data.success && Array.isArray(data.notifications)) {
         setNotifications(data.notifications);
         setUnreadCount(data.unreadCount || 0);
+
+        // If there's a pending popup, dispatch event to trigger modal
+        if (data.pendingPopup) {
+          window.dispatchEvent(
+            new CustomEvent('bk:new_popup_notification', { detail: data.pendingPopup })
+          );
+        }
       }
     } catch (e) {
       console.warn('Gagal memuat notifikasi:', e);
     }
   };
 
+  // 1. Initial and Polling fetch (10 seconds interval)
   useEffect(() => {
-    if (user?.id) {
-      fetchNotifications();
-      // Poll every 45 seconds for new notifications
-      const interval = setInterval(fetchNotifications, 45000);
-      return () => clearInterval(interval);
-    }
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 10000);
+    return () => clearInterval(interval);
   }, [user?.id]);
+
+  // 2. Realtime WebSocket Subscription (Instant < 500ms delivery from Supabase)
+  useEffect(() => {
+    const channel = supabase
+      .channel('portal-live-notifications')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+        },
+        (payload) => {
+          const newNotif = payload.new as NotificationItem;
+          // Deliver if broadcast (user_id is null) OR targeted to current user
+          if (!newNotif.user_id || (user?.id && newNotif.user_id === user.id)) {
+            // A. Play chime
+            playNotificationChime();
+
+            // B. Native browser desktop notification if permission granted
+            if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+              try {
+                new Notification(newNotif.title, {
+                  body: newNotif.message,
+                  icon: '/brand/logo-icon-color.png',
+                });
+              } catch (err) {
+                console.warn('Desktop notification error:', err);
+              }
+            }
+
+            // C. Trigger popup modal if marked is_popup
+            if (newNotif.is_popup) {
+              window.dispatchEvent(
+                new CustomEvent('bk:new_popup_notification', { detail: newNotif })
+              );
+            }
+
+            // D. Prepend to state & bump unread count
+            setNotifications((prev) => [
+              { ...newNotif, is_read: false },
+              ...prev.filter((n) => n.id !== newNotif.id),
+            ]);
+            setUnreadCount((c) => c + 1);
+
+            // E. Auto-refresh tokens if tokens were granted
+            if (newNotif.tokens_granted && newNotif.tokens_granted > 0) {
+              refreshTokens();
+            }
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id, refreshTokens]);
 
   // Close dropdown on outside click
   useEffect(() => {
