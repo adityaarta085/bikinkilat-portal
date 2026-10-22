@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Coins, CheckCircle2, QrCode, Sparkles } from 'lucide-react';
+import { Coins, CheckCircle2, QrCode } from 'lucide-react';
 import { SpotlightCard } from '@/components/SpotlightCard';
 
 interface AnimatedPricingCardProps {
@@ -83,18 +83,17 @@ export function AnimatedPricingCard({ pkg, onSelect, index }: AnimatedPricingCar
       <SpotlightCard
         data-cursor={`PAKET ${pkg.tokens} TOKEN`}
         onMouseEnter={handleMouseEnter}
-        spotlightColor={pkg.popular ? "rgba(99, 102, 241, 0.18)" : "rgba(148, 163, 184, 0.12)"}
+        spotlightColor={pkg.popular ? "rgba(99, 102, 241, 0.12)" : "rgba(148, 163, 184, 0.08)"}
         enableTilt={true}
-        className={`h-full rounded-3xl p-8 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between group overflow-visible ${
+        className={`h-full rounded-2xl p-7 bg-white dark:bg-slate-900 border transition-all duration-300 flex flex-col justify-between group overflow-visible ${
           pkg.popular
-            ? 'border-indigo-600/90 dark:border-indigo-500 ring-4 ring-indigo-500/10 shadow-[0_20px_50px_rgba(79,70,229,0.12)]'
-            : 'border-slate-200/90 dark:border-slate-800 shadow-[0_10px_30px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.06)]'
+            ? 'border-indigo-600 dark:border-indigo-500 ring-2 ring-indigo-500/20 shadow-lg'
+            : 'border-slate-200/90 dark:border-slate-800 shadow-xs hover:shadow-md'
         }`}
       >
         {/* Top Badge (Paling Populer) - z-30 and overflow-visible ensures it is NEVER clipped */}
         {pkg.popular && (
-          <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm tracking-wide flex items-center gap-1.5 z-30 ring-2 ring-white dark:ring-slate-950 whitespace-nowrap pointer-events-none">
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300 animate-pulse" />
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white text-[11px] font-bold shadow-xs tracking-wide flex items-center gap-1.5 z-30 ring-2 ring-white dark:ring-slate-950 whitespace-nowrap pointer-events-none">
             <span>{pkg.badge}</span>
           </span>
         )}
@@ -191,15 +190,12 @@ export function AnimatedPricingCard({ pkg, onSelect, index }: AnimatedPricingCar
         <button
           type="button"
           onClick={onSelect}
-          className={`relative overflow-hidden w-full py-3.5 px-4 rounded-2xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 min-h-[48px] active:scale-95 ${
+          className={`w-full py-3 px-4 rounded-xl font-bold text-xs transition-all duration-200 flex items-center justify-center gap-2 min-h-[44px] active:scale-95 ${
             pkg.popular
-              ? 'bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-xs hover:shadow-md ring-1 ring-slate-900/10'
+              ? 'bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-xs hover:shadow-md'
               : 'bg-slate-100 hover:bg-slate-200 active:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200'
           }`}
         >
-          {pkg.popular && (
-            <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-          )}
           <QrCode className="w-4 h-4" />
           <span>Pilih Paket {pkg.tokens} Token</span>
         </button>

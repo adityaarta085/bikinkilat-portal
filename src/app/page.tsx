@@ -30,10 +30,10 @@ import {
   Search,
   X,
   LayoutDashboard,
-  Sparkles,
   SlidersHorizontal,
   FileCheck2,
-  ShieldCheck
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -87,59 +87,50 @@ export default function PortalHomePage() {
       <Navbar tokens={tokens} onOpenCashier={handleOpenCashier} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-20 pb-24 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
-        {/* Apple Refractive Ambient Light with Gentle Aurora Drift */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[560px] bg-gradient-to-b from-indigo-100/40 via-sky-50/25 to-transparent dark:from-indigo-950/30 dark:via-sky-950/20 dark:to-transparent pointer-events-none -z-10 blur-3xl animate-aurora" />
-
-        {/* Floating Decorative Feature Micro-Pills */}
-        <div className="hidden lg:flex items-center gap-2 absolute top-24 left-6 xl:left-14 px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-sm animate-float-subtle text-xs font-bold text-slate-700 dark:text-slate-200 pointer-events-none ring-1 ring-slate-900/[0.03]">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Output .pptx, .docx, .xlsx Asli</span>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-2 absolute top-36 right-6 xl:right-14 px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-sm animate-float-subtle-delayed text-xs font-bold text-slate-700 dark:text-slate-200 pointer-events-none ring-1 ring-slate-900/[0.03]">
-          <span className="w-2 h-2 rounded-full bg-indigo-500" />
-          <span>Taat Standar Regulasi Resmi RI</span>
-        </div>
+      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-16 pb-20 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+        {/* Subtle Ambient Depth */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[480px] bg-gradient-to-b from-indigo-50/70 via-slate-50/30 to-transparent dark:from-indigo-950/20 dark:via-slate-950/40 dark:to-transparent pointer-events-none -z-10 blur-3xl" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-6">
             {/* Pill Badge Announcement */}
             <Link
               href="/catatan-rilis"
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs transition-all duration-200 group active:scale-95"
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium shadow-2xs transition-all duration-200 group active:scale-95"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
-              <span>Rilis v2.4: PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
-              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center">
-                Log Rilis →
+              <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-mono text-[11px] font-bold">
+                v2.4
+              </span>
+              <span>PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
+              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center font-semibold">
+                Catatan Rilis →
               </span>
             </Link>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
-              Selesaikan Tugas & Dokumen{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-400 dark:via-indigo-300 dark:to-sky-400">
+              Selesaikan Dokumen &amp; Presentasi{' '}
+              <span className="text-indigo-600 dark:text-indigo-400">
                 10x Lebih Kilat
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
               Akses 9 platform otomasi cerdas berstandar profesional di Indonesia. 
-              Gunakan 1 akun dan 1 saldo token terpadu untuk generate slide PowerPoint, makalah akademik, modul ajar, hingga dokumen hukum sah.
+              Gunakan 1 akun dan 1 saldo token terpadu untuk menyusun slide presentasi, naskah akademik, modul ajar, hingga dokumen hukum sah.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-3">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               {user ? (
                 <MagneticButton strength={14}>
                   <Link
                     href="/dashboard"
                     data-cursor="DASHBOARD"
-                    className="px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group ring-1 ring-indigo-500/20"
+                    className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group"
                   >
                     <LayoutDashboard className="w-4 h-4" />
                     <span>Buka Dashboard Saya</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </MagneticButton>
               ) : null}
@@ -148,11 +139,10 @@ export default function PortalHomePage() {
                 <a
                   href="#live-preview"
                   data-cursor="STUDIO"
-                  className="relative overflow-hidden px-7 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center gap-2 group ring-1 ring-slate-900/10 dark:ring-white/20"
+                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center gap-2 group"
                 >
-                  <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
                   <span>Coba Live Studio Preview</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </a>
               </MagneticButton>
 
@@ -161,40 +151,56 @@ export default function PortalHomePage() {
                   type="button"
                   data-cursor="TOP-UP"
                   onClick={handleOpenCashier}
-                  className="px-7 py-3.5 rounded-2xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 flex items-center gap-2 ring-1 ring-slate-900/[0.02]"
+                  className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-2"
                 >
-                  <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400 group-hover:rotate-6 transition-transform" />
+                  <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   <span>Top-Up Token (QRIS Instan)</span>
                 </button>
               </MagneticButton>
             </div>
 
+            {/* Grounded Capabilities Strip */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
+              <span className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span>Format Asli .pptx, .docx, .xlsx</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span>Kepatuhan Standar Regulasi RI</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span>1 Saldo Token Terpadu</span>
+              </span>
+            </div>
+
             {/* Metrics Ribbon with Dynamic Rolling Numbers */}
             <div 
               ref={heroMetricsRef}
-              className={`pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isMetricsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
               }`}
             >
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] hover:-translate-y-1 transition-transform duration-300">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
                   {animatedAppsCount}
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Layanan Spesialis</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Layanan Spesialis</div>
               </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] hover:-translate-y-1 transition-transform duration-300">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">1 Dompet</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Terintegrasi Antar-Layanan</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Terintegrasi Antar-Layanan</div>
               </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] hover:-translate-y-1 transition-transform duration-300">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">QRIS</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Otomatisasi Tanpa Admin</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Otomatisasi Tanpa Admin</div>
               </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] hover:-translate-y-1 transition-transform duration-300">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">
                   {animatedPercentFormat}%
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Standar Format Indonesia</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Standar Format Indonesia</div>
               </div>
             </div>
           </div>
@@ -367,10 +373,10 @@ export default function PortalHomePage() {
           </div>
 
           {/* Custom Nominal Flexible Top-Up Banner */}
-          <div className="max-w-5xl mx-auto -mt-6 mb-16 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-700/80 transition-all duration-300">
+          <div className="max-w-5xl mx-auto -mt-6 mb-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-700/80 transition-all duration-300">
             <div className="space-y-1.5 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-amber-400/15 text-amber-300 text-xs font-semibold border border-amber-400/20">
+                <Coins className="w-3.5 h-3.5 text-amber-400" />
                 <span>Fitur Baru: Top-Up Bebas Fleksibel</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
@@ -383,7 +389,7 @@ export default function PortalHomePage() {
 
             <Link
               href="/kasir"
-              className="px-7 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 shrink-0 min-h-[48px] group"
+              className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 shrink-0 min-h-[48px] group"
             >
               <SlidersHorizontal className="w-4 h-4 text-slate-950 group-hover:rotate-12 transition-transform" />
               <span>Atur Nominal di Kasir →</span>

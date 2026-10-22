@@ -25,10 +25,10 @@ export function EnterpriseBento() {
         }`}
       >
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold mb-3">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Arsitektur & Kepatuhan Standar Indonesia</span>
+            <span>Arsitektur &amp; Kepatuhan Standar Indonesia</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
             Mengapa Otomasi BikinKilat Berbeda Dari AI Biasa?
@@ -38,18 +38,18 @@ export function EnterpriseBento() {
           </p>
         </div>
 
-        {/* Liquid Glass Bento Grid with Spotlight Tilt */}
+        {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           
           {/* Bento 1 (Large - Spans 2 cols on md/lg) */}
           <SpotlightCard
             spotlightColor="rgba(99, 102, 241, 0.12)"
             enableTilt={true}
-            className="md:col-span-2 bg-white/85 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-8 sm:p-9 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/50 dark:hover:border-indigo-500/50 shadow-[0_12px_32px_rgba(15,23,42,0.03)] hover:shadow-[0_24px_50px_rgba(99,102,241,0.07)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] group"
+            className="md:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-7 sm:p-8 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/60 dark:hover:border-indigo-500/60 shadow-xs hover:shadow-lg flex flex-col justify-between group"
           >
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50/90 dark:bg-indigo-950/70 border border-indigo-200/70 dark:border-indigo-800 flex items-center justify-center mb-6 shadow-2xs group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                <FileCheck2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-200/70 dark:border-indigo-800 flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-transform duration-200">
+                <FileCheck2 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
                 Output Binary Asli
@@ -63,19 +63,19 @@ export function EnterpriseBento() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-              <div className="bg-slate-50/80 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-center hover:scale-105 transition-transform duration-200">
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.PPTX</div>
                 <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Editable Slides 16:9</div>
               </div>
-              <div className="bg-slate-50/80 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-center hover:scale-105 transition-transform duration-200">
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.DOCX</div>
                 <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Tata Naskah Resmi</div>
               </div>
-              <div className="bg-slate-50/80 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-center hover:scale-105 transition-transform duration-200">
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.XLSX</div>
                 <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Formula Dinamis Aktif</div>
               </div>
-              <div className="bg-slate-50/80 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-center hover:scale-105 transition-transform duration-200">
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.PDF</div>
                 <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Vektor Resolusi Tinggi</div>
               </div>
@@ -86,11 +86,11 @@ export function EnterpriseBento() {
           <SpotlightCard
             spotlightColor="rgba(16, 185, 129, 0.12)"
             enableTilt={true}
-            className="bg-white/85 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-8 sm:p-9 border border-slate-200/90 dark:border-slate-800 hover:border-emerald-400/50 dark:hover:border-emerald-500/50 shadow-[0_12px_32px_rgba(15,23,42,0.03)] hover:shadow-[0_24px_50px_rgba(16,185,129,0.07)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] group"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-7 sm:p-8 border border-slate-200/90 dark:border-slate-800 hover:border-emerald-400/60 dark:hover:border-emerald-500/60 shadow-xs hover:shadow-lg flex flex-col justify-between group"
           >
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/70 border border-emerald-200/70 dark:border-emerald-800 flex items-center justify-center mb-6 shadow-2xs group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200/70 dark:border-emerald-800 flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-transform duration-200">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
                 Kepatuhan Regulasi
@@ -104,8 +104,8 @@ export function EnterpriseBento() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
-              <span>Bebas Klaim Hoaks & Taat UU</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Bebas Klaim Hoaks &amp; Taat UU</span>
             </div>
           </SpotlightCard>
 
@@ -113,11 +113,11 @@ export function EnterpriseBento() {
           <SpotlightCard
             spotlightColor="rgba(245, 158, 11, 0.12)"
             enableTilt={true}
-            className="bg-white/85 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-8 sm:p-9 border border-slate-200/90 dark:border-slate-800 hover:border-amber-400/50 dark:hover:border-amber-500/50 shadow-[0_12px_32px_rgba(15,23,42,0.03)] hover:shadow-[0_24px_50px_rgba(245,158,11,0.07)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] group"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-7 sm:p-8 border border-slate-200/90 dark:border-slate-800 hover:border-amber-400/60 dark:hover:border-amber-500/60 shadow-xs hover:shadow-lg flex flex-col justify-between group"
           >
             <div>
-              <div className="w-12 h-12 rounded-2xl bg-amber-50/90 dark:bg-amber-950/70 border border-amber-200/70 dark:border-amber-800 flex items-center justify-center mb-6 shadow-2xs group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
-                <Coins className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+              <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-950/70 border border-amber-200/70 dark:border-amber-800 flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-transform duration-200">
+                <Coins className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               </div>
               <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
                 Satu Dompet Terpadu
@@ -140,7 +140,7 @@ export function EnterpriseBento() {
           <SpotlightCard
             spotlightColor="rgba(99, 102, 241, 0.12)"
             enableTilt={true}
-            className="md:col-span-2 bg-white/85 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl p-8 sm:p-9 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/50 dark:hover:border-indigo-500/50 shadow-[0_12px_32px_rgba(15,23,42,0.03)] hover:shadow-[0_24px_50px_rgba(99,102,241,0.07)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03] group"
+            className="md:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-7 sm:p-8 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/60 dark:hover:border-indigo-500/60 shadow-xs hover:shadow-lg flex flex-col justify-between group"
           >
             <div>
               <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center mb-6 shadow-2xs group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">

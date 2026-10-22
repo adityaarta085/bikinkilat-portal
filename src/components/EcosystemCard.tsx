@@ -13,7 +13,7 @@ import {
   LayoutGrid, 
   ArrowUpRight, 
   Coins, 
-  Sparkles 
+  Check 
 } from 'lucide-react';
 import { EcosystemApp } from '@/lib/ecosystem';
 import { SpotlightCard } from '@/components/SpotlightCard';
@@ -43,27 +43,27 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
   return (
     <SpotlightCard
       data-cursor={`BUKA ${app.name.split(' ')[0].toUpperCase()}`}
-      spotlightColor="rgba(99, 102, 241, 0.15)"
+      spotlightColor="rgba(99, 102, 241, 0.12)"
       enableTilt={true}
-      className="group relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/60 dark:hover:border-indigo-500/60 rounded-3xl p-6 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(99,102,241,0.08)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]"
+      className="group relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/70 dark:hover:border-indigo-500/70 rounded-2xl p-6 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
     >
       <div>
         {/* Header row: Icon + Badges */}
         <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-3 group-hover:bg-indigo-50/70 dark:group-hover:bg-indigo-950/60 transition-all duration-300 shadow-2xs">
+          <div className="w-11 h-11 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center group-hover:scale-105 group-hover:bg-indigo-50/80 dark:group-hover:bg-indigo-950/60 transition-all duration-200 shadow-2xs">
             {getIcon(app.iconName)}
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border transition-colors ${app.badgeColor}`}>
+          <div className="flex items-center gap-1.5">
+            <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-md border transition-colors ${app.badgeColor}`}>
               {app.category}
             </span>
             {app.status === 'live' ? (
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 flex items-center gap-1.5 shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
+              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 Live
               </span>
             ) : (
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                 Beta
               </span>
             )}
@@ -72,11 +72,11 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
 
         {/* Title & Tagline */}
         <div className="mb-4">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-2">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-2">
             {app.name}
           </h3>
-          <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1.5">{app.subdomain}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+          <p className="text-xs font-mono font-medium text-indigo-600 dark:text-indigo-400 mb-1.5">{app.subdomain}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
             {app.tagline}
           </p>
         </div>
@@ -85,7 +85,7 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
         <div className="space-y-1.5 mb-5 pt-3 border-t border-slate-100 dark:border-slate-800">
           {app.features.map((feature, idx) => (
             <div key={idx} className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0 group-hover:scale-110 transition-transform" />
+              <Check className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" strokeWidth={2.5} />
               <span>{feature}</span>
             </div>
           ))}
