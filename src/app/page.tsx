@@ -7,7 +7,8 @@ import { EcosystemCard } from '@/components/EcosystemCard';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { InteractiveShowcase } from '@/components/InteractiveShowcase';
-import { EnterpriseBento } from '@/components/EnterpriseBento';
+import { ArtisanalHero } from '@/components/ArtisanalHero';
+import { DocumentAuthenticityComparison } from '@/components/DocumentAuthenticityComparison';
 import { QuickWorkflow } from '@/components/QuickWorkflow';
 import { InteractiveComparison } from '@/components/InteractiveComparison';
 import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
@@ -72,90 +73,8 @@ export default function PortalHomePage() {
     <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <Navbar tokens={tokens} onOpenCashier={handleOpenCashier} />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-20 pb-24 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
-        {/* Apple Refractive Ambient Light */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[520px] bg-gradient-to-b from-indigo-100/35 via-sky-50/20 to-transparent dark:from-indigo-950/25 dark:via-sky-950/15 dark:to-transparent pointer-events-none -z-10 blur-2xl" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto space-y-6">
-            {/* Pill Badge Announcement */}
-            <Link
-              href="/catatan-rilis"
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs transition group"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
-              <span>Rilis v2.4: PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
-              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center">
-                Log Rilis →
-              </span>
-            </Link>
-
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
-              Selesaikan Tugas & Dokumen{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-400 dark:via-indigo-300 dark:to-sky-400">
-                10x Lebih Kilat
-              </span>
-            </h1>
-
-            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
-              Akses 9 platform otomasi cerdas berstandar profesional di Indonesia. 
-              Gunakan 1 akun dan 1 saldo token terpadu untuk generate slide PowerPoint, makalah akademik, modul ajar, hingga dokumen hukum sah.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-3">
-              {user ? (
-                <Link
-                  href="/dashboard"
-                  className="px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group ring-1 ring-indigo-500/20"
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span>Buka Dashboard Saya</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              ) : null}
-
-              <a
-                href="#live-preview"
-                className="px-7 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group ring-1 ring-slate-900/10 dark:ring-white/20"
-              >
-                <span>Coba Live Studio Preview</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-
-              <button
-                type="button"
-                onClick={handleOpenCashier}
-                className="px-7 py-3.5 rounded-2xl bg-white hover:bg-slate-50 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs transition-all duration-200 flex items-center gap-2 ring-1 ring-slate-900/[0.02]"
-              >
-                <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                <span>Top-Up Token (QRIS Instan)</span>
-              </button>
-            </div>
-
-            {/* Metrics Ribbon */}
-            <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800">
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">9</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Layanan Spesialis</div>
-              </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">1 Dompet</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Terintegrasi Antar-Layanan</div>
-              </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">QRIS</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Otomatisasi Tanpa Admin</div>
-              </div>
-              <div className="p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
-                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">100%</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-0.5">Standar Format Indonesia</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Artisanal Split Hero with Live Document Command Center */}
+      <ArtisanalHero onOpenCashier={handleOpenCashier} user={user} />
 
       {/* Flagship Interactive Document Studio Showcase */}
       <div id="live-preview">
@@ -268,8 +187,8 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* Architecture & Standards Bento Grid */}
-      <EnterpriseBento />
+      {/* Real Output Comparison: Chatbot AI Biasa vs BikinKilat Engine */}
+      <DocumentAuthenticityComparison />
 
       {/* 3-Step Simple Workflow */}
       <QuickWorkflow />

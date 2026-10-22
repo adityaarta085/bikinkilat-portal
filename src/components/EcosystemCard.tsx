@@ -13,7 +13,7 @@ import {
   LayoutGrid, 
   ArrowUpRight, 
   Coins, 
-  Sparkles 
+  Check 
 } from 'lucide-react';
 import { EcosystemApp } from '@/lib/ecosystem';
 
@@ -40,11 +40,11 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
   const targetUrl = isLocalhost && app.id === '02-slide' ? 'http://localhost:3000' : app.url;
 
   return (
-    <div className="group relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-2xl p-6 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-[0_16px_36px_rgba(15,23,42,0.06)] hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]">
+    <div className="group relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 rounded-2xl p-6 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)] hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between">
       <div>
         {/* Header row: Icon + Badges */}
         <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center group-hover:scale-105 group-hover:bg-indigo-50/50 dark:group-hover:bg-indigo-950/40 transition-all duration-200 shadow-2xs">
+          <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center transition-colors shadow-2xs">
             {getIcon(app.iconName)}
           </div>
           <div className="flex items-center gap-2">
@@ -54,11 +54,11 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
             {app.status === 'live' ? (
               <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400" />
-                Live
+                Aktif
               </span>
             ) : (
               <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
-                Beta
+                Segera
               </span>
             )}
           </div>
@@ -66,11 +66,11 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
 
         {/* Title & Tagline */}
         <div className="mb-4">
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-2">
+          <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors flex items-center gap-2">
             {app.name}
           </h3>
-          <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mb-1.5">{app.subdomain}</p>
-          <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">{app.subdomain}</p>
+          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
             {app.tagline}
           </p>
         </div>
@@ -79,7 +79,7 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
         <div className="space-y-1.5 mb-5 pt-3 border-t border-slate-100 dark:border-slate-800">
           {app.features.map((feature, idx) => (
             <div key={idx} className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
+              <Check className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
               <span>{feature}</span>
             </div>
           ))}
