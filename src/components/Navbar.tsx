@@ -13,8 +13,7 @@ import {
   Layers,
   Sparkles,
   Menu,
-  X,
-  GitCommit
+  X
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -77,15 +76,6 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
           </Link>
           <Link href="/#riwayat" className="hover:text-slate-900 dark:hover:text-white transition-colors">
             Riwayat Transaksi
-          </Link>
-          <Link 
-            href="/catatan-rilis" 
-            className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1.5"
-          >
-            <span>Catatan Rilis</span>
-            <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.5 rounded-full">
-              v2.5
-            </span>
           </Link>
           {user && (
             <Link 
@@ -283,19 +273,6 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             >
               <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               <span>Riwayat Transaksi</span>
-            </Link>
-            <Link
-              href="/catatan-rilis"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition text-slate-900 dark:text-white"
-            >
-              <div className="flex items-center gap-2.5">
-                <GitCommit className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Catatan Rilis & Log GitHub</span>
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-2 py-0.5 rounded-full">
-                v2.4
-              </span>
             </Link>
             {user && (
               <Link

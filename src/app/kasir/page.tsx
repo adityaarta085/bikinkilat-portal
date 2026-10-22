@@ -155,9 +155,15 @@ export default function KasirPage() {
 
     pollIntervalRef.current = setInterval(async () => {
       try {
-        const res = await fetch(
-          `${GATEWAY_URL}/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(user.id)}&txId=${qrisData.transaction_id}`
-        );
+        let res: Response;
+        const endpoint = `/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(user.id)}&txId=${qrisData.transaction_id}`;
+
+        try {
+          res = await fetch(`${GATEWAY_URL}${endpoint}`);
+        } catch (e) {
+          res = await fetch(endpoint);
+        }
+
         if (!res.ok) return;
 
         const result = await res.json();
@@ -211,28 +217,43 @@ export default function KasirPage() {
     setPayingItem(itemToPay);
 
     try {
-      const res = await fetch(`${GATEWAY_URL}/api/payment/qris/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: user.id,
-          email: user.email || profile?.email || `user-${user.id.slice(0, 8)}@bikinkilat.web.id`,
-          name: profile?.name || user.user_metadata?.full_name || 'Pelanggan BikinKilat',
-          amount: itemToPay.price,
-          packageName: itemToPay.name,
-          tokens: itemToPay.tokens,
-          tokensToAdd: itemToPay.tokens,
-        }),
-      });
+      let res: Response;
+      const payload = {
+        userId: user.id,
+        email: user.email || profile?.email || `user-${user.id.slice(0, 8)}@bikinkilat.web.id`,
+        name: profile?.name || user.user_metadata?.full_name || 'Pelanggan BikinKilat',
+        amount: itemToPay.price,
+        packageName: itemToPay.name,
+        tokens: itemToPay.tokens,
+        tokensToAdd: itemToPay.tokens,
+      };
+
+      try {
+        res = await fetch(`${GATEWAY_URL}/api/payment/qris/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (directErr) {
+        // Fallback ke proxy internal jika edge domain terhalang browser
+        res = await fetch('/api/payment/qris/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      }
 
       const data = await res.json();
 
-      if (!res.ok || !data.success) {
+      const isSuccess = res.ok && (data.status === 'success' || data.success === true) && Boolean(data.data);
+
+      if (!isSuccess) {
         throw new Error(data.error || data.message || 'Gagal membuat kode QRIS pembayaran');
       }
 
       setQrisData(data.data);
-      setCountdown(900);
+      const expiresIn = data.data.expires_in_seconds ? Math.floor(data.data.expires_in_seconds) : 900;
+      setCountdown(expiresIn > 0 ? expiresIn : 900);
       setIsSuccess(false);
     } catch (err: any) {
       console.error('Error generate QRIS:', err);
