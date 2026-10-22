@@ -1,4 +1,4 @@
-export interface EcosystemApp {
+﻿export interface EcosystemApp {
   id: string;
   name: string;
   subdomain: string;

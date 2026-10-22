@@ -11,7 +11,9 @@ import {
   ChevronDown, 
   LayoutDashboard,
   Layers,
-  Sparkles
+  Sparkles,
+  Menu,
+  X
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -25,6 +27,7 @@ interface NavbarProps {
 export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   const { user, profile, tokens: authTokens, signOut } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const activeTokens = typeof propTokens === 'number' ? propTokens : authTokens;
@@ -217,8 +220,82 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               <span>Masuk</span>
             </Link>
           )}
+
+          {/* Mobile Hamburger Button */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden flex items-center justify-center p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition min-h-[44px] min-w-[44px]"
+            aria-label={isMobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t border-slate-200/80 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl px-4 py-4 space-y-3 animate-in fade-in slide-in-from-top-2">
+          <nav className="flex flex-col space-y-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <Link
+              href="/#layanan"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <Layers className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>9 Layanan Cerdas</span>
+            </Link>
+            <Link
+              href="/#live-preview"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>Live Studio Preview</span>
+            </Link>
+            <Link
+              href="/#kasir"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
+              <span>Tarif & Paket Token</span>
+            </Link>
+            <Link
+              href="/#riwayat"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>Riwayat Transaksi</span>
+            </Link>
+            {user && (
+              <Link
+                href="/dashboard"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 font-bold transition"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                <span>Dashboard Akun Lengkap</span>
+              </Link>
+            )}
+          </nav>
+
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleOpenCashier();
+              }}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-sm font-bold shadow-xs transition"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Isi Ulang Saldo Token (QRIS Instan)</span>
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+﻿import { createClient } from '@supabase/supabase-js';
 import { crossSubdomainStorage } from './session';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://oonozobspxhvztoikakt.supabase.co';

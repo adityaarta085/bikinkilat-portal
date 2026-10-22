@@ -1,4 +1,4 @@
-// Legal Content & Policy Definitions for Ekosistem BikinKilat.web.id
+﻿// Legal Content & Policy Definitions for Ekosistem BikinKilat.web.id
 // Sesuai Regulasi Hukum Indonesia (UU ITE No. 1/2024, UU PDP No. 27/2022, PP PSTE No. 71/2019)
 
 export const LEGAL_COMPANY_INFO = {
