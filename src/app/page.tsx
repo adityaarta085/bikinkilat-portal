@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
-import { EcosystemCard } from '@/components/EcosystemCard';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { InteractiveShowcase } from '@/components/InteractiveShowcase';
@@ -16,36 +15,27 @@ import { Footer } from '@/components/Footer';
 import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
 import { InfiniteMarquee } from '@/components/InfiniteMarquee';
 import { MagneticButton } from '@/components/MagneticButton';
-import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
+import { EditorialProjectDeck } from '@/components/EditorialProjectDeck';
+import { TOKEN_PACKAGES } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { 
-  Coins, 
   ArrowRight, 
-  Layers, 
-  CheckCircle2, 
   HelpCircle,
   QrCode,
-  Search,
-  X,
   LayoutDashboard,
   Sparkles,
   SlidersHorizontal,
-  FileCheck2,
-  ShieldCheck
 } from 'lucide-react';
 
 export default function PortalHomePage() {
   const { tokens, setTokens, user, refreshTokens, openAuthModal } = useAuth();
   const [isCashierOpen, setIsCashierOpen] = useState(false);
   const [lastTxUpdated, setLastTxUpdated] = useState<number>(Date.now());
-  const [activeCategory, setActiveCategory] = useState<string>('Semua');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Scroll reveals for sections
   const { ref: heroMetricsRef, isVisible: isMetricsVisible } = useScrollReveal({ threshold: 0.1 });
-  const { ref: layananRef, isVisible: isLayananVisible } = useScrollReveal({ threshold: 0.05 });
 
   // Animated Count-Up Metrics
   const animatedAppsCount = useCountUp({ end: 9, duration: 1000, enabled: isMetricsVisible });
@@ -65,59 +55,26 @@ export default function PortalHomePage() {
     }
   };
 
-  const categories = ['Semua', 'Akademik', 'Karier', 'Bisnis', 'Legal', 'Kreatif'];
-
-  const filteredApps = ECOSYSTEM_APPS.filter((app) => {
-    const matchesCategory = activeCategory === 'Semua' || app.category === activeCategory;
-    const q = searchQuery.toLowerCase().trim();
-    if (!q) return matchesCategory;
-
-    const matchesSearch = 
-      app.name.toLowerCase().includes(q) ||
-      app.tagline.toLowerCase().includes(q) ||
-      app.subdomain.toLowerCase().includes(q) ||
-      app.outputFormats.some(f => f.toLowerCase().includes(q)) ||
-      app.features.some(f => f.toLowerCase().includes(q));
-
-    return matchesCategory && matchesSearch;
-  });
-
   return (
     <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <Navbar tokens={tokens} onOpenCashier={handleOpenCashier} />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-20 pb-24 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
-        {/* Apple Refractive Ambient Light with Gentle Aurora Drift */}
+        {/* Subtle Ambient Light with Gentle Aurora Drift */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[560px] bg-gradient-to-b from-indigo-100/40 via-sky-50/25 to-transparent dark:from-indigo-950/30 dark:via-sky-950/20 dark:to-transparent pointer-events-none -z-10 blur-3xl animate-aurora" />
 
-        {/* Floating Decorative Feature Micro-Pills */}
-        <div className="hidden lg:flex items-center gap-2 absolute top-24 left-6 xl:left-14 px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-sm animate-float-subtle text-xs font-bold text-slate-700 dark:text-slate-200 pointer-events-none ring-1 ring-slate-900/[0.03]">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Output .pptx, .docx, .xlsx Asli</span>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-2 absolute top-36 right-6 xl:right-14 px-3.5 py-2 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/80 dark:border-slate-800 shadow-sm animate-float-subtle-delayed text-xs font-bold text-slate-700 dark:text-slate-200 pointer-events-none ring-1 ring-slate-900/[0.03]">
-          <span className="w-2 h-2 rounded-full bg-indigo-500" />
-          <span>Taat Standar Regulasi Resmi RI</span>
-        </div>
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto space-y-6">
-            {/* Pill Badge Announcement */}
-            <Link
-              href="/catatan-rilis"
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-100/90 hover:bg-slate-200/90 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-2xs transition-all duration-200 group active:scale-95"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse" />
-              <span>Rilis v2.4: PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
-              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform flex items-center">
-                Log Rilis →
-              </span>
-            </Link>
+          <div className="text-center max-w-4xl mx-auto space-y-6">
+            {/* Minimalist Editorial Metadata (Emotion Agency Style) */}
+            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+              <span>[ EKOSISTEM DOKUMEN DIGITAL INDONESIA ]</span>
+              <span>•</span>
+              <span className="text-indigo-600 dark:text-indigo-400">9 SPESIALISASI TERPADU</span>
+            </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
-              Selesaikan Tugas & Dokumen{' '}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.05]">
+              Selesaikan Tugas &amp; Dokumen{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 dark:from-indigo-400 dark:via-indigo-300 dark:to-sky-400">
                 10x Lebih Kilat
               </span>
@@ -209,119 +166,8 @@ export default function PortalHomePage() {
         <InteractiveShowcase />
       </div>
 
-      {/* Ecosystem Apps Grid */}
-      <section 
-        id="layanan" 
-        ref={layananRef}
-        className="py-20 bg-slate-50/50 dark:bg-slate-950/50 border-b border-slate-200/80 dark:border-slate-800 relative transition-colors"
-      >
-        <div 
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isLayananVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
-            <div>
-              <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-1.5">
-                <Layers className="w-4 h-4" />
-                <span>Katalog Lengkap Layanan</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Pilih Layanan Sesuai Kebutuhan Anda
-              </h2>
-            </div>
-
-            {/* Search Input & Category Filter */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {/* Search Bar */}
-              <div className="relative min-w-[240px] sm:min-w-[280px]">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari layanan (slide, cv, modul)..."
-                  className="w-full pl-9 pr-8 py-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition shadow-2xs"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                    title="Hapus pencarian"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Category Filter Pills (Apple Segmented Group) */}
-              <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 p-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${
-                      activeCategory === cat
-                        ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-2xs'
-                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Search Result Count or Feedback */}
-          {searchQuery && (
-            <div className="mb-6 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
-              <span>
-                Menampilkan hasil untuk &ldquo;<strong className="text-slate-800 dark:text-white">{searchQuery}</strong>&rdquo; ({filteredApps.length} layanan ditemukan)
-              </span>
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
-              >
-                Reset pencarian
-              </button>
-            </div>
-          )}
-
-          {/* Cards Grid */}
-          {filteredApps.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredApps.map((app) => (
-                <EcosystemCard key={app.id} app={app} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800 p-8 max-w-lg mx-auto">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 flex items-center justify-center mx-auto mb-4 text-indigo-600 dark:text-indigo-400">
-                <Search className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">
-                Layanan Tidak Ditemukan
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
-                Tidak ada layanan yang cocok dengan kata kunci &ldquo;{searchQuery}&rdquo; dalam kategori {activeCategory}.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery('');
-                  setActiveCategory('Semua');
-                }}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white text-xs font-bold transition shadow-xs"
-              >
-                Tampilkan Semua 9 Layanan
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+      {/* Interactive Editorial Project Deck & Catalog (Emotion Agency Style) */}
+      <EditorialProjectDeck />
 
       {/* Architecture & Standards Bento Grid */}
       <EnterpriseBento />
