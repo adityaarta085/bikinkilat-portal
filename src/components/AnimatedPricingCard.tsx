@@ -79,22 +79,22 @@ export function AnimatedPricingCard({ pkg, onSelect, index }: AnimatedPricingCar
   };
 
   return (
-    <div ref={cardRef} className="h-full">
+    <div ref={cardRef} className="h-full relative overflow-visible pt-2">
       <SpotlightCard
         data-cursor={`PAKET ${pkg.tokens} TOKEN`}
         onMouseEnter={handleMouseEnter}
         spotlightColor={pkg.popular ? "rgba(99, 102, 241, 0.18)" : "rgba(148, 163, 184, 0.12)"}
         enableTilt={true}
-        className={`h-full rounded-3xl p-8 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between group ${
+        className={`h-full rounded-3xl p-8 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl border transition-all duration-300 flex flex-col justify-between group overflow-visible ${
           pkg.popular
             ? 'border-indigo-600/90 dark:border-indigo-500 ring-4 ring-indigo-500/10 shadow-[0_20px_50px_rgba(79,70,229,0.12)]'
             : 'border-slate-200/90 dark:border-slate-800 shadow-[0_10px_30px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.06)]'
         }`}
       >
-        {/* Top Badge (Paling Populer) */}
+        {/* Top Badge (Paling Populer) - z-30 and overflow-visible ensures it is NEVER clipped */}
         {pkg.popular && (
-          <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm tracking-wide flex items-center gap-1.5 z-10 ring-2 ring-white dark:ring-slate-950">
-            <Sparkles className="w-3 h-3 text-amber-300 fill-amber-300 animate-pulse" />
+          <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-slate-900 dark:bg-indigo-600 text-white text-xs font-extrabold shadow-sm tracking-wide flex items-center gap-1.5 z-30 ring-2 ring-white dark:ring-slate-950 whitespace-nowrap pointer-events-none">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300 fill-amber-300 animate-pulse" />
             <span>{pkg.badge}</span>
           </span>
         )}

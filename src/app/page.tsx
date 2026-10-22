@@ -355,7 +355,7 @@ export default function PortalHomePage() {
           </div>
 
           {/* Pricing Cards (Apple Liquid Glass Cards with Strike-Through Animation) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-6 mb-16 overflow-visible">
             {TOKEN_PACKAGES.map((pkg, idx) => (
               <AnimatedPricingCard
                 key={pkg.id}

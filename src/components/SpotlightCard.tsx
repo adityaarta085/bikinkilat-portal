@@ -14,6 +14,8 @@ interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
  * A tactile interactive card container that tracks the mouse position to render
  * a subtle spotlight glow and a gentle 3D tilt.
  * Fully optimized with hardware acceleration and touch detection.
+ * The spotlight gradient is clipped inside its own layer so parent overflow
+ * remains visible for badges and floating tags.
  */
 export function SpotlightCard({
   children,
@@ -73,18 +75,23 @@ export function SpotlightCard({
           ? 'transform 0.12s ease-out'
           : 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
-      className={`relative overflow-hidden ${className}`}
+      className={`relative ${className}`}
       {...props}
     >
-      {/* Dynamic Cursor Spotlight Layer */}
-      <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300 rounded-[inherit]"
-        style={{
-          opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(450px circle at ${coords.x}px ${coords.y}px, ${spotlightColor}, transparent 65%)`,
-        }}
-      />
+      {/* Clipped Spotlight Container (Keeps glow neatly within borders while letting badges pop outside) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
+        <div
+          className="absolute -inset-px transition-opacity duration-300"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            background: `radial-gradient(450px circle at ${coords.x}px ${coords.y}px, ${spotlightColor}, transparent 65%)`,
+          }}
+        />
+      </div>
+
       {children}
     </div>
   );
 }
+
+export default SpotlightCard;
