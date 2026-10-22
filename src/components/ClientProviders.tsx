@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { AuthProvider } from "@/lib/auth-context";
 import CookieBanner from "@/components/CookieBanner";
 import { UserPopupWarningModal } from "@/components/UserPopupWarningModal";
+import { SupportChatWidget } from "@/components/SupportChatWidget";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
         {children}
         <CookieBanner />
         <UserPopupWarningModal />
+        <SupportChatWidget />
       </AuthProvider>
     </ThemeProvider>
   );
