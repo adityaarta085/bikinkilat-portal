@@ -14,6 +14,8 @@ import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
 import { MobileQuickDock } from '@/components/MobileQuickDock';
 import { Footer } from '@/components/Footer';
 import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
+import { InfiniteMarquee } from '@/components/InfiniteMarquee';
+import { MagneticButton } from '@/components/MagneticButton';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
 import { useCountUp } from '@/hooks/useCountUp';
@@ -129,33 +131,42 @@ export default function PortalHomePage() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-3.5 pt-3">
               {user ? (
-                <Link
-                  href="/dashboard"
-                  className="px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group ring-1 ring-indigo-500/20"
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span>Buka Dashboard Saya</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <MagneticButton strength={14}>
+                  <Link
+                    href="/dashboard"
+                    data-cursor="DASHBOARD"
+                    className="px-7 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group ring-1 ring-indigo-500/20"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Buka Dashboard Saya</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </MagneticButton>
               ) : null}
 
-              <a
-                href="#live-preview"
-                className="relative overflow-hidden px-7 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center gap-2 group ring-1 ring-slate-900/10 dark:ring-white/20"
-              >
-                <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
-                <span>Coba Live Studio Preview</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
+              <MagneticButton strength={16}>
+                <a
+                  href="#live-preview"
+                  data-cursor="STUDIO"
+                  className="relative overflow-hidden px-7 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center gap-2 group ring-1 ring-slate-900/10 dark:ring-white/20"
+                >
+                  <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+                  <span>Coba Live Studio Preview</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </MagneticButton>
 
-              <button
-                type="button"
-                onClick={handleOpenCashier}
-                className="px-7 py-3.5 rounded-2xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 flex items-center gap-2 ring-1 ring-slate-900/[0.02]"
-              >
-                <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400 group-hover:rotate-6 transition-transform" />
-                <span>Top-Up Token (QRIS Instan)</span>
-              </button>
+              <MagneticButton strength={12}>
+                <button
+                  type="button"
+                  data-cursor="TOP-UP"
+                  onClick={handleOpenCashier}
+                  className="px-7 py-3.5 rounded-2xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 flex items-center gap-2 ring-1 ring-slate-900/[0.02]"
+                >
+                  <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400 group-hover:rotate-6 transition-transform" />
+                  <span>Top-Up Token (QRIS Instan)</span>
+                </button>
+              </MagneticButton>
             </div>
 
             {/* Metrics Ribbon with Dynamic Rolling Numbers */}
@@ -189,6 +200,9 @@ export default function PortalHomePage() {
           </div>
         </div>
       </section>
+
+      {/* Infinite Kinetic Marquee (Emotion Agency Style) */}
+      <InfiniteMarquee />
 
       {/* Flagship Interactive Document Studio Showcase */}
       <div id="live-preview">

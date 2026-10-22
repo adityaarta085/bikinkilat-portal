@@ -81,6 +81,7 @@ export function AnimatedPricingCard({ pkg, onSelect, index }: AnimatedPricingCar
   return (
     <div ref={cardRef} className="h-full">
       <SpotlightCard
+        data-cursor={`PAKET ${pkg.tokens} TOKEN`}
         onMouseEnter={handleMouseEnter}
         spotlightColor={pkg.popular ? "rgba(99, 102, 241, 0.18)" : "rgba(148, 163, 184, 0.12)"}
         enableTilt={true}

@@ -42,6 +42,7 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
 
   return (
     <SpotlightCard
+      data-cursor={`BUKA ${app.name.split(' ')[0].toUpperCase()}`}
       spotlightColor="rgba(99, 102, 241, 0.15)"
       enableTilt={true}
       className="group relative bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400/60 dark:hover:border-indigo-500/60 rounded-3xl p-6 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_45px_rgba(99,102,241,0.08)] flex flex-col justify-between ring-1 ring-slate-900/[0.02] dark:ring-white/[0.03]"
