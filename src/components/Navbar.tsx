@@ -45,11 +45,11 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
   }, []);
 
   const handleOpenCashier = () => {
-    if (onOpenCashier) {
-      onOpenCashier();
-    } else {
-      window.location.href = '/#kasir';
+    if (!user) {
+      window.location.href = '/auth?returnUrl=/kasir';
+      return;
     }
+    window.location.href = '/kasir';
   };
 
   const displayName = profile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Pengguna';
@@ -72,7 +72,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
           <Link href="/#live-preview" className="hover:text-slate-900 dark:hover:text-white transition-colors">
             Live Studio
           </Link>
-          <Link href="/#kasir" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+          <Link href="/kasir" className="hover:text-slate-900 dark:hover:text-white transition-colors">
             Tarif & Paket Token
           </Link>
           <Link href="/#riwayat" className="hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -101,10 +101,14 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
         {/* Right Section: Tokens, Theme & Auth */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* User Wallet Badge */}
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs">
+          <Link
+            href={user ? "/kasir" : "/auth?returnUrl=/kasir"}
+            className="flex items-center gap-2 px-3 py-1.5 bg-white/90 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 rounded-full text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-bold shadow-xs hover:border-indigo-300 dark:hover:border-indigo-700 transition"
+            title={user ? "Saldo Token Anda - Klik untuk Isi Ulang" : "Masuk Akun untuk Klaim 5 Token Gratis"}
+          >
             <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-            <span>{activeTokens} Token</span>
-          </div>
+            <span>{user ? `${activeTokens} Token` : '0 Token (Klaim 5)'}</span>
+          </Link>
 
           {/* Top-up Button */}
           <button
@@ -112,7 +116,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs hover:shadow transition-all duration-200 ring-1 ring-indigo-500/20"
           >
             <PlusCircle className="w-3.5 h-3.5" />
-            <span>Top-Up QRIS</span>
+            <span>{user ? "Top-Up QRIS" : "Klaim 5 Token"}</span>
           </button>
 
           {/* Global Dark Mode Switch */}
@@ -265,12 +269,12 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               <span>Live Studio Preview</span>
             </Link>
             <Link
-              href="/#kasir"
+              href="/kasir"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             >
               <Coins className="w-4 h-4 text-amber-500 fill-amber-500" />
-              <span>Tarif & Paket Token</span>
+              <span>Kasir & Paket Token</span>
             </Link>
             <Link
               href="/#riwayat"
@@ -314,7 +318,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl text-sm font-bold shadow-xs transition"
             >
               <PlusCircle className="w-4 h-4" />
-              <span>Isi Ulang Saldo Token (QRIS Instan)</span>
+              <span>{user ? "Isi Ulang Saldo Token (Kasir QRIS)" : "Masuk Akun & Klaim 5 Token Gratis"}</span>
             </button>
           </div>
         </div>

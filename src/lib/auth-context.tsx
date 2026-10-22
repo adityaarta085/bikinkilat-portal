@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
@@ -33,7 +33,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [tokens, setTokens] = useState<number>(5);
+  const [tokens, setTokens] = useState<number>(0); // Pengguna belum login WAJIB 0 token
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
@@ -75,14 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshTokens = useCallback(async () => {
     if (!user) {
-      // Check shared cookie or guest wallet
-      try {
-        const res = await fetch("/api/wallet");
-        const data = await res.json();
-        if (typeof data.tokens === "number") setTokens(data.tokens);
-      } catch (e) {
-        // Ignore fallback
-      }
+      setTokens(0);
       return;
     }
     await syncUserProfile(user);
@@ -131,12 +124,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 setTokens(shared.cachedTokens);
               }
             } catch (e) {
-              if (shared.cachedTokens !== null && mounted) {
-                setTokens(shared.cachedTokens);
-              }
+              if (mounted) setTokens(0);
             }
-          } else if (shared.cachedTokens !== null && mounted) {
-            setTokens(shared.cachedTokens);
+          } else if (mounted) {
+            setTokens(0);
           }
         }
       } catch (err) {
@@ -156,7 +147,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
         setProfile(null);
         clearSharedSessionCookie();
-        setTokens(5);
+        setTokens(0); // WAJIB 0 saat logout
       }
     });
 
@@ -220,7 +211,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearSharedSessionCookie();
     setUser(null);
     setProfile(null);
-    setTokens(5);
+    setTokens(0);
   };
 
   return (

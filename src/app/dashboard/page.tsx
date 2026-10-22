@@ -262,7 +262,7 @@ export default function UserDashboardPage() {
                 Konektivitas Cloud:
               </span>
               <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 px-3 py-1 rounded-full">
-                Supabase Sync Aktif
+                Sinkronisasi Akun Aktif
               </span>
             </div>
           </div>
@@ -300,14 +300,13 @@ export default function UserDashboardPage() {
             </div>
 
             <div className="pt-6">
-              <button
-                type="button"
-                onClick={() => setIsCashierOpen(true)}
+              <Link
+                href="/kasir"
                 className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2"
               >
                 <PlusCircle className="w-4 h-4" />
-                <span>Top-Up Token (QRIS Instan)</span>
-              </button>
+                <span>Top-Up Token (Buka Kasir QRIS)</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -404,7 +403,7 @@ export default function UserDashboardPage() {
           {isLoadingTx ? (
             <div className="py-12 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
               <RefreshCw className="w-4 h-4 animate-spin text-indigo-600" />
-              <span>Memuat data transaksi dari Supabase...</span>
+              <span>Memuat riwayat transaksi Anda...</span>
             </div>
           ) : transactions.length > 0 ? (
             <div className="overflow-x-auto">
@@ -464,13 +463,12 @@ export default function UserDashboardPage() {
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto mb-4">
                 Setiap pembayaran paket kuota token via QRIS akan otomatis tercatat dan tersimpan rapi di sini.
               </p>
-              <button
-                type="button"
-                onClick={() => setIsCashierOpen(true)}
-                className="px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-xs hover:bg-indigo-700 transition"
+              <Link
+                href="/kasir"
+                className="inline-block px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-xs hover:bg-indigo-700 transition"
               >
                 Beli Paket Token Pertama
-              </button>
+              </Link>
             </div>
           )}
         </section>

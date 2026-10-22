@@ -1,4 +1,4 @@
-﻿export interface EcosystemApp {
+export interface EcosystemApp {
   id: string;
   name: string;
   subdomain: string;
@@ -157,6 +157,8 @@ export const TOKEN_PACKAGES = [
     id: 'pkg-10',
     tokens: 10,
     price: 15000,
+    pricePerToken: 1500,
+    name: 'Paket Pelajar',
     label: 'Paket Pelajar',
     badge: 'Mulai Praktis',
     popular: false,
@@ -166,6 +168,8 @@ export const TOKEN_PACKAGES = [
     id: 'pkg-25',
     tokens: 25,
     price: 29000,
+    pricePerToken: 1160,
+    name: 'Paket Mahasiswa',
     label: 'Paket Mahasiswa',
     badge: 'Paling Populer',
     popular: true,
@@ -175,6 +179,8 @@ export const TOKEN_PACKAGES = [
     id: 'pkg-60',
     tokens: 60,
     price: 49000,
+    pricePerToken: 816,
+    name: 'Paket Profesional',
     label: 'Paket Profesional',
     badge: 'Paling Hemat',
     popular: false,

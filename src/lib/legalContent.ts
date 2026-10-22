@@ -29,7 +29,7 @@ export const TERMS_OF_SERVICE = {
       id: "akun",
       title: "2. Akun & Otentikasi Terpadu",
       content: [
-        "Pengguna dapat mendaftar dan masuk ke Platform menggunakan akun Google (Google OAuth) atau alamat email yang valid melalui sistem otentikasi terpusat Supabase Auth.",
+        "Pengguna dapat mendaftar dan masuk ke Platform menggunakan akun Google (Google OAuth) atau alamat email yang valid melalui sistem otentikasi akun terpusat BikinKilat yang aman dan terenkripsi.",
         "Satu akun pengguna memiliki satu dompet Saldo Token yang tersinkronisasi secara otomatis di seluruh subdomain ekosistem BikinKilat.web.id.",
         "Pengguna bertanggung jawab penuh untuk menjaga keamanan dan kerahasiaan kredensial akun miliknya. Segala aktivitas yang terjadi melalui akun Pengguna dianggap sah dilakukan oleh Pengguna yang bersangkutan.",
         "Pengguna menyatakan bahwa data profil yang diberikan saat pendaftaran adalah data yang benar, akurat, dan dapat dipertanggungjawabkan.",

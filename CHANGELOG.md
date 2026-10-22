@@ -33,17 +33,17 @@ Halaman publik interaktif dapat diakses langsung di: **[bikinkilat.web.id/catata
 
 ## [v2.3.0] - 2026-10-21
 ### Ditambahkan (Added)
-- **Arsitektur AI Berkecepatan Tinggi**: Integrasi Alibaba Model Studio (Qwen 3.8, DeepSeek v4.1, GLM 5.3) dengan rotasi multi-model otomatis pada endpoint `/api/generate`.
-- **Sistem Cadangan Multi-Kunci OpenRouter**: 3-layer fallback otomatis saat layanan primer mencapai batas kuota laju.
+- **Arsitektur Pembuatan Dokumen Cepat**: Integrasi mesin kecerdasan buatan multi-model dengan rotasi otomatis pada sistem generasi dokumen.
+- **Sistem Cadangan Berlapis**: Perlindungan stabilitas bertingkat saat sistem mengalami lonjakan trafik permintaan.
 
 ### Ditingkatkan (Improved)
-- **Pemangkasan Latensi**: Menonaktifkan token penalaran internal (`enable_thinking: false`) dan menerapkan batas waktu ketat 6.5 detik untuk mencapai waktu respon sub-2 detik tanpa timeout Vercel.
+- **Pemangkasan Latensi**: Optimalisasi tanpa jeda waktu dan batasan respon ketat untuk mencapai waktu pembuatan dokumen di bawah 2 detik yang mulus dan stabil.
 
 ---
 
 ## [v2.2.0] - 2026-10-19
 ### Ditambahkan (Added)
-- **Dompet Token Terpadu**: Sinkronisasi saldo akun pengguna di seluruh 9 subdomain melalui database Supabase terpusat.
+- **Dompet Token Terpadu**: Sinkronisasi saldo akun pengguna di seluruh 9 subdomain melalui basis data cloud terpusat BikinKilat.
 - **Kasir QRIS Otomatis**: Integrasi top-up token instan dan pencatatan riwayat transaksi real-time.
 
 ---

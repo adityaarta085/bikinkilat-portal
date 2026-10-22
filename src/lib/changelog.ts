@@ -98,11 +98,11 @@ export const RELEASES: ReleaseNote[] = [
   {
     version: 'v2.3.0',
     date: '21 Oktober 2026',
-    title: 'Arsitektur AI Multi-Model Berkecepatan Tinggi (Sub-2 Detik)',
-    badge: 'Performa AI',
+    title: 'Arsitektur Kecerdasan Buatan Multi-Model Berkecepatan Tinggi (Sub-2 Detik)',
+    badge: 'Performa Sistem',
     badgeColor: 'sky',
     summary:
-      'Integrasi mesin perutean AI Alibaba Model Studio dengan rotasi otomatis (Qwen 3.8, DeepSeek v4.1, GLM 5.3) dan cadangan multi-kunci OpenRouter tanpa jeda tunggu pemikiran.',
+      'Integrasi mesin kecerdasan dokumen multi-model dengan sistem perutean otomatis berkecepatan tinggi dan sistem cadangan mandiri tanpa jeda waktu.',
     impactedServices: [
       { name: 'Slide & Makalah', subdomain: 'slide', url: 'https://slide.bikinkilat.web.id' },
       { name: 'Modul Merdeka', subdomain: 'modul', url: 'https://modul.bikinkilat.web.id' },
@@ -111,19 +111,19 @@ export const RELEASES: ReleaseNote[] = [
       { name: 'Surat & Kontrak', subdomain: 'surat', url: 'https://surat.bikinkilat.web.id' },
       { name: 'Proposal Skripsi', subdomain: 'proposal', url: 'https://proposal.bikinkilat.web.id' },
     ],
-    categories: ['AI Engine', 'Infrastruktur'],
+    categories: ['Mesin Dokumen', 'Performa'],
     changes: [
       {
         type: 'added',
-        text: 'Implementasi rotasi model bahasa cerdas pada endpoint /api/generate di 6 subdomain dokumen otomatis.',
+        text: 'Implementasi rotasi model cerdas otomatis pada pembuatan dokumen di 6 studio dokumen BikinKilat.',
       },
       {
         type: 'added',
-        text: 'Fallback berantai 3 tingkat menggunakan OpenRouter API keys ketika layanan primer mengalami batas laju (rate limit).',
+        text: 'Sistem cadangan berlapis otomatis untuk menjamin proses pembuatan dokumen tetap lancar saat trafik tinggi.',
       },
       {
         type: 'improved',
-        text: 'Konfigurasi non-thinking (enable_thinking: false) dan timeout 6.5 detik untuk memangkas latensi respon hingga di bawah 2 detik tanpa melanggar batas serverless Vercel.',
+        text: 'Optimalisasi respons cepat dengan batasan respon ketat untuk memangkas waktu tunggu pembuatan dokumen hingga di bawah 2 detik.',
       },
     ],
     githubCommitUrl: 'https://github.com/adityaarta085/bikinkilat-slide/commit/cbc44e0',
@@ -135,7 +135,7 @@ export const RELEASES: ReleaseNote[] = [
     badge: 'Sistem Kasir',
     badgeColor: 'amber',
     summary:
-      'Peluncuran dompet token lintas-subdomain berbasis Supabase terpusat dan kasir pembayaran QRIS instan otomatis.',
+      'Peluncuran dompet token lintas-subdomain berbasis komputasi awan terpusat dan kasir pembayaran QRIS instan resmi.',
     impactedServices: [
       { name: 'Portal Ekosistem', subdomain: 'portal', url: 'https://bikinkilat.web.id' },
     ],
@@ -147,11 +147,11 @@ export const RELEASES: ReleaseNote[] = [
       },
       {
         type: 'added',
-        text: 'Simulasi kasir QRIS dinamis dan riwayat mutasi transaksi real-time pada dashboard pengguna.',
+        text: 'Kasir QRIS dinamis dan riwayat mutasi transaksi real-time pada dashboard pengguna.',
       },
       {
         type: 'improved',
-        text: 'Sistem penyimpanan metadata dokumen tersimpan aman di database Supabase terpusat dengan enkripsi SSL/TLS.',
+        text: 'Sistem penyimpanan metadata dokumen tersimpan aman di basis data akun terenkripsi BikinKilat dengan proteksi SSL/TLS.',
       },
     ],
     githubCommitUrl: 'https://github.com/adityaarta085/bikinkilat-portal',

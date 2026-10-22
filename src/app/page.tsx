@@ -42,9 +42,9 @@ export default function PortalHomePage() {
 
   const handleOpenCashier = () => {
     if (!user) {
-      openAuthModal();
+      window.location.href = '/auth?returnUrl=/kasir';
     } else {
-      setIsCashierOpen(true);
+      window.location.href = '/kasir';
     }
   };
 
