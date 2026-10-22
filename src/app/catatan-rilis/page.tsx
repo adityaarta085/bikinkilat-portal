@@ -343,7 +343,7 @@ export default function CatatanRilisPage() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Setiap repositori layanan dikelola secara mandiri dengan pipeline continuous deployment ke edge Vercel. Anda dapat memeriksa struktur kode, log komit, dan riwayat perbaikan secara transparan.
+            Setiap repositori layanan dikelola secara mandiri dengan pipeline continuous deployment ke jaringan cloud hosting global. Anda dapat memeriksa struktur kode, log komit, dan riwayat perbaikan secara transparan.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
