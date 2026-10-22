@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
@@ -148,6 +148,10 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
       });
 
       const data = await res.json();
+      if (res.status === 409 || data.code === 'ACTIVE_PENDING_EXISTS') {
+        setErrorMessage(data.message || 'Anda memiliki transaksi QRIS aktif yang belum diselesaikan. Harap selesaikan atau batalkan di kasir / riwayat transaksi.');
+        return;
+      }
       if (res.ok && data.status === 'success') {
         setQrisData(data.data);
         setCountdown(900);
@@ -158,6 +162,26 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
       setErrorMessage('Tidak dapat terhubung ke server pembayaran.');
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleCancelCurrentQris = async () => {
+    if (!qrisData || !user?.id) return;
+    if (!window.confirm('Batalkan transaksi pembayaran QRIS ini?')) return;
+    try {
+      await fetch('/api/transactions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transactionId: qrisData.transaction_id,
+          userId: user.id,
+          action: 'cancel',
+        }),
+      });
+      setQrisData(null);
+      setErrorMessage('Transaksi berhasil dibatalkan.');
+    } catch (e) {
+      setErrorMessage('Gagal membatalkan transaksi.');
     }
   };
 
@@ -477,7 +501,15 @@ export function CashierModal({ isOpen, onClose, onPaymentSuccess }: CashierModal
                       </>
                     )}
                   </button>
-                ) : null}
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleCancelCurrentQris}
+                    className="w-full py-2.5 px-4 rounded-xl border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs font-bold transition flex items-center justify-center gap-1.5 min-h-[40px]"
+                  >
+                    <span>Batalkan Transaksi Ini</span>
+                  </button>
+                )}
               </div>
             </div>
           ) : (

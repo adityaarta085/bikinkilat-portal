@@ -12,6 +12,7 @@ import {
   Check, 
   RefreshCw, 
   AlertCircle, 
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   Lock,
@@ -21,7 +22,10 @@ import {
   SlidersHorizontal,
   Layers,
   Zap,
-  Gift
+  Gift,
+  Trash2,
+  XCircle,
+  History
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Navbar } from '@/components/Navbar';
@@ -74,7 +78,39 @@ export default function KasirPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hasCopiedAmount, setHasCopiedAmount] = useState(false);
 
+  // Active Pending Transaction State
+  const [pendingTx, setPendingTx] = useState<any | null>(null);
+  const [isLoadingPending, setIsLoadingPending] = useState(false);
+  const [cancellingTxId, setCancellingTxId] = useState<string | null>(null);
+  const [actionSuccessMsg, setActionSuccessMsg] = useState<string | null>(null);
+
   const pollIntervalRef = useRef<any>(null);
+
+  // Fetch active pending transactions for the current user
+  const fetchPendingTx = async (userId: string) => {
+    setIsLoadingPending(true);
+    try {
+      const res = await fetch(`/api/transactions?userId=${encodeURIComponent(userId)}&status=pending`);
+      const data = await res.json();
+      if (data.success && Array.isArray(data.transactions) && data.transactions.length > 0) {
+        setPendingTx(data.transactions[0]);
+      } else {
+        setPendingTx(null);
+      }
+    } catch (e) {
+      console.warn('Gagal memuat status transaksi pending:', e);
+    } finally {
+      setIsLoadingPending(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchPendingTx(user.id);
+    } else {
+      setPendingTx(null);
+    }
+  }, [user?.id]);
 
   // Dynamic custom calculation
   const customCalc = useMemo(() => calculateCustomTokens(customAmount), [customAmount]);
@@ -187,6 +223,7 @@ export default function KasirPage() {
   const triggerSuccess = (transactionId: string, tokensToAdd: number) => {
     setTxId(transactionId);
     setIsSuccess(true);
+    setPendingTx(null);
     refreshTokens();
 
     try {
@@ -198,9 +235,78 @@ export default function KasirPage() {
     } catch (e) {}
   };
 
+  // Resume or re-display active pending QRIS
+  const handleResumePendingQris = (tx: any) => {
+    const tokens = tx.tokens_added || 10;
+    const price = tx.amount_idr || tx.amount || 0;
+    
+    setPayingItem({
+      name: tx.package_name,
+      tokens,
+      price,
+      pricePerToken: Math.round(price / Math.max(1, tokens)),
+      isCustom: false,
+    });
+
+    setQrisData({
+      transaction_id: tx.id,
+      qris_id: tx.qris_id || '',
+      qris_image_url: tx.qris_image_url || (tx.qris_id ? `https://api.qrispy.id/api/public/qris/${tx.qris_id}/image` : undefined),
+      amount: price,
+      requested_amount: price,
+      unique_id: 0,
+      checkout_url: tx.checkout_url,
+    });
+
+    setCountdown(900);
+    setIsSuccess(false);
+    setErrorMessage(null);
+  };
+
+  // Cancel pending transaction
+  const handleCancelPending = async (txIdToCancel: string, qrisId?: string) => {
+    if (!user?.id) return;
+    const confirm = window.confirm('Apakah Anda yakin ingin membatalkan transaksi pembayaran QRIS ini?');
+    if (!confirm) return;
+
+    setCancellingTxId(txIdToCancel);
+    setErrorMessage(null);
+    try {
+      const res = await fetch('/api/transactions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transactionId: txIdToCancel,
+          userId: user.id,
+          action: 'cancel',
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPendingTx(null);
+        setQrisData(null);
+        setActionSuccessMsg('Transaksi pembayaran sebelumnya berhasil dibatalkan. Anda sekarang dapat memilih paket baru.');
+        setTimeout(() => setActionSuccessMsg(null), 6000);
+        refreshTokens();
+      } else {
+        setErrorMessage(data.error || 'Gagal membatalkan transaksi.');
+      }
+    } catch (e: any) {
+      setErrorMessage(e.message || 'Terjadi gangguan saat membatalkan transaksi.');
+    } finally {
+      setCancellingTxId(null);
+    }
+  };
+
   const handleGenerateQris = async (overrideItem?: PayingItem) => {
     if (!user) {
       window.location.href = '/auth?returnUrl=/kasir';
+      return;
+    }
+
+    // Blokir jika user masih memiliki transaksi pending yang belum diselesaikan
+    if (pendingTx) {
+      setErrorMessage('Anda memiliki transaksi QRIS aktif yang belum diselesaikan. Harap selesaikan pembayaran atau batalkan transaksi tersebut terlebih dahulu.');
       return;
     }
 
@@ -243,6 +349,17 @@ export default function KasirPage() {
       }
 
       const data = await res.json();
+
+      // Cek apakah server mengembalikan 409 Conflict (transaksi pending sudah ada)
+      if (res.status === 409 || data.code === 'ACTIVE_PENDING_EXISTS') {
+        if (data.pending_transaction) {
+          setPendingTx(data.pending_transaction);
+        } else {
+          await fetchPendingTx(user.id);
+        }
+        setErrorMessage(data.message || 'Anda memiliki transaksi QRIS aktif yang belum diselesaikan.');
+        return;
+      }
 
       const isSuccess = res.ok && (data.status === 'success' || data.success === true) && Boolean(data.data);
 
@@ -376,9 +493,26 @@ export default function KasirPage() {
               </div>
             </div>
 
+            {/* Notification Alert: Success Message */}
+            {actionSuccessMsg && (
+              <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm font-semibold flex items-center justify-between gap-3 animate-in fade-in duration-200">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <span>{actionSuccessMsg}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActionSuccessMsg(null)}
+                  className="underline text-xs"
+                >
+                  Tutup
+                </button>
+              </div>
+            )}
+
             {/* Error Message Alert */}
             {errorMessage && (
-              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs sm:text-sm font-semibold flex items-center justify-between gap-3">
+              <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs sm:text-sm font-semibold flex items-center justify-between gap-3 animate-in fade-in duration-200">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
                   <span>{errorMessage}</span>
@@ -390,6 +524,110 @@ export default function KasirPage() {
                 >
                   Tutup
                 </button>
+              </div>
+            )}
+
+            {/* PENDING TRANSACTION ACTIVE BANNER */}
+            {pendingTx && !qrisData && !isSuccess && (
+              <div className="bg-amber-50/90 dark:bg-amber-950/40 rounded-3xl border-2 border-amber-300 dark:border-amber-800 p-6 sm:p-8 shadow-sm space-y-5 animate-in fade-in duration-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-200/80 dark:border-amber-800/80 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <AlertTriangle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-200 text-amber-900 dark:bg-amber-900 dark:text-amber-200">
+                          Menunggu Pembayaran
+                        </span>
+                        <span className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                          1 Tagihan QRIS Aktif
+                        </span>
+                      </div>
+                      <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white mt-1">
+                        Anda Memiliki Transaksi QRIS yang Belum Diselesaikan
+                      </h2>
+                    </div>
+                  </div>
+
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline transition self-start sm:self-auto"
+                  >
+                    <History className="w-3.5 h-3.5" />
+                    <span>Lihat Riwayat Transaksi →</span>
+                  </Link>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  Untuk mencegah tagihan ganda dan menjaga ketertiban dompet Anda, sistem melarang pembuatan transaksi baru sampai tagihan yang sedang berjalan ini diselesaikan atau dibatalkan.
+                </p>
+
+                {/* Card Detail Transaksi Aktif */}
+                <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/80 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xs">
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Paket yang Dipesan:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
+                        {pendingTx.package_name}
+                      </span>
+                      <span className="text-xs font-black text-emerald-600 bg-emerald-50 dark:bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                        +{pendingTx.tokens_added} Token
+                      </span>
+                    </div>
+                    <span className="text-xs text-slate-500 block">
+                      Waktu Pembuatan: {new Date(pendingTx.created_at).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })} WIB
+                    </span>
+                  </div>
+
+                  <div className="md:text-right">
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Total Nominal Bayar:
+                    </span>
+                    <span className="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">
+                      {formatRupiah(pendingTx.amount_idr || pendingTx.amount || 0)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleResumePendingQris(pendingTx)}
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs shadow-md transition active:scale-95 min-h-[44px]"
+                  >
+                    <QrCode className="w-4 h-4" />
+                    <span>Tampilkan / Buka QRIS Sekarang</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={cancellingTxId === pendingTx.id}
+                    onClick={() => handleCancelPending(pendingTx.id, pendingTx.qris_id)}
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-slate-900 hover:bg-rose-50 dark:hover:bg-rose-950/50 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 font-extrabold text-xs shadow-xs transition active:scale-95 disabled:opacity-50 min-h-[44px]"
+                  >
+                    {cancellingTxId === pendingTx.id ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Membatalkan...</span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle className="w-4 h-4 text-rose-500" />
+                        <span>Batalkan Pesanan Ini</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             )}
 
@@ -524,13 +762,32 @@ export default function KasirPage() {
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
                     <button
                       type="button"
                       onClick={() => setQrisData(null)}
                       className="text-xs font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                     >
                       ← Ganti Nominal / Paket
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={cancellingTxId === qrisData.transaction_id}
+                      onClick={() => handleCancelPending(qrisData.transaction_id, qrisData.qris_id)}
+                      className="text-xs font-extrabold text-rose-600 hover:text-rose-700 dark:text-rose-400 flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 transition disabled:opacity-50"
+                    >
+                      {cancellingTxId === qrisData.transaction_id ? (
+                        <>
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          <span>Membatalkan...</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="w-3.5 h-3.5" />
+                          <span>Batalkan Transaksi Ini</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
@@ -687,8 +944,13 @@ export default function KasirPage() {
                             <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
                               <button
                                 type="button"
+                                disabled={Boolean(pendingTx)}
                                 onClick={(e) => {
                                   e.stopPropagation();
+                                  if (pendingTx) {
+                                    setErrorMessage('Anda masih memiliki transaksi pending yang belum diselesaikan. Harap selesaikan atau batalkan pesanan di atas terlebih dahulu.');
+                                    return;
+                                  }
                                   setSelectedPkg(pkg);
                                   handleGenerateQris({
                                     name: pkg.name,
@@ -698,13 +960,17 @@ export default function KasirPage() {
                                     isCustom: false,
                                   });
                                 }}
-                                className={`w-full py-2.5 rounded-xl font-bold text-xs transition min-h-[40px] ${
-                                  isSelected
+                                className={`w-full py-2.5 rounded-xl font-bold text-xs transition min-h-[40px] disabled:opacity-50 disabled:cursor-not-allowed ${
+                                  isSelected && !pendingTx
                                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs'
                                     : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200'
                                 }`}
                               >
-                                {isSelected ? 'Lanjut Pembayaran' : 'Pilih Paket'}
+                                {pendingTx
+                                  ? 'Tagihan Lain Aktif'
+                                  : isSelected
+                                  ? 'Lanjut Pembayaran'
+                                  : 'Pilih Paket'}
                               </button>
                             </div>
                           </div>
@@ -913,13 +1179,18 @@ export default function KasirPage() {
                       <button
                         type="button"
                         onClick={() => handleGenerateQris()}
-                        disabled={isGenerating || !customCalc.isValid}
-                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:from-amber-500 active:to-amber-600 text-slate-950 font-black text-sm shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50 min-h-[48px]"
+                        disabled={isGenerating || !customCalc.isValid || Boolean(pendingTx)}
+                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:from-amber-500 active:to-amber-600 text-slate-950 font-black text-sm shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
                       >
                         {isGenerating ? (
                           <>
                             <RefreshCw className="w-4 h-4 animate-spin" />
                             <span>Menyiapkan Kode QRIS...</span>
+                          </>
+                        ) : pendingTx ? (
+                          <>
+                            <AlertTriangle className="w-4 h-4" />
+                            <span>Selesaikan / Batalkan Tagihan Aktif di Atas</span>
                           </>
                         ) : (
                           <>
@@ -945,13 +1216,18 @@ export default function KasirPage() {
                     <button
                       type="button"
                       onClick={() => handleGenerateQris()}
-                      disabled={isGenerating}
-                      className="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0 min-h-[48px]"
+                      disabled={isGenerating || Boolean(pendingTx)}
+                      className="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0 min-h-[48px]"
                     >
                       {isGenerating ? (
                         <>
                           <RefreshCw className="w-4 h-4 animate-spin" />
                           <span>Menyiapkan Kode QRIS...</span>
+                        </>
+                      ) : pendingTx ? (
+                        <>
+                          <AlertTriangle className="w-4 h-4 text-amber-300" />
+                          <span>Tagihan Aktif Terdeteksi (Lihat di Atas)</span>
                         </>
                       ) : (
                         <>
