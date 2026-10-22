@@ -73,7 +73,6 @@ export default function KasirPage() {
   const [countdown, setCountdown] = useState(900);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hasCopiedAmount, setHasCopiedAmount] = useState(false);
-  const [isSimulating, setIsSimulating] = useState(false);
 
   const pollIntervalRef = useRef<any>(null);
 
@@ -260,37 +259,6 @@ export default function KasirPage() {
       setErrorMessage(err.message || 'Terjadi gangguan jaringan saat memproses pesanan.');
     } finally {
       setIsGenerating(false);
-    }
-  };
-
-  const handleSimulatePayment = async () => {
-    if (!qrisData || !user?.id) return;
-    setIsSimulating(true);
-
-    const currentItem = payingItem || activeItem;
-
-    try {
-      const res = await fetch(`${GATEWAY_URL}/api/payment/simulate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: user.id,
-          tokens: currentItem.tokens,
-          packageName: currentItem.name,
-          amount: currentItem.price,
-        }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        triggerSuccess(data.transactionId || 'SIMULASI-OK', currentItem.tokens);
-      } else {
-        setErrorMessage('Simulasi pembayaran gagal.');
-      }
-    } catch (e) {
-      setErrorMessage('Terjadi kendala saat simulasi.');
-    } finally {
-      setIsSimulating(false);
     }
   };
 
@@ -563,16 +531,6 @@ export default function KasirPage() {
                       className="text-xs font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                     >
                       ← Ganti Nominal / Paket
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={handleSimulatePayment}
-                      disabled={isSimulating}
-                      className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition"
-                      title="Simulasi pembayaran berhasil untuk mode pengujian"
-                    >
-                      {isSimulating ? 'Memverifikasi...' : '⚡ Simulasi Bayar Instan'}
                     </button>
                   </div>
                 </div>
