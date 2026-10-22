@@ -84,7 +84,7 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
           >
             <span>Catatan Rilis</span>
             <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-1.5 py-0.5 rounded-full">
-              v2.4
+              v2.5
             </span>
           </Link>
           {user && (

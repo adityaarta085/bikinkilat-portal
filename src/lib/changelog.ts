@@ -18,11 +18,51 @@ export interface ReleaseNote {
 
 export const RELEASES: ReleaseNote[] = [
   {
+    version: 'v2.5.0',
+    date: '22 Oktober 2026',
+    title: 'Top-Up Token Nominal Bebas (Custom Min. Rp 10.000) & Kalkulator Bonus Fleksibel',
+    badge: 'Rilis Terbaru',
+    badgeColor: 'emerald',
+    summary:
+      'Penambahan fitur isi ulang nominal bebas fleksibel mulai Rp 10.000 dengan kalkulator bonus transparan bertingkat hingga +50% ekstra token, terintegrasi ke kasir terpusat dan seluruh subdomain.',
+    impactedServices: [
+      { name: 'Portal Ekosistem & Kasir', subdomain: 'portal', url: 'https://bikinkilat.web.id/kasir' },
+      { name: 'Seluruh 9 Subdomain', subdomain: 'portal', url: 'https://bikinkilat.web.id/#layanan' },
+    ],
+    categories: ['Kasir & Top-Up', 'Mobile UX', 'Ekosistem'],
+    changes: [
+      {
+        type: 'added',
+        text: 'Menghadirkan fitur Top-Up Nominal Bebas di halaman kasir resmi (/kasir), memungkinkan pengguna memasukkan nominal berapapun dengan batas minimal terjangkau Rp 10.000.',
+      },
+      {
+        type: 'added',
+        text: 'Kalkulator bonus token dinamis: bonus +5% untuk nominal >= Rp 25.000, +16% untuk >= Rp 50.000, +33% untuk >= Rp 100.000, dan +50% untuk >= Rp 250.000.',
+      },
+      {
+        type: 'added',
+        text: 'Pintasan chip pilihan cepat (Rp 10.000, Rp 20.000, Rp 25.000, Rp 50.000, Rp 100.000, Rp 250.000) serta tombol tambah cepat (+Rp 10.000, +Rp 25.000, +Rp 50.000) untuk kecepatan transaksi di ponsel.',
+      },
+      {
+        type: 'added',
+        text: 'Tautan langsung ke Kasir Nominal Bebas di jendela TopUpModal pada seluruh 8 subdomain generator dokumen.',
+      },
+      {
+        type: 'fixed',
+        text: 'Pembersihan tuntas istilah teknis vendor internal di seluruh antarmuka publik dan modal pembayaran untuk pengalaman pengguna yang ramah dan profesional.',
+      },
+      {
+        type: 'fixed',
+        text: 'Penguatan proteksi kasir: tamu tanpa autentikasi wajib masuk akun terlebih dahulu sebelum menghasilkan kode QRIS, mencegah token bocor atau tidak tersimpan.',
+      },
+    ],
+  },
+  {
     version: 'v2.4.0',
     date: '22 Oktober 2026',
     title: 'Pembaruan PPTX Widescreen 16:9, Gestur Usap Mobile & Portal Catatan Rilis',
-    badge: 'Rilis Terbaru',
-    badgeColor: 'emerald',
+    badge: 'Stabil',
+    badgeColor: 'indigo',
     summary:
       'Penyempurnaan tuntas layout presentasi PowerPoint agar tidak terpotong di desktop maupun mobile, pratinjau mobile adaptif dengan gestur usap, dan peluncuran log pembaruan publik.',
     impactedServices: [

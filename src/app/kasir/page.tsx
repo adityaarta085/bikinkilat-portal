@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { 
   Coins, 
@@ -15,16 +15,24 @@ import {
   ArrowLeft,
   ArrowRight,
   Lock,
-  User as UserIcon,
-  HelpCircle,
   Clock,
-  Download
+  Plus,
+  RotateCcw,
+  SlidersHorizontal,
+  Layers,
+  Zap,
+  Gift
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
-import { TOKEN_PACKAGES } from '@/lib/ecosystem';
+import { 
+  TOKEN_PACKAGES, 
+  CUSTOM_PRESETS, 
+  MIN_CUSTOM_TOPUP, 
+  calculateCustomTokens 
+} from '@/lib/ecosystem';
 
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://api.bikinkilat.web.id';
 
@@ -40,9 +48,24 @@ interface QrisResponse {
   checkout_url?: string;
 }
 
+interface PayingItem {
+  name: string;
+  tokens: number;
+  price: number;
+  pricePerToken: number;
+  isCustom?: boolean;
+}
+
 export default function KasirPage() {
   const { user, profile, tokens, isLoading, refreshTokens } = useAuth();
-  const [selectedPkg, setSelectedPkg] = useState(TOKEN_PACKAGES[1]); // Default 25 tokens
+  
+  // Selection mode: 'package' (paket preset) or 'custom' (nominal bebas)
+  const [mode, setMode] = useState<'package' | 'custom'>('package');
+  const [selectedPkg, setSelectedPkg] = useState(TOKEN_PACKAGES[1]); // Default Paket Mahasiswa (25 token)
+  const [customAmount, setCustomAmount] = useState<number>(50000);
+  const [customInputStr, setCustomInputStr] = useState<string>('50.000');
+
+  const [payingItem, setPayingItem] = useState<PayingItem | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [qrisData, setQrisData] = useState<QrisResponse | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -53,6 +76,60 @@ export default function KasirPage() {
   const [isSimulating, setIsSimulating] = useState(false);
 
   const pollIntervalRef = useRef<any>(null);
+
+  // Dynamic custom calculation
+  const customCalc = useMemo(() => calculateCustomTokens(customAmount), [customAmount]);
+
+  // Active item determined by current tab
+  const activeItem: PayingItem = useMemo(() => {
+    if (mode === 'package') {
+      return {
+        name: selectedPkg.name,
+        tokens: selectedPkg.tokens,
+        price: selectedPkg.price,
+        pricePerToken: selectedPkg.pricePerToken,
+        isCustom: false,
+      };
+    } else {
+      return {
+        name: `Top-Up Bebas (${customCalc.totalTokens} Token)`,
+        tokens: customCalc.totalTokens,
+        price: customCalc.amount,
+        pricePerToken: customCalc.effectivePricePerToken,
+        isCustom: true,
+      };
+    }
+  }, [mode, selectedPkg, customCalc]);
+
+  // Handle custom input
+  const handleCustomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawDigits = e.target.value.replace(/\D/g, '');
+    if (!rawDigits) {
+      setCustomInputStr('');
+      setCustomAmount(0);
+      return;
+    }
+    const val = parseInt(rawDigits, 10);
+    setCustomInputStr(val.toLocaleString('id-ID'));
+    setCustomAmount(val);
+  };
+
+  const handleSelectPreset = (amount: number) => {
+    setCustomAmount(amount);
+    setCustomInputStr(amount.toLocaleString('id-ID'));
+  };
+
+  const handleAddAmount = (delta: number) => {
+    const current = customAmount || 0;
+    const next = current + delta;
+    setCustomAmount(next);
+    setCustomInputStr(next.toLocaleString('id-ID'));
+  };
+
+  const handleResetAmount = () => {
+    setCustomAmount(MIN_CUSTOM_TOPUP);
+    setCustomInputStr(MIN_CUSTOM_TOPUP.toLocaleString('id-ID'));
+  };
 
   // Timer countdown
   useEffect(() => {
@@ -87,7 +164,7 @@ export default function KasirPage() {
         if (result.status === 'success' && result.data?.payment_status === 'paid') {
           clearInterval(pollIntervalRef.current);
           pollIntervalRef.current = null;
-          triggerSuccess(qrisData.transaction_id, selectedPkg.tokens);
+          triggerSuccess(qrisData.transaction_id, payingItem?.tokens || activeItem.tokens);
         }
       } catch (e) {
         // Abaikan gangguan koneksi polling sementara
@@ -100,7 +177,7 @@ export default function KasirPage() {
         pollIntervalRef.current = null;
       }
     };
-  }, [qrisData, isSuccess, selectedPkg, user]);
+  }, [qrisData, isSuccess, payingItem, activeItem, user]);
 
   const triggerSuccess = (transactionId: string, tokensToAdd: number) => {
     setTxId(transactionId);
@@ -116,14 +193,22 @@ export default function KasirPage() {
     } catch (e) {}
   };
 
-  const handleGenerateQris = async () => {
+  const handleGenerateQris = async (overrideItem?: PayingItem) => {
     if (!user) {
       window.location.href = '/auth?returnUrl=/kasir';
       return;
     }
 
+    const itemToPay = overrideItem || activeItem;
+
+    if (itemToPay.isCustom && itemToPay.price < MIN_CUSTOM_TOPUP) {
+      setErrorMessage(`Nominal minimal isi ulang bebas adalah Rp ${MIN_CUSTOM_TOPUP.toLocaleString('id-ID')}.`);
+      return;
+    }
+
     setIsGenerating(true);
     setErrorMessage(null);
+    setPayingItem(itemToPay);
 
     try {
       const res = await fetch(`${GATEWAY_URL}/api/payment/qris/generate`, {
@@ -133,16 +218,17 @@ export default function KasirPage() {
           userId: user.id,
           email: user.email || profile?.email || `user-${user.id.slice(0, 8)}@bikinkilat.web.id`,
           name: profile?.name || user.user_metadata?.full_name || 'Pelanggan BikinKilat',
-          amount: selectedPkg.price,
-          packageName: selectedPkg.name,
-          tokens: selectedPkg.tokens,
+          amount: itemToPay.price,
+          packageName: itemToPay.name,
+          tokens: itemToPay.tokens,
+          tokensToAdd: itemToPay.tokens,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Gagal membuat kode QRIS pembayaran');
+        throw new Error(data.error || data.message || 'Gagal membuat kode QRIS pembayaran');
       }
 
       setQrisData(data.data);
@@ -160,21 +246,23 @@ export default function KasirPage() {
     if (!qrisData || !user?.id) return;
     setIsSimulating(true);
 
+    const currentItem = payingItem || activeItem;
+
     try {
       const res = await fetch(`${GATEWAY_URL}/api/payment/simulate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user.id,
-          tokens: selectedPkg.tokens,
-          packageName: selectedPkg.name,
-          amount: selectedPkg.price,
+          tokens: currentItem.tokens,
+          packageName: currentItem.name,
+          amount: currentItem.price,
         }),
       });
 
       const data = await res.json();
       if (data.success) {
-        triggerSuccess(data.transactionId || 'SIMULASI-OK', selectedPkg.tokens);
+        triggerSuccess(data.transactionId || 'SIMULASI-OK', currentItem.tokens);
       } else {
         setErrorMessage('Simulasi pembayaran gagal.');
       }
@@ -202,6 +290,8 @@ export default function KasirPage() {
     const s = secs % 60;
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
+
+  const activeDisplayItem = payingItem || activeItem;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
@@ -272,7 +362,7 @@ export default function KasirPage() {
                   Isi Ulang Saldo Token BikinKilat
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl leading-relaxed">
-                  Gunakan saldo token Anda untuk generate slide presentasi, naskah makalah, kurikulum modul ajar, dan dokumen resmi di seluruh layanan ekosistem.
+                  Pilih paket rekomendasi atau tentukan sendiri nominal isi ulang mulai dari Rp 10.000. Saldo berlaku selamanya tanpa kedaluwarsa di 9 studio dokumen.
                 </p>
               </div>
 
@@ -330,11 +420,11 @@ export default function KasirPage() {
                   </h2>
                   <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
                     Saldo akun Anda telah bertambah sebesar{' '}
-                    <strong className="text-emerald-600 font-bold">{selectedPkg.tokens} Token</strong>. Anda sekarang dapat langsung menggunakannya di semua layanan.
+                    <strong className="text-emerald-600 font-bold">{activeDisplayItem.tokens} Token</strong>. Anda sekarang dapat langsung menggunakannya di semua layanan.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-sm mx-auto text-xs text-left space-y-1">
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-sm mx-auto text-xs text-left space-y-1.5">
                   <div className="flex justify-between">
                     <span className="text-slate-500">Nomor Transaksi:</span>
                     <span className="font-mono font-bold text-slate-900 dark:text-white truncate max-w-[180px]">
@@ -342,12 +432,16 @@ export default function KasirPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Paket:</span>
-                    <span className="font-bold text-slate-900 dark:text-white">{selectedPkg.name}</span>
+                    <span className="text-slate-500">Jenis Top-Up:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{activeDisplayItem.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Total Saldo:</span>
-                    <span className="font-bold text-emerald-600">{tokens} Token</span>
+                    <span className="text-slate-500">Nominal Pembayaran:</span>
+                    <span className="font-bold text-slate-900 dark:text-white">{formatRupiah(activeDisplayItem.price)}</span>
+                  </div>
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-1.5">
+                    <span className="text-slate-500 font-semibold">Saldo Baru Akun:</span>
+                    <span className="font-black text-emerald-600 text-sm">{tokens} Token</span>
                   </div>
                 </div>
 
@@ -447,7 +541,7 @@ export default function KasirPage() {
                       onClick={() => setQrisData(null)}
                       className="text-xs font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                     >
-                      ← Ganti Paket Lain
+                      ← Ganti Nominal / Paket
                     </button>
 
                     <button
@@ -470,13 +564,19 @@ export default function KasirPage() {
 
                   <div className="space-y-3 text-xs sm:text-sm">
                     <div className="flex justify-between">
-                      <span className="text-slate-500">Paket Pilihan:</span>
-                      <span className="font-bold text-slate-900 dark:text-white">{selectedPkg.name}</span>
+                      <span className="text-slate-500">Pilihan:</span>
+                      <span className="font-bold text-slate-900 dark:text-white">{activeDisplayItem.name}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Jumlah Token:</span>
                       <span className="font-extrabold text-indigo-600 dark:text-indigo-400">
-                        +{selectedPkg.tokens} Token
+                        +{activeDisplayItem.tokens} Token
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Rata-rata Biaya:</span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">
+                        Rp {activeDisplayItem.pricePerToken.toLocaleString('id-ID')} / token
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -490,7 +590,7 @@ export default function KasirPage() {
                     <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-baseline">
                       <span className="font-bold text-slate-700 dark:text-slate-300">Total Tagihan:</span>
                       <span className="text-xl font-black text-slate-900 dark:text-white">
-                        {formatRupiah(selectedPkg.price)}
+                        {formatRupiah(activeDisplayItem.price)}
                       </span>
                     </div>
                   </div>
@@ -498,7 +598,7 @@ export default function KasirPage() {
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2 text-xs text-slate-600 dark:text-slate-400">
                     <span className="font-bold text-slate-900 dark:text-white block">Cara Pembayaran:</span>
                     <ol className="list-decimal pl-4 space-y-1">
-                      <li>Buka aplikasi m-Banking atau e-Wallet di smartphone Anda.</li>
+                      <li>Buka aplikasi m-Banking atau e-Wallet di ponsel Anda.</li>
                       <li>Pilih menu <strong>Pindai QR / Bayar QRIS</strong>.</li>
                       <li>Arahkan kamera ke kode QRIS di layar.</li>
                       <li>Pastikan nominal yang tertera sesuai dengan tagihan.</li>
@@ -508,111 +608,381 @@ export default function KasirPage() {
                 </div>
               </div>
             ) : (
-              /* PACKAGE SELECTION STATE */
+              /* SELECTION WORKFLOW: TABS (PAKET VS CUSTOM) */
               <div className="space-y-6">
-                <div className="space-y-1">
-                  <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                    Langkah 1: Pilih Paket Token Sesuai Kebutuhan
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                    Token tidak memiliki masa kedaluwarsa dan dapat dibelanjakan di seluruh 9 subdomain layanan kami.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {TOKEN_PACKAGES.map((pkg) => {
-                    const isSelected = selectedPkg.id === pkg.id;
-                    return (
-                      <div
-                        key={pkg.id}
-                        onClick={() => setSelectedPkg(pkg)}
-                        className={`cursor-pointer rounded-3xl p-5 border-2 transition-all relative flex flex-col justify-between ${
-                          isSelected
-                            ? 'border-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/30 shadow-md ring-4 ring-indigo-500/10'
-                            : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 shadow-xs'
-                        }`}
-                      >
-                        {pkg.badge && (
-                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-[10px] uppercase shadow-sm">
-                            {pkg.badge}
-                          </div>
-                        )}
-
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400">
-                              {pkg.name}
-                            </span>
-                            {isSelected && <CheckCircle className="w-5 h-5 text-indigo-600 shrink-0" />}
-                          </div>
-
-                          <div>
-                            <span className="text-3xl font-black text-slate-900 dark:text-white">
-                              {pkg.tokens}
-                            </span>
-                            <span className="text-xs text-slate-500 font-semibold ml-1">Token</span>
-                          </div>
-
-                          <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-                            <span className="text-lg font-black text-slate-900 dark:text-white block">
-                              {formatRupiah(pkg.price)}
-                            </span>
-                            <span className="text-[11px] text-slate-400 font-medium">
-                              Rp {pkg.pricePerToken.toLocaleString('id-ID')} / token
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPkg(pkg);
-                              handleGenerateQris();
-                            }}
-                            className={`w-full py-2.5 rounded-xl font-bold text-xs transition min-h-[40px] ${
-                              isSelected
-                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs'
-                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200'
-                            }`}
-                          >
-                            {isSelected ? 'Beli Sekarang' : 'Pilih Paket'}
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Primary Proceed CTA */}
-                <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                {/* Mode Selector Tabs */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
                   <div>
-                    <span className="text-xs font-bold text-slate-500 block">Paket Terpilih:</span>
-                    <span className="text-lg font-black text-slate-900 dark:text-white">
-                      {selectedPkg.name} ({selectedPkg.tokens} Token) — {formatRupiah(selectedPkg.price)}
-                    </span>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-white">
+                      Langkah 1: Pilih Metode Isi Ulang
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                      Tersedia paket hemat terstruktur atau nominal bebas fleksibel minimal Rp 10.000.
+                    </p>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleGenerateQris}
-                    disabled={isGenerating}
-                    className="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0 min-h-[48px]"
-                  >
-                    {isGenerating ? (
-                      <>
-                        <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span>Menyiapkan Kode QRIS...</span>
-                      </>
-                    ) : (
-                      <>
-                        <QrCode className="w-4 h-4" />
-                        <span>Lanjutkan ke Pembayaran QRIS →</span>
-                      </>
-                    )}
-                  </button>
+                  {/* Segmented Control Buttons */}
+                  <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 self-start sm:self-auto">
+                    <button
+                      type="button"
+                      onClick={() => setMode('package')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition min-h-[40px] ${
+                        mode === 'package'
+                          ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <Layers className="w-4 h-4" />
+                      <span>Paket Rekomendasi</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setMode('custom')}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold transition relative min-h-[40px] ${
+                        mode === 'custom'
+                          ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <SlidersHorizontal className="w-4 h-4" />
+                      <span>Nominal Bebas (Custom)</span>
+                      <span className="ml-1 px-1.5 py-0.2 rounded-full text-[9px] font-black uppercase bg-amber-400 text-slate-950">
+                        Fleksibel
+                      </span>
+                    </button>
+                  </div>
                 </div>
+
+                {/* TAB 1: PAKET REKOMENDASI */}
+                {mode === 'package' && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {TOKEN_PACKAGES.map((pkg) => {
+                        const isSelected = selectedPkg.id === pkg.id;
+                        return (
+                          <div
+                            key={pkg.id}
+                            onClick={() => setSelectedPkg(pkg)}
+                            className={`cursor-pointer rounded-3xl p-6 border-2 transition-all relative flex flex-col justify-between ${
+                              isSelected
+                                ? 'border-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/30 shadow-md ring-4 ring-indigo-500/10'
+                                : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 shadow-xs'
+                            }`}
+                          >
+                            {pkg.badge && (
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-[10px] uppercase shadow-sm">
+                                {pkg.badge}
+                              </div>
+                            )}
+
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-black uppercase text-indigo-600 dark:text-indigo-400">
+                                  {pkg.name}
+                                </span>
+                                {isSelected && <CheckCircle className="w-5 h-5 text-indigo-600 shrink-0" />}
+                              </div>
+
+                              <div>
+                                <span className="text-3xl font-black text-slate-900 dark:text-white">
+                                  {pkg.tokens}
+                                </span>
+                                <span className="text-xs text-slate-500 font-semibold ml-1">Token</span>
+                              </div>
+
+                              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed min-h-[32px]">
+                                {pkg.desc}
+                              </p>
+
+                              <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                <span className="text-xl font-black text-slate-900 dark:text-white block">
+                                  {formatRupiah(pkg.price)}
+                                </span>
+                                <span className="text-[11px] text-slate-400 font-medium">
+                                  Rp {pkg.pricePerToken.toLocaleString('id-ID')} / token
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedPkg(pkg);
+                                  handleGenerateQris({
+                                    name: pkg.name,
+                                    tokens: pkg.tokens,
+                                    price: pkg.price,
+                                    pricePerToken: pkg.pricePerToken,
+                                    isCustom: false,
+                                  });
+                                }}
+                                className={`w-full py-2.5 rounded-xl font-bold text-xs transition min-h-[40px] ${
+                                  isSelected
+                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs'
+                                    : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200'
+                                }`}
+                              >
+                                {isSelected ? 'Lanjut Pembayaran' : 'Pilih Paket'}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 2: NOMINAL BEBAS (CUSTOM) */}
+                {mode === 'custom' && (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    {/* Left 7 Cols: Input & Preset Chips */}
+                    <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase">
+                          <SlidersHorizontal className="w-4 h-4" />
+                          <span>Atur Nominal Sesuai Keinginan</span>
+                        </div>
+                        <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                          Berapa Rupiah yang Ingin Anda Isi?
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          Bebas masukkan nominal berapapun mulai dari <strong>Rp 10.000</strong>. Makin besar nominal, makin banyak bonus token yang Anda peroleh!
+                        </p>
+                      </div>
+
+                      {/* Main Interactive Input */}
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                          Masukkan Nominal (Rupiah):
+                        </label>
+                        <div className="relative rounded-2xl border-2 border-indigo-500/40 focus-within:border-indigo-600 dark:focus-within:border-indigo-400 bg-slate-50/50 dark:bg-slate-950 transition overflow-hidden p-2 flex items-center shadow-inner">
+                          <span className="pl-3 pr-2 text-lg sm:text-2xl font-black text-slate-400 select-none">
+                            Rp
+                          </span>
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            value={customInputStr}
+                            onChange={handleCustomInputChange}
+                            placeholder="Contoh: 50.000"
+                            className="w-full bg-transparent text-xl sm:text-3xl font-black text-slate-900 dark:text-white outline-none tracking-tight py-2"
+                          />
+                          {customAmount > 0 && (
+                            <button
+                              type="button"
+                              onClick={handleResetAmount}
+                              className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition"
+                              title="Reset ke Rp 10.000"
+                            >
+                              <RotateCcw className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+
+                        {!customCalc.isValid && (
+                          <p className="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 pt-1">
+                            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                            <span>Minimal isi ulang nominal bebas adalah Rp {MIN_CUSTOM_TOPUP.toLocaleString('id-ID')}.</span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Quick Preset Chips */}
+                      <div className="space-y-2.5">
+                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block">
+                          Pilihan Cepat Sekali Sentuh:
+                        </span>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                          {CUSTOM_PRESETS.map((preset) => {
+                            const isCurrent = customAmount === preset.amount;
+                            return (
+                              <button
+                                key={preset.amount}
+                                type="button"
+                                onClick={() => handleSelectPreset(preset.amount)}
+                                className={`p-3 rounded-2xl border text-left transition flex flex-col justify-between min-h-[64px] ${
+                                  isCurrent
+                                    ? 'border-indigo-600 bg-indigo-50/70 dark:bg-indigo-950/60 ring-2 ring-indigo-500/20'
+                                    : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 hover:border-slate-300'
+                                }`}
+                              >
+                                <div className="flex items-center justify-between w-full">
+                                  <span className="text-xs font-black text-slate-900 dark:text-white">
+                                    {preset.label}
+                                  </span>
+                                  {preset.badge && (
+                                    <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950">
+                                      {preset.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mt-1">
+                                  {preset.tokens} Token
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Quick Increment Buttons */}
+                      <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <span className="text-[11px] font-semibold text-slate-400 mr-1">Tambah Cepat:</span>
+                        <button
+                          type="button"
+                          onClick={() => handleAddAmount(10000)}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Rp 10.000</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleAddAmount(25000)}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Rp 25.000</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleAddAmount(50000)}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center gap-1"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Rp 50.000</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Right 5 Cols: Live Token Calculation Dashboard */}
+                    <div className="lg:col-span-5 bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-7 shadow-lg space-y-5">
+                      <div className="flex items-center justify-between border-b border-indigo-800/60 pb-3">
+                        <div className="flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-amber-400" />
+                          <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                            Perhitungan Token Langsung
+                          </span>
+                        </div>
+                        <span className="text-[11px] font-bold text-indigo-200 bg-indigo-950/80 px-2.5 py-0.5 rounded-full border border-indigo-700/60">
+                          {customCalc.tierLabel}
+                        </span>
+                      </div>
+
+                      {/* Big Token Result */}
+                      <div className="text-center py-4 bg-indigo-950/60 rounded-2xl border border-indigo-800/40 space-y-1">
+                        <span className="text-xs text-indigo-300 font-semibold block uppercase tracking-wider">
+                          Total Saldo yang Anda Dapatkan:
+                        </span>
+                        <div className="flex items-center justify-center gap-2">
+                          <Coins className="w-7 h-7 text-amber-400 fill-amber-400" />
+                          <span className="text-4xl sm:text-5xl font-black text-amber-300 tracking-tight">
+                            {customCalc.totalTokens}
+                          </span>
+                          <span className="text-base font-bold text-white self-end mb-1">Token</span>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-center gap-2 text-xs text-indigo-200">
+                          <span>Dasar: <strong>{customCalc.baseTokens} Token</strong></span>
+                          {customCalc.bonusTokens > 0 && (
+                            <>
+                              <span>•</span>
+                              <span className="text-emerald-400 font-bold flex items-center gap-1">
+                                <Gift className="w-3.5 h-3.5" />
+                                <span>Bonus: +{customCalc.bonusTokens} Token ({customCalc.bonusPercent}%)</span>
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Calculation Breakdown Details */}
+                      <div className="space-y-2.5 text-xs text-indigo-200 border-t border-indigo-800/60 pt-3">
+                        <div className="flex justify-between">
+                          <span>Nominal Pembayaran:</span>
+                          <span className="font-bold text-white">{formatRupiah(customCalc.amount)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Rata-rata Harga per Token:</span>
+                          <span className="font-bold text-amber-300">
+                            Rp {customCalc.effectivePricePerToken.toLocaleString('id-ID')} / token
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Masa Berlaku Token:</span>
+                          <span className="font-bold text-emerald-400">Selamanya (Tanpa Batas Waktu)</span>
+                        </div>
+                      </div>
+
+                      {/* Next Tier Incentive Banner */}
+                      {customCalc.nextTierAmount && customCalc.diffToNextTier > 0 && (
+                        <div className="p-3 rounded-2xl bg-indigo-950/90 border border-amber-500/30 text-xs space-y-1">
+                          <div className="flex items-center gap-1.5 text-amber-300 font-bold">
+                            <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                            <span>Peluang Bonus Lebih Banyak!</span>
+                          </div>
+                          <p className="text-[11px] text-indigo-200 leading-relaxed">
+                            Tambah <strong>{formatRupiah(customCalc.diffToNextTier)}</strong> lagi untuk membuka <strong>Tier Bonus +{customCalc.nextTierBonusPercent}% Token</strong>!
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Proceed Button Inside Custom Panel */}
+                      <button
+                        type="button"
+                        onClick={() => handleGenerateQris()}
+                        disabled={isGenerating || !customCalc.isValid}
+                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:from-amber-500 active:to-amber-600 text-slate-950 font-black text-sm shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50 min-h-[48px]"
+                      >
+                        {isGenerating ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>Menyiapkan Kode QRIS...</span>
+                          </>
+                        ) : (
+                          <>
+                            <QrCode className="w-4 h-4" />
+                            <span>Bayar {formatRupiah(customCalc.amount)} via QRIS →</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Primary Proceed CTA for Package Mode */}
+                {mode === 'package' && (
+                  <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-bold text-slate-500 block">Paket Terpilih:</span>
+                      <span className="text-lg font-black text-slate-900 dark:text-white">
+                        {selectedPkg.name} ({selectedPkg.tokens} Token) : {formatRupiah(selectedPkg.price)}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleGenerateQris()}
+                      disabled={isGenerating}
+                      className="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0 min-h-[48px]"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                          <span>Menyiapkan Kode QRIS...</span>
+                        </>
+                      ) : (
+                        <>
+                          <QrCode className="w-4 h-4" />
+                          <span>Lanjutkan ke Pembayaran QRIS →</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

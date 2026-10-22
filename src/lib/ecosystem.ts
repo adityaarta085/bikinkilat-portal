@@ -187,3 +187,87 @@ export const TOKEN_PACKAGES = [
     desc: 'Pilihan hemat untuk tim kerja, guru pengajar, dan konsultan.'
   }
 ];
+
+export interface CustomTokenCalculation {
+  amount: number;
+  baseTokens: number;
+  bonusTokens: number;
+  totalTokens: number;
+  bonusPercent: number;
+  tierLabel: string;
+  effectivePricePerToken: number;
+  nextTierAmount: number | null;
+  nextTierBonusPercent: number;
+  diffToNextTier: number;
+  isValid: boolean;
+  minAmount: number;
+}
+
+export const MIN_CUSTOM_TOPUP = 10000;
+
+export const CUSTOM_PRESETS = [
+  { amount: 10000, label: 'Rp 10.000', tokens: 10 },
+  { amount: 20000, label: 'Rp 20.000', tokens: 20 },
+  { amount: 25000, label: 'Rp 25.000', tokens: 26, badge: 'Bonus +1' },
+  { amount: 50000, label: 'Rp 50.000', tokens: 58, badge: 'Populer +8' },
+  { amount: 100000, label: 'Rp 100.000', tokens: 133, badge: 'Hemat +33' },
+  { amount: 250000, label: 'Rp 250.000', tokens: 375, badge: 'Sultan +125' },
+];
+
+export function calculateCustomTokens(rawAmount: number): CustomTokenCalculation {
+  const amount = Math.max(0, Math.floor(rawAmount || 0));
+  const isValid = amount >= MIN_CUSTOM_TOPUP;
+  const baseTokens = Math.floor(amount / 1000);
+
+  let bonusPercent = 0;
+  let tierLabel = 'Standar';
+  let nextTierAmount: number | null = null;
+  let nextTierBonusPercent = 0;
+
+  if (amount >= 250000) {
+    bonusPercent = 50;
+    tierLabel = 'Tier Sultan (+50% Bonus Token)';
+    nextTierAmount = null;
+    nextTierBonusPercent = 0;
+  } else if (amount >= 100000) {
+    bonusPercent = 33;
+    tierLabel = 'Tier Prioritas (+33% Bonus Token)';
+    nextTierAmount = 250000;
+    nextTierBonusPercent = 50;
+  } else if (amount >= 50000) {
+    bonusPercent = 16;
+    tierLabel = 'Tier Populer (+16% Bonus Token)';
+    nextTierAmount = 100000;
+    nextTierBonusPercent = 33;
+  } else if (amount >= 25000) {
+    bonusPercent = 5;
+    tierLabel = 'Tier Hemat (+5% Bonus Token)';
+    nextTierAmount = 50000;
+    nextTierBonusPercent = 16;
+  } else {
+    bonusPercent = 0;
+    tierLabel = 'Tier Standar (Rp 1.000 / Token)';
+    nextTierAmount = 25000;
+    nextTierBonusPercent = 5;
+  }
+
+  const bonusTokens = Math.floor((baseTokens * bonusPercent) / 100);
+  const totalTokens = baseTokens + bonusTokens;
+  const effectivePricePerToken = totalTokens > 0 ? Math.round(amount / totalTokens) : 1000;
+  const diffToNextTier = nextTierAmount ? Math.max(0, nextTierAmount - amount) : 0;
+
+  return {
+    amount,
+    baseTokens,
+    bonusTokens,
+    totalTokens,
+    bonusPercent,
+    tierLabel,
+    effectivePricePerToken,
+    nextTierAmount,
+    nextTierBonusPercent,
+    diffToNextTier,
+    isValid,
+    minAmount: MIN_CUSTOM_TOPUP,
+  };
+}

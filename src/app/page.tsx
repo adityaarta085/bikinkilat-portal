@@ -24,7 +24,9 @@ import {
   QrCode,
   Search,
   X,
-  LayoutDashboard
+  LayoutDashboard,
+  Sparkles,
+  SlidersHorizontal
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -356,6 +358,30 @@ export default function PortalHomePage() {
                 </button>
               </div>
             ))}
+          </div>
+
+          {/* Custom Nominal Flexible Top-Up Banner */}
+          <div className="max-w-5xl mx-auto -mt-6 mb-16 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-1.5 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Fitur Baru: Top-Up Bebas Fleksibel</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                Ingin Nominal Berapapun? Minimal Hanya Rp 10.000!
+              </h3>
+              <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
+                Tentukan anggaran Anda sendiri tanpa terpaku paket. Dapatkan bonus ekstra token bertingkat hingga +50% dengan kalkulator transparan di Kasir Resmi kami.
+              </p>
+            </div>
+
+            <Link
+              href="/kasir"
+              className="px-7 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md transition flex items-center gap-2 shrink-0 min-h-[48px]"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-slate-950" />
+              <span>Atur Nominal di Kasir →</span>
+            </Link>
           </div>
 
           {/* Transaction History Section */}
