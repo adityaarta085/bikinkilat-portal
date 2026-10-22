@@ -238,6 +238,17 @@ export default function UserDashboardPage() {
                     <ShieldCheck className="w-3 h-3" />
                     <span>Terverifikasi</span>
                   </span>
+                  {user.email?.toLowerCase() === 'adityaarta085@gmail.com' && (
+                    <a
+                      href="https://admin.bikinkilat.web.id"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black shadow-xs transition"
+                    >
+                      <ShieldCheck className="w-3 h-3" />
+                      <span>Admin Command Center →</span>
+                    </a>
+                  )}
                 </div>
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                   {displayEmail}
