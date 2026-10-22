@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { ThemeProvider } from "@/lib/theme-context";
 import { AuthProvider } from "@/lib/auth-context";
 import CookieBanner from "@/components/CookieBanner";
+import { UserPopupWarningModal } from "@/components/UserPopupWarningModal";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -11,6 +12,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         {children}
         <CookieBanner />
+        <UserPopupWarningModal />
       </AuthProvider>
     </ThemeProvider>
   );

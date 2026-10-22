@@ -18,6 +18,7 @@ import {
 import { useAuth } from '@/lib/auth-context';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { BrandLogo } from '@/components/BrandLogo';
+import { NotificationCenter } from '@/components/NotificationCenter';
 
 interface NavbarProps {
   tokens?: number;
@@ -108,6 +109,9 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             <PlusCircle className="w-3.5 h-3.5" />
             <span>{user ? "Top-Up QRIS" : "Klaim 5 Token"}</span>
           </button>
+
+          {/* Notification Center */}
+          <NotificationCenter />
 
           {/* Global Dark Mode Switch */}
           <ThemeToggle />
