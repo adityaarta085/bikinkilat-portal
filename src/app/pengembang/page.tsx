@@ -40,7 +40,7 @@ import {
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import confetti from 'canvas-confetti';
-import { GalleryItem, GuestbookEntry, INITIAL_GALLERY, INITIAL_GUESTBOOK } from '@/lib/developer-data';
+import { GalleryItem, GuestbookEntry, INITIAL_GALLERY, INITIAL_GUESTBOOK, SUPABASE_ASSETS } from '@/lib/developer-data';
 
 const CATEGORIES = ['Semua', 'Aktivitas', 'Proyek', 'Sertifikat', 'Sekolah'] as const;
 type CategoryFilter = (typeof CATEGORIES)[number];
@@ -263,7 +263,7 @@ export default function DeveloperPage() {
                 
                 <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/20 shadow-2xl aspect-[3/4]">
                   <img
-                    src="/developer/aditya-arta.jpg"
+                    src={SUPABASE_ASSETS.avatarUrl}
                     alt="Aditya Arta Putra - Pengembang Resmi BikinKilat.web.id"
                     title="Aditya Arta Putra - Founder & Solo Engineer BikinKilat.web.id"
                     className="w-full h-full object-cover object-top transition duration-700 group-hover:scale-105"
@@ -396,7 +396,7 @@ export default function DeveloperPage() {
             <div className="lg:col-span-5 order-2 lg:order-1">
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 group aspect-[3/4] bg-slate-900">
                 <img
-                  src="/developer/about-sec-image.jpeg"
+                  src={SUPABASE_ASSETS.secImageUrl}
                   alt="Aditya Arta Putra berseragam jas almamater resmi SMK Muhammadiyah Bandongan"
                   title="Aditya Arta Putra - Siswa 11 TJKT A SMK Muhammadiyah Bandongan"
                   className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition duration-500"

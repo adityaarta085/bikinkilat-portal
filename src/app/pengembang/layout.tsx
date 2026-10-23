@@ -50,13 +50,13 @@ export const metadata: Metadata = {
     type: 'profile',
     images: [
       {
-        url: '/developer/aditya-arta.jpg',
+        url: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg',
         width: 768,
         height: 1024,
         alt: 'Aditya Arta Putra - Founder & Solo Engineer BikinKilat.web.id',
       },
       {
-        url: '/developer/about-sec-image.jpeg',
+        url: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/about-sec-image.jpeg',
         width: 682,
         height: 1024,
         alt: 'Aditya Arta Putra berseragam almamater resmi SMK Muhammadiyah Bandongan',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     title: 'Aditya Arta Putra - Profil Resmi & Portofolio',
     description:
       'Founder & Solo Engineer BikinKilat.web.id | Siswa 11 TJKT A SMK Muhammadiyah Bandongan. "Biarkan dunia melihat karyaku."',
-    images: ['/developer/aditya-arta.jpg'],
+    images: ['https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg'],
     creator: '@bikinkilat',
   },
   icons: {
@@ -113,9 +113,9 @@ const jsonLd = {
       description:
         'Aditya Arta Putra adalah pendiri dan insinyur mandiri (Solo Engineer) ekosistem BikinKilat.web.id, Project Leader pembangunan Website Portal Resmi Desa Ngawonggo (ngawonggo.web.id), dan siswa berprestasi kelas 11 TJKT A di SMK Muhammadiyah Bandongan.',
       image: [
-        'https://bikinkilat.web.id/developer/aditya-arta.jpg',
-        'https://bikinkilat.web.id/developer/about-sec-image.jpeg',
-        'https://bikinkilat.web.id/developer/aditya-smk-almamater.jpg',
+        'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg',
+        'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/about-sec-image.jpeg',
+        'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-smk-almamater.jpg',
       ],
       url: 'https://bikinkilat.web.id/pengembang',
       mainEntityOfPage: 'https://bikinkilat.web.id/pengembang',

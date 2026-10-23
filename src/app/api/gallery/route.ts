@@ -8,9 +8,9 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const { data: dbItems, error } = await supabaseAdmin
-      .from('notifications')
+      .from('developer_gallery')
       .select('*')
-      .eq('type', 'developer_gallery')
+      .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -21,22 +21,15 @@ export async function GET() {
     const mappedDbItems: GalleryItem[] = (dbItems || []).map((row) => ({
       id: row.id,
       title: row.title || 'Dokumentasi Kegiatan',
-      description: row.message || '',
-      category: (row.created_by as any) || 'Aktivitas',
-      imageUrl: row.action_url || '/developer/aditya-arta.jpg',
-      date: new Date(row.created_at).getFullYear().toString(),
-      isPinned: Boolean(row.is_popup),
+      description: row.description || '',
+      category: (row.category as any) || 'Aktivitas',
+      imageUrl: row.image_url || 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg',
+      date: row.date || new Date(row.created_at).getFullYear().toString(),
+      isPinned: Boolean(row.is_pinned),
     }));
 
-    // Merge custom db items with initial curated gallery (avoid duplicate ids)
-    const existingIds = new Set(mappedDbItems.map((i) => i.id));
-    const merged = [
-      ...mappedDbItems,
-      ...INITIAL_GALLERY.filter((i) => !existingIds.has(i.id)),
-    ];
-
     return NextResponse.json(
-      { success: true, items: merged },
+      { success: true, items: mappedDbItems.length > 0 ? mappedDbItems : INITIAL_GALLERY },
       {
         headers: {
           'Cache-Control': 'no-store, max-age=0',
@@ -51,7 +44,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { title, description, category, imageUrl, isPinned } = body;
+    const { title, description, category, imageUrl, isPinned, date = '2026' } = body;
 
     if (!title?.trim() || !imageUrl?.trim()) {
       return NextResponse.json(
@@ -60,19 +53,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newId = crypto.randomUUID();
     const { data, error } = await supabaseAdmin
-      .from('notifications')
+      .from('developer_gallery')
       .insert({
-        id: newId,
         title: title.trim(),
-        message: description?.trim() || '',
-        action_url: imageUrl.trim(),
-        created_by: category || 'Aktivitas',
-        type: 'developer_gallery',
-        is_popup: Boolean(isPinned),
-        tokens_granted: 0,
-        created_at: new Date().toISOString(),
+        description: description?.trim() || '',
+        category: category || 'Aktivitas',
+        image_url: imageUrl.trim(),
+        date: date.toString(),
+        is_pinned: Boolean(isPinned),
       })
       .select()
       .single();
@@ -84,45 +73,16 @@ export async function POST(req: NextRequest) {
       item: {
         id: data.id,
         title: data.title,
-        description: data.message,
-        category: data.created_by,
-        imageUrl: data.action_url,
-        date: new Date(data.created_at).getFullYear().toString(),
-        isPinned: data.is_popup,
+        description: data.description,
+        category: data.category,
+        imageUrl: data.image_url,
+        date: data.date,
+        isPinned: data.is_pinned,
       },
     });
   } catch (err: any) {
     return NextResponse.json(
       { success: false, error: err?.message || 'Gagal menambahkan foto ke galeri' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json(
-        { success: false, error: 'ID foto wajib disertakan.' },
-        { status: 400 }
-      );
-    }
-
-    const { error } = await supabaseAdmin
-      .from('notifications')
-      .delete()
-      .eq('id', id)
-      .eq('type', 'developer_gallery');
-
-    if (error) throw error;
-
-    return NextResponse.json({ success: true, message: 'Foto berhasil dihapus.' });
-  } catch (err: any) {
-    return NextResponse.json(
-      { success: false, error: err?.message || 'Gagal menghapus foto' },
       { status: 500 }
     );
   }

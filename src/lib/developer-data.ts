@@ -18,22 +18,28 @@ export interface GuestbookEntry {
   isPinned?: boolean;
 }
 
+export const SUPABASE_ASSETS = {
+  avatarUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg',
+  secImageUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/about-sec-image.jpeg',
+  almamaterUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-smk-almamater.jpg',
+};
+
 export const INITIAL_GALLERY: GalleryItem[] = [
   {
     id: 'gal-1',
     title: 'Aditya Arta Putra - Founder & Solo Developer',
     description: 'Aditya Arta Putra, siswa 11 TJKT A SMK Muhammadiyah Bandongan saat memimpin arsitektur dan pengembangan ekosistem BikinKilat.web.id.',
     category: 'Aktivitas',
-    imageUrl: '/developer/aditya-arta.jpg',
+    imageUrl: SUPABASE_ASSETS.avatarUrl,
     date: '2026',
     isPinned: true,
   },
   {
     id: 'gal-2',
-    title: 'Aditya Arta Putra - Almamater SMK Muhammadiyah Bandongan',
+    title: 'Aditya Arta Putra - Almamater Resmi SMK Muhammadiyah Bandongan',
     description: 'Dokumentasi resmi siswa 11 TJKT A berseragam almamater kebanggaan SMK Muhammadiyah Bandongan.',
     category: 'Sekolah',
-    imageUrl: '/developer/about-sec-image.jpeg',
+    imageUrl: SUPABASE_ASSETS.secImageUrl,
     date: '2026',
     isPinned: true,
   },
@@ -42,7 +48,7 @@ export const INITIAL_GALLERY: GalleryItem[] = [
     title: 'Portal Resmi Desa Ngawonggo (ngawonggo.web.id)',
     description: 'Kepemimpinan arsitektur sistem informasi publik kemitraan Pemdes Ngawonggo & SMK Muhammadiyah Bandongan.',
     category: 'Proyek',
-    imageUrl: '/developer/aditya-arta.jpg',
+    imageUrl: SUPABASE_ASSETS.avatarUrl,
     date: '2026',
   },
   {
@@ -50,7 +56,7 @@ export const INITIAL_GALLERY: GalleryItem[] = [
     title: 'Kredensial & Penghargaan Arsitektur Sistem',
     description: 'Piagam kredensial resmi terverifikasi dan apresiasi inovasi teknologi web publik.',
     category: 'Sertifikat',
-    imageUrl: '/developer/about-sec-image.jpeg',
+    imageUrl: SUPABASE_ASSETS.secImageUrl,
     date: '2025',
   },
   {
@@ -58,7 +64,7 @@ export const INITIAL_GALLERY: GalleryItem[] = [
     title: 'Pengembangan 9 Subdomain BikinKilat',
     description: 'Perancangan antarmuka cerdas dan integrasi pembayaran QRIS instan sub-2 detik.',
     category: 'Proyek',
-    imageUrl: '/developer/aditya-arta.jpg',
+    imageUrl: SUPABASE_ASSETS.avatarUrl,
     date: '2026',
   },
 ];

@@ -8,10 +8,9 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const { data: dbEntries, error } = await supabaseAdmin
-      .from('notifications')
+      .from('developer_guestbook')
       .select('*')
-      .eq('type', 'developer_guestbook')
-      .order('is_popup', { ascending: false })
+      .order('is_pinned', { ascending: false })
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -21,22 +20,16 @@ export async function GET() {
 
     const mappedDb: GuestbookEntry[] = (dbEntries || []).map((row) => ({
       id: row.id,
-      name: row.title || 'Pengunjung',
-      role: row.created_by || 'Sahabat BikinKilat',
+      name: row.name || 'Pengunjung',
+      role: row.role || 'Sahabat BikinKilat',
       message: row.message || '',
-      avatar: row.action_url || '✨',
+      avatar: row.avatar || '✨',
       createdAt: row.created_at,
-      isPinned: Boolean(row.is_popup),
+      isPinned: Boolean(row.is_pinned),
     }));
 
-    const existingIds = new Set(mappedDb.map((e) => e.id));
-    const merged = [
-      ...mappedDb,
-      ...INITIAL_GUESTBOOK.filter((e) => !existingIds.has(e.id)),
-    ];
-
     return NextResponse.json(
-      { success: true, entries: merged },
+      { success: true, entries: mappedDb },
       {
         headers: {
           'Cache-Control': 'no-store, max-age=0',
@@ -67,19 +60,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newId = crypto.randomUUID();
     const { data, error } = await supabaseAdmin
-      .from('notifications')
+      .from('developer_guestbook')
       .insert({
-        id: newId,
-        title: name.trim().slice(0, 60),
+        name: name.trim().slice(0, 60),
+        role: (role?.trim() || 'Pengunjung').slice(0, 60),
         message: message.trim(),
-        action_url: avatar || '🚀',
-        created_by: (role?.trim() || 'Pengunjung').slice(0, 50),
-        type: 'developer_guestbook',
-        is_popup: false,
-        tokens_granted: 0,
-        created_at: new Date().toISOString(),
+        avatar: avatar || '🚀',
+        is_pinned: false,
       })
       .select()
       .single();
@@ -90,12 +78,12 @@ export async function POST(req: NextRequest) {
       success: true,
       entry: {
         id: data.id,
-        name: data.title,
-        role: data.created_by,
+        name: data.name,
+        role: data.role,
         message: data.message,
-        avatar: data.action_url,
+        avatar: data.avatar,
         createdAt: data.created_at,
-        isPinned: false,
+        isPinned: data.is_pinned,
       },
     });
   } catch (err: any) {
@@ -119,14 +107,13 @@ export async function DELETE(req: NextRequest) {
     }
 
     const { error } = await supabaseAdmin
-      .from('notifications')
+      .from('developer_guestbook')
       .delete()
-      .eq('id', id)
-      .eq('type', 'developer_guestbook');
+      .eq('id', id);
 
     if (error) throw error;
 
-    return NextResponse.json({ success: true, message: 'Pesan berhasil dihapus.' });
+    return NextResponse.json({ success: true, message: 'Pesan buku tamu berhasil dihapus secara permanen.' });
   } catch (err: any) {
     return NextResponse.json(
       { success: false, error: err?.message || 'Gagal menghapus pesan' },
