@@ -30,7 +30,8 @@ export function DeveloperShowcase() {
                 <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/20 shadow-2xl aspect-[3/4]">
                   <img
                     src="/developer/aditya-arta.jpg"
-                    alt="Aditya Arta Putra - Pengembang Resmi BikinKilat.web.id"
+                    alt="Aditya Arta Putra - Founder & Solo Engineer BikinKilat.web.id"
+                    title="Aditya Arta Putra - Founder BikinKilat.web.id"
                     className="w-full h-full object-cover object-top transition duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-x-0 bottom-0 pt-16 pb-3 px-4 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent text-white">
@@ -76,7 +77,7 @@ export function DeveloperShowcase() {
               </div>
 
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                BikinKilat.web.id dibangun dari dedikasi mendalam seorang siswa kejuruan yang berani membuktikan bahwa usia sekolah mampu merekayasa ekosistem web modern berskala nasional. Aditya juga merupakan Project Leader di balik pembangunan Portal Resmi Desa Ngawonggo (ngawonggo.web.id).
+                BikinKilat.web.id dibangun dari dedikasi mendalam seorang siswa kejuruan, <strong>Aditya Arta Putra</strong>, yang berani membuktikan bahwa usia sekolah mampu merekayasa ekosistem web modern berskala nasional. Aditya Arta Putra juga merupakan Project Leader di balik pembangunan Portal Resmi Desa Ngawonggo (ngawonggo.web.id).
               </p>
 
               {/* Badges Matrix */}
@@ -103,9 +104,10 @@ export function DeveloperShowcase() {
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
                 <Link
                   href="/pengembang"
+                  title="Profil dan Portofolio Lengkap Aditya Arta Putra"
                   className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-indigo-500/20 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
-                  <span>Lihat Profil & Galeri Pengembang</span>
+                  <span>Lihat Profil & Portofolio Aditya Arta Putra</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <a

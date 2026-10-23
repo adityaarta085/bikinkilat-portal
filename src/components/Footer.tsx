@@ -142,10 +142,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pengembang" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold text-indigo-600 dark:text-indigo-400">
-                  <span>Pengembang Resmi</span>
+                <Link
+                  href="/pengembang"
+                  title="Profil Resmi Aditya Arta Putra - Founder BikinKilat.web.id"
+                  className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 font-bold text-indigo-600 dark:text-indigo-400"
+                >
+                  <span>Aditya Arta Putra</span>
                   <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 px-1.5 py-0.2 rounded">
-                    Founder
+                    Pengembang
                   </span>
                 </Link>
               </li>

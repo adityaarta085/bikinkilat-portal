@@ -2169,11 +2169,12 @@ export default function BetaLandingPage() {
                 <li>
                   <Link
                     href="/pengembang"
+                    title="Profil Resmi Aditya Arta Putra"
                     className="hover:text-indigo-600 dark:hover:text-indigo-400 font-bold transition flex items-center gap-1.5"
                   >
-                    <span>Pengembang Resmi</span>
+                    <span>Aditya Arta Putra</span>
                     <span className="text-[9px] uppercase px-1 rounded bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                      Founder
+                      Pengembang
                     </span>
                   </Link>
                 </li>

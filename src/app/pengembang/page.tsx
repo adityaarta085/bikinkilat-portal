@@ -31,6 +31,12 @@ import {
   ArrowUpRight,
   Check,
   Copy,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  User,
+  MapPin,
+  School,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import confetti from 'canvas-confetti';
@@ -40,6 +46,34 @@ const CATEGORIES = ['Semua', 'Aktivitas', 'Proyek', 'Sertifikat', 'Sekolah'] as 
 type CategoryFilter = (typeof CATEGORIES)[number];
 
 const AVATAR_OPTIONS = ['🚀', '💻', '🎓', '🏛️', '⭐', '🔥', '✨', '💡'];
+
+const DEVELOPER_FAQS = [
+  {
+    question: 'Siapa sosok Aditya Arta Putra?',
+    answer:
+      'Aditya Arta Putra adalah Web Developer muda asal Magelang yang merupakan Founder & Solo Engineer ekosistem BikinKilat.web.id, serta Project Leader Website Resmi Portal Desa Ngawonggo (ngawonggo.web.id). Saat ini Aditya menempuh pendidikan kejuruan di SMK Muhammadiyah Bandongan sebagai siswa kelas 11 jurusan Teknik Jaringan Komputer & Telekomunikasi (11 TJKT A).',
+  },
+  {
+    question: 'Apa saja portofolio dan karya teknologi buatan Aditya Arta Putra?',
+    answer:
+      'Karya unggulan Aditya Arta Putra meliputi: (1) BikinKilat.web.id — platform micro-SaaS terpadu 9 otomasi cerdas dokumen dengan satu dompet token dan integrasi QRIS instan, (2) Portal Resmi Desa Ngawonggo (ngawonggo.web.id) hasil kemitraan resmi Pemdes Ngawonggo & SMK Muhammadiyah Bandongan, (3) Sistem Web Perizinan Online (E-Izin open source di GitHub @adityaarta085), (4) Linksku Software Suite (SSWEB, IQC Generator, Media Digital, AI Assistant), dan (5) Buku Tamu Digital SMK Muhammadiyah Bandongan.',
+  },
+  {
+    question: 'Di mana riwayat pendidikan formal Aditya Arta Putra?',
+    answer:
+      'Riwayat pendidikan formal Aditya Arta Putra berakar di Kabupaten Magelang, Jawa Tengah: (1) MI Al Huda Maduretno (Lulus), (2) MTsN 2 Magelang (Lulus), dan (3) SMK Muhammadiyah Bandongan (Kelas 11 TJKT A - Aktif).',
+  },
+  {
+    question: 'Apa filosofi dan motto hidup resmi Aditya Arta Putra?',
+    answer:
+      'Motto resmi Aditya Arta Putra adalah “Biarkan dunia melihat karyaku.” (Let the world see me). Prinsip ini menjadi pendorong utama semangatnya untuk membuktikan bahwa usia sekolah mampu merekayasa arsitektur sistem perangkat lunak modern berskala nasional.',
+  },
+  {
+    question: 'Bagaimana cara menghubungi atau berkolaborasi dengan Aditya Arta Putra?',
+    answer:
+      'Aditya Arta Putra dapat dihubungi langsung melalui nomor WhatsApp resmi di +62 851-3643-6577, melalui email di adityaarta085@gmail.com, atau melalui akun GitHub resmi di https://github.com/adityaarta085.',
+  },
+];
 
 export default function DeveloperPage() {
   // Theme & Mounted
@@ -62,6 +96,9 @@ export default function DeveloperPage() {
 
   // Email copy state
   const [copiedEmail, setCopiedEmail] = useState(false);
+
+  // FAQ Accordion State
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   useEffect(() => {
     setMounted(true);
@@ -152,6 +189,7 @@ export default function DeveloperPage() {
           <Link
             href="/"
             className="flex items-center gap-2.5 group hover:opacity-95 transition-opacity"
+            title="BikinKilat.web.id - Portal Utama"
           >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-sm shadow-sm group-hover:scale-105 transition-transform">
               BK
@@ -162,7 +200,7 @@ export default function DeveloperPage() {
                   BikinKilat.web.id
                 </span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                  Pengembang
+                  Aditya Arta Putra
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -173,7 +211,7 @@ export default function DeveloperPage() {
 
           <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600 dark:text-slate-300">
             <a href="#tentang" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              Tentang
+              Tentang Aditya
             </a>
             <a href="#pendidikan" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               Pendidikan
@@ -182,7 +220,10 @@ export default function DeveloperPage() {
               Proyek
             </a>
             <a href="#galeri" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-              Galeri
+              Galeri Foto
+            </a>
+            <a href="#faq" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+              FAQ
             </a>
             <a href="#buku-tamu" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
               Buku Tamu
@@ -207,7 +248,7 @@ export default function DeveloperPage() {
         </div>
       </header>
 
-      {/* 2. HERO SECTION - FOTO UTAMA & IDENTITAS RESMI */}
+      {/* 2. HERO SECTION - FOTO UTAMA & IDENTITAS RESMI ADITYA ARTA PUTRA */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
         {/* Subtle Background Glow */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-indigo-500/15 via-violet-500/10 to-teal-500/10 blur-3xl pointer-events-none -z-10" />
@@ -224,6 +265,7 @@ export default function DeveloperPage() {
                   <img
                     src="/developer/aditya-arta.jpg"
                     alt="Aditya Arta Putra - Pengembang Resmi BikinKilat.web.id"
+                    title="Aditya Arta Putra - Founder & Solo Engineer BikinKilat.web.id"
                     className="w-full h-full object-cover object-top transition duration-700 group-hover:scale-105"
                   />
                   {/* Bottom Vignette with Badge */}
@@ -264,15 +306,15 @@ export default function DeveloperPage() {
                   Aditya Arta Putra
                 </h1>
                 <p className="text-base sm:text-lg font-semibold text-indigo-600 dark:text-indigo-400">
-                  Siswa Kelas 11 TJKT A di SMK Muhammadiyah Bandongan
+                  Siswa Kelas 11 TJKT A di SMK Muhammadiyah Bandongan | Web Developer Muda Indonesia
                 </p>
               </div>
 
               {/* Authentic Motto Quote */}
               <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-50/80 via-white to-violet-50/80 dark:from-slate-900 dark:via-slate-900/90 dark:to-indigo-950/40 border border-indigo-200/70 dark:border-slate-800 shadow-sm relative overflow-hidden">
-                <div className="text-xs uppercase font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider mb-1 flex items-center gap-1.5">
+                <div className="text-xs uppercase font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider mb-1 flex items-center gap-1.5 justify-center lg:justify-start">
                   <Terminal className="w-3.5 h-3.5" />
-                  <span>Prinsip & Motto Hidup</span>
+                  <span>Prinsip & Motto Hidup Resmi</span>
                 </div>
                 <blockquote className="text-lg sm:text-xl font-bold italic text-slate-800 dark:text-slate-200">
                   “Biarkan dunia melihat karyaku.”
@@ -280,7 +322,7 @@ export default function DeveloperPage() {
               </div>
 
               <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl font-normal">
-                Siswa SMK yang berdedikasi tinggi dalam dunia Web Development, rekayasa perangkat lunak modern, dan arsitektur sistem cloud. Berpengalaman memimpin arsitektur sistem dari hulu ke hilir, mulai dari portal pemerintahan desa hingga membangun ekosistem 9 otomasi dokumen digital BikinKilat.
+                <strong>Aditya Arta Putra</strong> adalah siswa SMK berbakat asal Magelang yang berdedikasi tinggi dalam Web Development, rekayasa perangkat lunak modern, dan arsitektur sistem cloud. Berpengalaman memimpin arsitektur sistem nyata dari hulu ke hilir, mulai dari portal pemerintahan desa hingga membangun ekosistem 9 otomasi dokumen digital BikinKilat.
               </p>
 
               {/* Action Buttons */}
@@ -292,7 +334,7 @@ export default function DeveloperPage() {
                   className="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/25 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>Hubungi via WhatsApp</span>
+                  <span>Hubungi Aditya via WhatsApp</span>
                 </a>
                 <a
                   href="#proyek"
@@ -302,11 +344,11 @@ export default function DeveloperPage() {
                   <span>Lihat Karya & Portofolio</span>
                 </a>
                 <a
-                  href="#buku-tamu"
+                  href="#faq"
                   className="px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors"
                 >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Isi Buku Tamu</span>
+                  <HelpCircle className="w-4 h-4" />
+                  <span>FAQ Profil</span>
                 </a>
               </div>
 
@@ -334,28 +376,29 @@ export default function DeveloperPage() {
         </div>
       </section>
 
-      {/* 3. TENTANG SAYA & 4 PILAR KEUNGGULAN */}
+      {/* 3. TENTANG ADITYA ARTA PUTRA & ENTITAS RESMI */}
       <section id="tentang" className="py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
             <span className="text-xs uppercase font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider">
-              Dedikasi & Filosofi
+              Biografi & Dedikasi
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
               Tentang Aditya Arta Putra
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Perpaduan kompetensi kejuruan jaringan komputer, arsitektur perangkat lunak modern, dan etos kerja mandiri.
+              Profil resmi siswa kejuruan jaringan komputer, arsitek perangkat lunak mandiri, dan pengembang teknologi web modern.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Foto Aktivitas Sekolah (Secondary Photo) */}
+            {/* Foto Aktivitas Sekolah Resmi (Foto Almamater SMK Muhammadiyah Bandongan) */}
             <div className="lg:col-span-5 order-2 lg:order-1">
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 group aspect-[3/4] bg-slate-900">
                 <img
                   src="/developer/about-sec-image.jpeg"
-                  alt="Aktivitas Siswa Aditya Arta Putra di SMK Muhammadiyah Bandongan"
+                  alt="Aditya Arta Putra berseragam jas almamater resmi SMK Muhammadiyah Bandongan"
+                  title="Aditya Arta Putra - Siswa 11 TJKT A SMK Muhammadiyah Bandongan"
                   className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent flex items-end p-5 text-white">
@@ -371,8 +414,34 @@ export default function DeveloperPage() {
               </div>
             </div>
 
-            {/* Story & Core Pillars */}
+            {/* Story & Executive Entity Details */}
             <div className="lg:col-span-7 order-1 lg:order-2 space-y-6">
+              {/* Ringkasan Entitas Resmi Google */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-900/60 space-y-3">
+                <div className="text-xs font-extrabold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5" />
+                  <span>Ringkasan Identitas Resmi (Entity Profile)</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <span className="text-slate-500 dark:text-slate-400">Nama Lengkap:</span>{' '}
+                    <strong className="text-slate-900 dark:text-white">Aditya Arta Putra</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 dark:text-slate-400">Nama Panggilan / Alias:</span>{' '}
+                    <strong className="text-slate-900 dark:text-white">Aditya / adityaarta085</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 dark:text-slate-400">Domisili Asal:</span>{' '}
+                    <strong className="text-slate-900 dark:text-white">Magelang, Jawa Tengah, ID</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 dark:text-slate-400">Status Pendidikan:</span>{' '}
+                    <strong className="text-slate-900 dark:text-white">SMK Muhammadiyah Bandongan (11 TJKT A)</strong>
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
                 <p>
                   Halo! Saya <strong>Aditya Arta Putra</strong>, siswa kelas 11 TJKT A di SMK Muhammadiyah Bandongan, Kabupaten Magelang, Jawa Tengah. Saya memiliki ketertarikan mendalam dan tekad kuat untuk terus menguasai rekayasa sistem modern, arsitektur web berskala, dan otomasi digital.
@@ -440,7 +509,7 @@ export default function DeveloperPage() {
         </div>
       </section>
 
-      {/* 4. RIWAYAT PENDIDIKAN RESMI */}
+      {/* 4. RIWAYAT PENDIDIKAN RESMI ADITYA ARTA PUTRA */}
       <section id="pendidikan" className="py-20 bg-slate-50 dark:bg-slate-950 transition-colors">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-xl mx-auto mb-14 space-y-2">
@@ -448,10 +517,10 @@ export default function DeveloperPage() {
               Rekam Jejak Akademik
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Riwayat Pendidikan Formal
+              Riwayat Pendidikan Aditya Arta Putra
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Jejak langkah pendidikan dari dasar hingga sekolah kejuruan saat ini.
+              Jejak langkah pendidikan formal Aditya Arta Putra dari dasar hingga sekolah kejuruan saat ini.
             </p>
           </div>
 
@@ -529,7 +598,7 @@ export default function DeveloperPage() {
         </div>
       </section>
 
-      {/* 5. KARYA & PROYEK UNGGULAN */}
+      {/* 5. KARYA & PROYEK UNGGULAN ADITYA ARTA PUTRA */}
       <section id="proyek" className="py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
@@ -537,7 +606,7 @@ export default function DeveloperPage() {
               Karya Nyata & Portofolio
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Proyek & Inovasi Perangkat Lunak
+              Proyek Teknologi Buatan Aditya Arta Putra
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               Karya rekayasa sistem nyata, kemitraan pemerintah daerah, dan ekosistem SaaS mandiri.
@@ -553,7 +622,7 @@ export default function DeveloperPage() {
                   <span>⭐ PROYEK UTAMA SAAS</span>
                 </div>
                 <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                  Solo Founder & Lead Engineer
+                  Solo Founder & Lead Engineer: Aditya Arta Putra
                 </span>
               </div>
 
@@ -601,7 +670,7 @@ export default function DeveloperPage() {
                     className="w-full py-3 px-4 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-colors"
                   >
                     <Github className="w-4 h-4" />
-                    <span>Profil GitHub</span>
+                    <span>Profil GitHub Aditya</span>
                   </a>
                 </div>
               </div>
@@ -615,7 +684,7 @@ export default function DeveloperPage() {
                   <span>KEMITRAAN RESMI PEMERINTAH DESA</span>
                 </div>
                 <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                  Project Leader & Lead Developer (40% Kontribusi Tim)
+                  Project Leader & Lead Developer: Aditya Arta Putra (40% Kontribusi Tim)
                 </span>
               </div>
 
@@ -680,7 +749,7 @@ export default function DeveloperPage() {
                     Sistem Web Perizinan Online (E-Izin)
                   </h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-                    Sistem perizinan online berbasis web yang mempermudah proses pengajuan administrasi perizinan secara digital, terstruktur, dan efisien.
+                    Sistem perizinan online berbasis web karya Aditya Arta Putra yang mempermudah proses pengajuan administrasi perizinan secara digital, terstruktur, dan efisien.
                   </p>
                 </div>
                 <div className="pt-4 flex items-center justify-between text-xs font-semibold text-indigo-600 dark:text-indigo-400">
@@ -715,7 +784,7 @@ export default function DeveloperPage() {
                     Linksku Software Suite
                   </h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-                    Koleksi perkakas digital: SSWEB screenshot otomatis berkecepatan tinggi, generator barcode IQC logistik, media digital, dan AI assistant.
+                    Koleksi perkakas digital buatan Aditya: SSWEB screenshot otomatis kecepatan tinggi, generator barcode IQC logistik, media digital, dan AI assistant.
                   </p>
                 </div>
                 <div className="pt-4 flex items-center justify-between text-xs font-semibold text-indigo-600 dark:text-indigo-400">
@@ -750,7 +819,7 @@ export default function DeveloperPage() {
                     Buku Tamu Digital SMK
                   </h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-                    Aplikasi buku tamu digital khusus SMK Muhammadiyah Bandongan guna mencatat kunjungan dan kehadiran tamu secara modern, rapi, dan aman.
+                    Aplikasi buku tamu digital karya Aditya Arta Putra khusus SMK Muhammadiyah Bandongan guna mencatat kunjungan dan kehadiran tamu secara modern, rapi, dan aman.
                   </p>
                 </div>
                 <div className="pt-4 flex items-center justify-between text-xs font-semibold text-indigo-600 dark:text-indigo-400">
@@ -787,10 +856,10 @@ export default function DeveloperPage() {
               Dokumentasi & Visual
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Galeri Kegiatan & Proyek
+              Galeri Foto Resmi Aditya Arta Putra
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Dokumentasi foto resmi aktivitas, rekayasa perangkat lunak, piagam sertifikat, dan sekolah.
+              Dokumentasi foto resmi kegiatan, rekayasa perangkat lunak, piagam sertifikat, dan aktivitas SMK Muhammadiyah Bandongan.
             </p>
           </div>
 
@@ -823,7 +892,8 @@ export default function DeveloperPage() {
                 <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 dark:bg-slate-800">
                   <img
                     src={item.imageUrl}
-                    alt={item.title}
+                    alt={`${item.title} - Aditya Arta Putra`}
+                    title={`${item.title} - Aditya Arta Putra`}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                   />
                   <div className="absolute inset-0 bg-slate-950/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
@@ -881,7 +951,7 @@ export default function DeveloperPage() {
             <div className="relative aspect-[16/10] sm:aspect-[16/9] bg-slate-950">
               <img
                 src={activeLightbox.imageUrl}
-                alt={activeLightbox.title}
+                alt={`${activeLightbox.title} - Aditya Arta Putra`}
                 className="w-full h-full object-contain"
               />
             </div>
@@ -908,15 +978,65 @@ export default function DeveloperPage() {
         </div>
       )}
 
-      {/* 7. BUKU TAMU INTERAKTIF (GUESTBOOK) */}
-      <section id="buku-tamu" className="py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800 transition-colors">
+      {/* 7. FAQ SEPUTAR ADITYA ARTA PUTRA (PENCARIAN GOOGLE & BING TERATAS #1) */}
+      <section id="faq" className="py-20 bg-white dark:bg-slate-900/50 border-y border-slate-200/80 dark:border-slate-800 transition-colors">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
+            <span className="text-xs uppercase font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider">
+              Tanya Jawab & Penelusuran
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+              Pertanyaan Umum Seputar Aditya Arta Putra
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              Jawaban resmi mengenai identitas, karya, latar belakang, dan kontak Aditya Arta Putra.
+            </p>
+          </div>
+
+          <div className="space-y-3.5">
+            {DEVELOPER_FAQS.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-colors"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  >
+                    <span>{faq.question}</span>
+                    <div className="w-7 h-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+                      {isOpen ? (
+                        <ChevronUp className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                      )}
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-200/60 dark:border-slate-800/80 font-normal">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. BUKU TAMU INTERAKTIF (GUESTBOOK) */}
+      <section id="buku-tamu" className="py-20 bg-slate-50 dark:bg-slate-950 transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
             <span className="text-xs uppercase font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider">
               Apresiasi & Jejak Kunjungan
             </span>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-              Buku Tamu Pengunjung
+              Buku Tamu untuk Aditya Arta Putra
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
               Tinggalkan pesan sapaan, apresiasi, atau masukan yang tersimpan langsung di sistem basis data cloud kami.
@@ -925,10 +1045,10 @@ export default function DeveloperPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Form Input Buku Tamu */}
-            <div className="lg:col-span-5 p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div className="lg:col-span-5 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                <span>Tulis Pesan Sapaan</span>
+                <span>Tulis Pesan untuk Aditya</span>
               </h3>
 
               {gbSuccess && (
@@ -956,7 +1076,7 @@ export default function DeveloperPage() {
                     onChange={(e) => setGbName(e.target.value)}
                     placeholder="Contoh: Budi Santoso"
                     maxLength={60}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -968,9 +1088,9 @@ export default function DeveloperPage() {
                     type="text"
                     value={gbRole}
                     onChange={(e) => setGbRole(e.target.value)}
-                    placeholder="Contoh: Guru / Mahasiswa / UMKM"
+                    placeholder="Contoh: Guru / Mahasiswa / Rekan Developer"
                     maxLength={50}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -987,7 +1107,7 @@ export default function DeveloperPage() {
                         className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg transition-transform ${
                           gbAvatar === av
                             ? 'bg-indigo-600 scale-110 shadow-sm shadow-indigo-500/20'
-                            : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105'
+                            : 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:scale-105'
                         }`}
                       >
                         {av}
@@ -1005,9 +1125,9 @@ export default function DeveloperPage() {
                     rows={3}
                     value={gbMessage}
                     onChange={(e) => setGbMessage(e.target.value)}
-                    placeholder="Tulis pesan atau masukan positif Anda di sini..."
+                    placeholder="Tulis pesan atau masukan positif Anda untuk Aditya di sini..."
                     maxLength={500}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                   />
                   <div className="text-[10px] text-slate-400 text-right mt-0.5">
                     {gbMessage.length}/500
@@ -1020,7 +1140,7 @@ export default function DeveloperPage() {
                   className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  <span>{gbSubmitting ? 'Mengirim...' : 'Kirim ke Buku Tamu'}</span>
+                  <span>{gbSubmitting ? 'Mengirim...' : 'Kirim Pesan ke Buku Tamu'}</span>
                 </button>
               </form>
             </div>
@@ -1028,7 +1148,7 @@ export default function DeveloperPage() {
             {/* Feed Buku Tamu */}
             <div className="lg:col-span-7 space-y-3.5 max-h-[520px] overflow-y-auto pr-1">
               <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 pb-1">
-                <span>Daftar Pesan ({guestbookEntries.length})</span>
+                <span>Daftar Pesan Masuk ({guestbookEntries.length})</span>
                 <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-extrabold">
                   Basis Data Terpadu
                 </span>
@@ -1084,8 +1204,8 @@ export default function DeveloperPage() {
         </div>
       </section>
 
-      {/* 8. MARI BEKERJA SAMA & KONTAK LANGSUNG */}
-      <section id="kontak" className="py-20 bg-slate-50 dark:bg-slate-950 transition-colors">
+      {/* 9. MARI BEKERJA SAMA & KONTAK LANGSUNG ADITYA ARTA PUTRA */}
+      <section id="kontak" className="py-20 bg-white dark:bg-slate-900/50 border-t border-slate-200/80 dark:border-slate-800 transition-colors">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-violet-800 text-white shadow-2xl space-y-8 relative overflow-hidden text-center sm:text-left">
             {/* Background Glow */}
@@ -1093,13 +1213,13 @@ export default function DeveloperPage() {
 
             <div className="space-y-3 relative z-10 max-w-xl">
               <span className="text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 rounded-full bg-white/20 text-white backdrop-blur-sm">
-                Terbuka untuk Kolaborasi
+                Terbuka untuk Kolaborasi & Proyek
               </span>
               <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
-                Mari Wujudkan Ide Digital Anda Bersama Aditya
+                Mari Wujudkan Ide Digital Anda Bersama Aditya Arta Putra
               </h2>
               <p className="text-xs sm:text-sm text-indigo-100 leading-relaxed font-normal">
-                Punya kebutuhan website instansi, sistem automasi bisnis, integrasi perizinan, atau ingin berdiskusi seputar rekayasa sistem modern? Jangan ragu untuk menghubungi saya langsung.
+                Punya kebutuhan website instansi, sistem automasi bisnis, integrasi perizinan, atau ingin berdiskusi seputar rekayasa sistem modern? Jangan ragu untuk menghubungi Aditya secara langsung.
               </p>
             </div>
 
@@ -1144,14 +1264,14 @@ export default function DeveloperPage() {
             </div>
 
             <div className="pt-4 border-t border-white/15 text-xs text-indigo-200 flex flex-wrap items-center justify-between gap-2 relative z-10">
-              <span>Lokasi: Magelang, Jawa Tengah, Indonesia</span>
+              <span>Lokasi Domisili: Magelang, Jawa Tengah, Indonesia</span>
               <span>SMK Muhammadiyah Bandongan (11 TJKT A)</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9. FOOTER RESMI */}
+      {/* 10. FOOTER RESMI */}
       <footer className="py-10 bg-white dark:bg-slate-950 border-t border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
