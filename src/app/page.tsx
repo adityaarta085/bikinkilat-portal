@@ -96,12 +96,12 @@ export default function PortalHomePage() {
             {/* Pill Badge Announcement */}
             <Link
               href="/catatan-rilis"
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium shadow-2xs transition-all duration-200 group active:scale-95"
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium shadow-2xs transition-all duration-200 group active:scale-95"
             >
               <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-mono text-[11px] font-bold">
-                v2.4
+                v2.7
               </span>
-              <span>PPT Widescreen &amp; Pratinjau Mobile Aktif</span>
+              <span>Slide Widescreen &amp; Verifikasi OTP Instan Aktif</span>
               <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center font-semibold">
                 Catatan Rilis →
               </span>

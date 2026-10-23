@@ -366,7 +366,7 @@ export function InteractiveShowcase() {
 
         {/* Segmented Control Tab Bar */}
         <div className="flex items-center justify-start lg:justify-center gap-1.5 overflow-x-auto pb-2 mb-8 scrollbar-none">
-          <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 shadow-2xs">
+          <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 shadow-2xs">
             {SHOWCASE_ITEMS.map((item) => {
               const ItemIcon = item.icon;
               const isSelected = item.id === selectedId;
@@ -396,7 +396,7 @@ export function InteractiveShowcase() {
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xl overflow-hidden">
           
           {/* Top Window Bar */}
-          <div className="px-5 sm:px-6 py-3 bg-slate-50 dark:bg-slate-850 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div className="px-5 sm:px-6 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-xs font-mono text-slate-700 dark:text-slate-300 shadow-2xs">
                 <Lock className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
