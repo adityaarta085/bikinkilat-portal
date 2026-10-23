@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import {
   Check,
   CheckCircle2,
@@ -791,7 +792,10 @@ export default function BetaLandingPage() {
           </nav>
 
           {/* User Auth & Balance Capsule */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Theme Toggle (Desktop & Tablet) */}
+            <ThemeToggle className="w-9 h-9 rounded-xl shrink-0" />
+
             {/* Token Balance Pill */}
             <button
               onClick={handleOpenCashier}
@@ -894,6 +898,10 @@ export default function BetaLandingPage() {
             >
               Bantuan
             </a>
+            <div className="flex items-center justify-between px-3 py-2.5 border-t border-slate-100 dark:border-slate-800 pt-3">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Mode Tampilan</span>
+              <ThemeToggle className="w-8 h-8 rounded-lg" />
+            </div>
           </div>
         )}
       </header>
@@ -939,7 +947,7 @@ export default function BetaLandingPage() {
                 <button
                   type="button"
                   onClick={handleOpenCashier}
-                  className="px-6 py-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 active:bg-slate-100 text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 inline-flex items-center gap-2"
+                  className="px-6 py-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 active:bg-slate-100 text-slate-900 dark:text-white font-bold text-sm border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 inline-flex items-center gap-2"
                 >
                   <QrCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   <span>Isi token dengan QRIS</span>
@@ -1117,7 +1125,7 @@ export default function BetaLandingPage() {
                       href={currentDemo.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 inline-flex items-center gap-1.5"
+                      className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 inline-flex items-center gap-1.5"
                     >
                       <span>Buka {currentDemo.tabLabel} BikinKilat</span>
                       <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
@@ -1301,7 +1309,7 @@ export default function BetaLandingPage() {
                     href={card.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 flex items-center justify-center gap-1.5"
+                    className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 flex items-center justify-center gap-1.5"
                   >
                     <span>{card.actionText}</span>
                     <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
@@ -1431,12 +1439,12 @@ export default function BetaLandingPage() {
             </h2>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 text-xs font-bold text-slate-600 dark:text-slate-400">
+              <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 text-xs font-bold text-slate-600 dark:text-slate-300">
                 <tr>
                   <th className="py-4 px-6 w-1/4"></th>
-                  <th className="py-4 px-6 w-3/8 text-slate-700 dark:text-slate-300">
+                  <th className="py-4 px-6 w-3/8 text-slate-700 dark:text-slate-300 font-semibold">
                     Ketik sendiri atau jasa ketik
                   </th>
                   <th className="py-4 px-6 w-3/8 text-blue-600 dark:text-blue-400 font-extrabold">
@@ -1444,9 +1452,9 @@ export default function BetaLandingPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                <tr>
-                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-white">Waktu</td>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
+                <tr className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-slate-100">Waktu</td>
                   <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
                     2 sampai 5 jam per berkas
                   </td>
@@ -1454,8 +1462,8 @@ export default function BetaLandingPage() {
                     30 sampai 60 detik
                   </td>
                 </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-white">Biaya</td>
+                <tr className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-slate-100">Biaya</td>
                   <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
                     Rp 50.000 sampai Rp 250.000 per pesanan
                   </td>
@@ -1463,8 +1471,8 @@ export default function BetaLandingPage() {
                     1 sampai 3 token per dokumen, tergantung layanan
                   </td>
                 </tr>
-                <tr>
-                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-white">Hasil</td>
+                <tr className="hover:bg-slate-50/60 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="py-4 px-6 font-bold text-slate-900 dark:text-slate-100">Hasil</td>
                   <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
                     Sering berupa gambar atau PDF terkunci yang sulit diedit
                   </td>
@@ -1703,7 +1711,7 @@ export default function BetaLandingPage() {
                 <button
                   type="button"
                   onClick={handleOpenCashier}
-                  className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95"
+                  className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95"
                 >
                   Pilih 10 token
                 </button>
@@ -1808,7 +1816,7 @@ export default function BetaLandingPage() {
                 <button
                   type="button"
                   onClick={handleOpenCashier}
-                  className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95"
+                  className="w-full py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95"
                 >
                   Pilih 60 token
                 </button>
@@ -1825,7 +1833,7 @@ export default function BetaLandingPage() {
             <button
               type="button"
               onClick={handleOpenCashier}
-              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 shrink-0"
+              className="px-5 py-2.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white text-xs font-bold border border-slate-200 dark:border-slate-800 shadow-2xs transition active:scale-95 shrink-0"
             >
               Atur nominal di kasir
             </button>
