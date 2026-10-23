@@ -7,6 +7,7 @@ import CookieBanner from "@/components/CookieBanner";
 import { UserPopupWarningModal } from "@/components/UserPopupWarningModal";
 import { SupportChatWidget } from "@/components/SupportChatWidget";
 import { MagneticCursor } from "@/components/MagneticCursor";
+import { AuthModal } from "@/components/AuthModal";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         <MagneticCursor />
         {children}
+        <AuthModal />
         <CookieBanner />
         <UserPopupWarningModal />
         <SupportChatWidget />

@@ -18,11 +18,91 @@ export interface ReleaseNote {
 
 export const RELEASES: ReleaseNote[] = [
   {
+    version: 'v2.7.0',
+    date: '23 Oktober 2026',
+    title: 'Autentikasi Aman Anti-Crash, Input Kode OTP 6-Digit & Sistem Email Helpdesk Terverifikasi',
+    badge: 'Rilis Terbaru',
+    badgeColor: 'emerald',
+    summary:
+      'Penyempurnaan tuntas stabilitas login lintas subdomain (pencegahan URI malformed), opsi pengisian kode token OTP 6-digit langsung tanpa harus klik tautan, pintasan 1-klik buka Gmail, pembatasan ketat akun Gmail & Google Sign-In, serta pengiriman email balasan resmi terverifikasi di panel admin.',
+    impactedServices: [
+      { name: 'Portal & Autentikasi', subdomain: 'portal', url: 'https://bikinkilat.web.id/auth' },
+      { name: 'Admin Command Center', subdomain: 'admin', url: 'https://admin.bikinkilat.web.id' },
+      { name: 'Seluruh 9 Subdomain', subdomain: 'portal', url: 'https://bikinkilat.web.id/#layanan' },
+    ],
+    categories: ['Autentikasi & Akun', 'Mobile UX', 'Ekosistem'],
+    changes: [
+      {
+        type: 'fixed',
+        text: 'Penyelesaian tuntas galat URIError: URI malformed pada adapter sinkronisasi sesi lintas-subdomain melalui decoding aman bertahap dan rekonstruksi chunk cookie.',
+      },
+      {
+        type: 'added',
+        text: 'Menghadirkan tab form "Isi Kode Token" di halaman masuk (/auth) dan modal login, memungkinkan verifikasi instan kode OTP 6-digit langsung dari email.',
+      },
+      {
+        type: 'added',
+        text: 'Tombol pintasan 1-klik "Buka Kotak Masuk Gmail Anda" (mail.google.com) setelah mengirimkan permintaan masuk akun maupun di layar pemulihan callback.',
+      },
+      {
+        type: 'improved',
+        text: 'Validasi ketat input email publik: hanya menerima akun resmi @gmail.com atau tombol 1-klik Masuk dengan Google.',
+      },
+      {
+        type: 'added',
+        text: 'Pemisahan filter sumber tiket di Admin Command Center: tab terpisah antara "Email Masuk" (support@bikinkilat.web.id) dan "Tiket Web Langsung".',
+      },
+      {
+        type: 'added',
+        text: 'Fitur Hapus Tiket Permanen (Hard Delete) yang membersihkan seluruh rekaman tiket dan riwayat percakapan dari basis data terenkripsi.',
+      },
+      {
+        type: 'added',
+        text: 'Integrasi pengiriman email balasan resmi terverifikasi melalui layanan email berkecepatan tinggi atas nama Customer Support BikinKilat <support@bikinkilat.web.id>.',
+      },
+    ],
+    githubCommitUrl: 'https://github.com/adityaarta085/bikinkilat-portal/commit/1bf7d84',
+  },
+  {
+    version: 'v2.6.0',
+    date: '23 Oktober 2026',
+    title: 'Peluncuran Email Resmi support@bikinkilat.web.id & Pembaruan Legalitas Hukum Indonesia',
+    badge: 'Stabil',
+    badgeColor: 'sky',
+    summary:
+      'Standardisasi alamat email resmi support@bikinkilat.web.id di seluruh footer dan widget bantuan 9 subdomain, template notifikasi email Supabase 6-kategori, dan penyelarasan dokumen legalitas UU PDP & UU ITE.',
+    impactedServices: [
+      { name: 'Seluruh 9 Subdomain', subdomain: 'portal', url: 'https://bikinkilat.web.id' },
+      { name: 'Admin Command Center', subdomain: 'admin', url: 'https://admin.bikinkilat.web.id' },
+      { name: 'Edge Gateway', subdomain: 'api', url: 'https://api.bikinkilat.web.id' },
+    ],
+    categories: ['Ekosistem', 'Portal', 'Legalitas'],
+    changes: [
+      {
+        type: 'added',
+        text: 'Penyematan lencana kontak resmi support@bikinkilat.web.id dengan tautan mailto interaktif pada footer portal utama dan 8 subdomain lainnya.',
+      },
+      {
+        type: 'added',
+        text: 'Paket template email autentikasi terpadu 6-kategori: Konfirmasi Pendaftaran, Undangan Pengguna, Magic Link OTP, Ubah Email, Reset Password, dan Reautentikasi.',
+      },
+      {
+        type: 'improved',
+        text: 'Penyelarasan redaksi dokumen Syarat dan Ketentuan, Kebijakan Privasi, dan Prosedur Garansi/Refund sesuai UU ITE No. 1/2024 dan UU PDP No. 27/2022.',
+      },
+      {
+        type: 'added',
+        text: 'Cloudflare Email Routing handler untuk mencerna email pertanyaan pengguna secara otomatis ke sistem tiket bantuan BikinKilat.',
+      },
+    ],
+    githubCommitUrl: 'https://github.com/adityaarta085/bikinkilat-portal/commit/5522201',
+  },
+  {
     version: 'v2.5.0',
     date: '22 Oktober 2026',
     title: 'Top-Up Token Nominal Bebas (Custom Min. Rp 10.000) & Kalkulator Bonus Fleksibel',
-    badge: 'Rilis Terbaru',
-    badgeColor: 'emerald',
+    badge: 'Stabil',
+    badgeColor: 'indigo',
     summary:
       'Penambahan fitur isi ulang nominal bebas fleksibel mulai Rp 10.000 dengan kalkulator bonus transparan bertingkat hingga +50% ekstra token, terintegrasi ke kasir terpusat dan seluruh subdomain.',
     impactedServices: [
