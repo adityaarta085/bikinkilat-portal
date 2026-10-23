@@ -23,6 +23,7 @@ interface AuthContextType {
   closeAuthModal: () => void;
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: any }>;
   signInWithEmailOtp: (email: string, customRedirect?: string) => Promise<{ error: any; message?: string }>;
+  verifyEmailOtp: (email: string, token: string) => Promise<{ error: any; message?: string }>;
   signOut: () => Promise<void>;
   setTokens: React.Dispatch<React.SetStateAction<number>>;
   refreshTokens: () => Promise<void>;
@@ -180,10 +181,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithEmailOtp = async (email: string, customRedirect?: string) => {
     try {
+      const cleanEmail = email.trim().toLowerCase();
+      if (!cleanEmail.endsWith("@gmail.com")) {
+        return {
+          error: new Error("Hanya alamat email @gmail.com yang didukung."),
+          message:
+            "Hanya alamat email @gmail.com yang didukung. Mohon gunakan akun Gmail atau masuk langsung dengan Google.",
+        };
+      }
+
       const origin = typeof window !== "undefined" ? window.location.origin : "https://bikinkilat.web.id";
       const redirectUrl = `${origin}/auth/callback${customRedirect ? `?returnUrl=${encodeURIComponent(customRedirect)}` : ""}`;
       const { error } = await supabase.auth.signInWithOtp({
-        email,
+        email: cleanEmail,
         options: {
           emailRedirectTo: redirectUrl,
         },
@@ -192,10 +202,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         error,
         message: error
           ? error.message
-          : "Tautan verifikasi telah dikirim! Silakan periksa email Anda untuk melanjutkan.",
+          : "Tautan dan kode token masuk telah dikirim ke Gmail Anda!",
       };
     } catch (err: any) {
       return { error: err, message: err.message };
+    }
+  };
+
+  const verifyEmailOtp = async (email: string, token: string) => {
+    try {
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanToken = token.trim();
+
+      if (!cleanEmail || !cleanEmail.endsWith("@gmail.com")) {
+        return {
+          error: new Error("Hanya alamat email @gmail.com yang didukung."),
+          message:
+            "Hanya alamat email @gmail.com yang didukung. Mohon gunakan akun Gmail atau masuk langsung dengan Google.",
+        };
+      }
+
+      if (!cleanToken) {
+        return {
+          error: new Error("Kode token OTP wajib diisi."),
+          message: "Mohon masukkan kode token OTP dari email Gmail Anda.",
+        };
+      }
+
+      // 1. Try 'email' type (standard email OTP)
+      let { data, error } = await supabase.auth.verifyOtp({
+        email: cleanEmail,
+        token: cleanToken,
+        type: "email",
+      });
+
+      // 2. Fallback: try 'signup' type (new user confirmation)
+      if (error) {
+        const signupRes = await supabase.auth.verifyOtp({
+          email: cleanEmail,
+          token: cleanToken,
+          type: "signup",
+        });
+        if (!signupRes.error) {
+          data = signupRes.data;
+          error = null;
+        }
+      }
+
+      if (error) {
+        return {
+          error,
+          message: error.message || "Kode token OTP tidak valid atau telah kedaluwarsa.",
+        };
+      }
+
+      if (data?.session?.user) {
+        setUser(data.session.user);
+        await syncUserProfile(data.session.user);
+      }
+
+      return {
+        error: null,
+        message: "Otentikasi berhasil! Mengalihkan ke akun Anda...",
+      };
+    } catch (err: any) {
+      return { error: err, message: err?.message || "Gagal memverifikasi kode token." };
     }
   };
 
@@ -231,6 +302,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         closeAuthModal: () => setIsAuthModalOpen(false),
         signInWithGoogle,
         signInWithEmailOtp,
+        verifyEmailOtp,
         signOut,
         setTokens,
         refreshTokens,
