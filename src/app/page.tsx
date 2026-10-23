@@ -442,6 +442,24 @@ export default function PortalHomePage() {
               Pembayaran diproses secara instan dan aman. Begitu transfer berhasil diverifikasi oleh bank atau e-wallet Anda, saldo token langsung bertambah otomatis dalam hitungan detik.
             </p>
           </div>
+
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
+              Berapa lama proses pembuatan slide dan dokumen di BikinKilat?
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+              Proses pembuatan dokumen, modul ajar, dan slide presentasi di BikinKilat berjalan dalam hitungan detik (sub-2 detik) menggunakan komputasi teroptimasi dan file siap langsung diunduh serta diedit.
+            </p>
+          </div>
+
+          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
+            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
+              Apakah ada bonus token gratis untuk mencoba?
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+              Ya, setiap pengguna baru yang mendaftar dan masuk ke akun BikinKilat otomatis mendapatkan bonus 5 token gratis untuk mencoba langsung pembuatan slide presentasi, naskah, atau modul tanpa biaya awal.
+            </p>
+          </div>
         </div>
       </section>
 

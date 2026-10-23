@@ -1,4 +1,4 @@
-﻿import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,11 +9,23 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/auth/callback'],
       },
       {
-        userAgent: ['Googlebot', 'Bingbot', 'YandexBot', 'DuckDuckBot', 'Baiduspider', 'Slurp'],
+        userAgent: [
+          'Googlebot',
+          'Bingbot',
+          'YandexBot',
+          'DuckDuckBot',
+          'Baiduspider',
+          'Slurp',
+          'Applebot',
+          'facebookexternalhit',
+          'Twitterbot',
+          'LinkedInBot',
+        ],
         allow: '/',
         disallow: ['/api/', '/auth/callback'],
       },
     ],
     sitemap: 'https://bikinkilat.web.id/sitemap.xml',
+    host: 'https://bikinkilat.web.id',
   };
 }
