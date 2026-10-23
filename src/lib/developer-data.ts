@@ -22,6 +22,11 @@ export const SUPABASE_ASSETS = {
   avatarUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-arta.jpg',
   secImageUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/about-sec-image.jpeg',
   almamaterUrl: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/aditya-smk-almamater.jpg',
+  brandLogoIcon: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/brand/logo-icon-color.png',
+  brandLogoHorizontal: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/brand/logo-horizontal-color.png',
+  schoolSmk: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/schools/smk-muhammadiyah-bandongan.png',
+  schoolMts: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/schools/mtsn-2-magelang.png',
+  schoolMi: 'https://oonozobspxhvztoikakt.supabase.co/storage/v1/object/public/developer-assets/schools/mi-al-huda-maduretno.png',
 };
 
 export const INITIAL_GALLERY: GalleryItem[] = [

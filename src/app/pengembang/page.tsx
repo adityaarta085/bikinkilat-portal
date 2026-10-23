@@ -191,8 +191,12 @@ export default function DeveloperPage() {
             className="flex items-center gap-2.5 group hover:opacity-95 transition-opacity"
             title="BikinKilat.web.id - Portal Utama"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-sm shadow-sm group-hover:scale-105 transition-transform">
-              BK
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-sm group-hover:scale-105 transition-transform shrink-0 flex items-center justify-center bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-1">
+              <img
+                src={SUPABASE_ASSETS.brandLogoIcon}
+                alt="Logo Resmi BikinKilat"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
@@ -527,8 +531,13 @@ export default function DeveloperPage() {
           <div className="space-y-6 relative before:absolute before:inset-0 before:left-5 sm:before:left-8 before:w-0.5 before:bg-indigo-200 dark:before:bg-slate-800">
             {/* 1. SMK Muhammadiyah Bandongan (Aktif) */}
             <div className="relative flex items-start gap-4 sm:gap-6 group">
-              <div className="w-10 sm:w-16 h-10 sm:h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center font-bold text-base sm:text-xl shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform">
-                <GraduationCap className="w-5 sm:w-8 h-5 sm:h-8" />
+              <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform p-1.5 sm:p-2 flex items-center justify-center">
+                <img
+                  src={SUPABASE_ASSETS.schoolSmk}
+                  alt="Logo Resmi SMK Muhammadiyah Bandongan"
+                  title="SMK Muhammadiyah Bandongan Kabupaten Magelang"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
+                />
               </div>
               <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900 border border-indigo-200/80 dark:border-indigo-900/60 shadow-sm space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -551,8 +560,13 @@ export default function DeveloperPage() {
 
             {/* 2. MTsN 2 Magelang (Lulus) */}
             <div className="relative flex items-start gap-4 sm:gap-6 group">
-              <div className="w-10 sm:w-16 h-10 sm:h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-bold text-base sm:text-xl shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform">
-                <Building2 className="w-5 sm:w-8 h-5 sm:h-8" />
+              <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform p-1.5 sm:p-2 flex items-center justify-center">
+                <img
+                  src={SUPABASE_ASSETS.schoolMts}
+                  alt="Logo Resmi MTs Negeri 2 Magelang"
+                  title="MTs Negeri 2 Magelang"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
+                />
               </div>
               <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -574,8 +588,13 @@ export default function DeveloperPage() {
 
             {/* 3. MI Al Huda Maduretno (Lulus) */}
             <div className="relative flex items-start gap-4 sm:gap-6 group">
-              <div className="w-10 sm:w-16 h-10 sm:h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center font-bold text-base sm:text-xl shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform">
-                <Building2 className="w-5 sm:w-8 h-5 sm:h-8" />
+              <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700 shadow-md shrink-0 z-10 group-hover:scale-105 transition-transform p-1.5 sm:p-2 flex items-center justify-center">
+                <img
+                  src={SUPABASE_ASSETS.schoolMi}
+                  alt="Logo Resmi MI Al Huda Maduretno"
+                  title="MI Al Huda Maduretno"
+                  className="w-full h-full object-contain filter drop-shadow-sm"
+                />
               </div>
               <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
