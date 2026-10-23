@@ -352,13 +352,13 @@ export default function DeveloperPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Foto Aktivitas Sekolah (Secondary Photo) */}
             <div className="lg:col-span-5 order-2 lg:order-1">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 group">
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 group aspect-[3/4] bg-slate-900">
                 <img
                   src="/developer/about-sec-image.jpeg"
                   alt="Aktivitas Siswa Aditya Arta Putra di SMK Muhammadiyah Bandongan"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition duration-500"
+                  className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-5 text-white">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent flex items-end p-5 text-white">
                   <div>
                     <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-600 text-white">
                       Aktivitas Akademik & Vokasi
