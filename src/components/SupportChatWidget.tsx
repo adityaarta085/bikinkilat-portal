@@ -402,7 +402,11 @@ export function SupportChatWidget() {
                         Punya kendala token, pembayaran, atau fitur?
                       </p>
                       <p className="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
-                        Kirimkan pesan Anda. Anda akan mendapatkan <strong>Nomor Tiket</strong> otomatis yang langsung dipantau oleh tim Customer Support BikinKilat.
+                        Kirimkan pesan melalui formulir ini atau email ke{' '}
+                        <a href="mailto:support@bikinkilat.web.id" className="font-bold text-indigo-600 dark:text-indigo-400 underline">
+                          support@bikinkilat.web.id
+                        </a>
+                        . Tiket resmi akan diproses langsung oleh tim Customer Support.
                       </p>
                     </div>
 

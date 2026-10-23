@@ -1,10 +1,10 @@
-﻿// Legal Content & Policy Definitions for Ekosistem BikinKilat.web.id
+// Legal Content & Policy Definitions for Ekosistem BikinKilat.web.id
 // Sesuai Regulasi Hukum Indonesia (UU ITE No. 1/2024, UU PDP No. 27/2022, PP PSTE No. 71/2019)
 
 export const LEGAL_COMPANY_INFO = {
   name: "PT BikinKilat Solusi Indonesia",
   brand: "BikinKilat.web.id",
-  email: "bantuan@bikinkilat.web.id",
+  email: "support@bikinkilat.web.id",
   privacyEmail: "privasi@bikinkilat.web.id",
   address: "Jakarta, Indonesia",
   domain: "bikinkilat.web.id",
@@ -179,7 +179,7 @@ export const REFUND_POLICY = {
       id: "prosedur-klaim",
       title: "3. Prosedur Pengajuan Bantuan & Klaim",
       content: [
-        "Kirimkan email ke bantuan@bikinkilat.web.id dengan subjek: [KLAIM QRIS] - (Nomor Referensi Transaksi).",
+        "Kirimkan email ke support@bikinkilat.web.id dengan subjek: [KLAIM QRIS] - (Nomor Referensi Transaksi).",
         "Lampirkan bukti mutasi pembayaran bank atau bukti transfer dompet digital yang memuat stempel waktu, nominal transfer persis, dan kode unik transaksi.",
         "Tim operasional kami akan memverifikasi catatan transaksi dengan gateway kliring Qrispy dalam waktu maksimal 1x24 jam kerja.",
         "Apabila klaim terbukti valid, Pengguna dapat memilih opsi penyelesaian: 1) Penambahan saldo token seketika disertai bonus kompensasi, atau 2) Pengembalian dana penuh via transfer bank/dompet digital pengirim.",
