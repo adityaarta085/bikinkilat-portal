@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { DeveloperShowcase } from '@/components/DeveloperShowcase';
 import {
   Check,
   CheckCircle2,
@@ -2060,6 +2061,9 @@ export default function BetaLandingPage() {
         </div>
       </section>
 
+      {/* Developer Showcase Section */}
+      <DeveloperShowcase />
+
       {/* 13. FOOTER (slice_8.jpg) */}
       <footer className="py-14 bg-slate-50 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 text-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -2160,6 +2164,17 @@ export default function BetaLandingPage() {
                     className="hover:text-slate-900 dark:hover:text-white transition"
                   >
                     Integritas Akademik & Etika AI
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pengembang"
+                    className="hover:text-indigo-600 dark:hover:text-indigo-400 font-bold transition flex items-center gap-1.5"
+                  >
+                    <span>Pengembang Resmi</span>
+                    <span className="text-[9px] uppercase px-1 rounded bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                      Founder
+                    </span>
                   </Link>
                 </li>
                 <li>

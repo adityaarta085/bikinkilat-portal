@@ -1,0 +1,93 @@
+export interface GalleryItem {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Aktivitas' | 'Proyek' | 'Sertifikat' | 'Sekolah';
+  imageUrl: string;
+  date?: string;
+  isPinned?: boolean;
+}
+
+export interface GuestbookEntry {
+  id: string;
+  name: string;
+  role?: string;
+  message: string;
+  avatar: string;
+  createdAt: string;
+  isPinned?: boolean;
+}
+
+export const INITIAL_GALLERY: GalleryItem[] = [
+  {
+    id: 'gal-1',
+    title: 'Aditya Arta Putra - Founder & Solo Developer',
+    description: 'Aditya Arta Putra, siswa 11 TJKT A SMK Muhammadiyah Bandongan saat memimpin arsitektur dan pengembangan ekosistem BikinKilat.web.id.',
+    category: 'Aktivitas',
+    imageUrl: '/developer/aditya-arta.jpg',
+    date: '2026',
+    isPinned: true,
+  },
+  {
+    id: 'gal-2',
+    title: 'Aktivitas Akademik SMK Muhammadiyah Bandongan',
+    description: 'Dokumentasi pembelajaran kejuruan Teknik Jaringan Komputer & Telekomunikasi (TJKT) di lingkungan SMK Muhammadiyah Bandongan.',
+    category: 'Sekolah',
+    imageUrl: '/developer/about-sec-image.jpeg',
+    date: '2026',
+    isPinned: true,
+  },
+  {
+    id: 'gal-3',
+    title: 'Portal Resmi Desa Ngawonggo (ngawonggo.web.id)',
+    description: 'Kepemimpinan arsitektur sistem informasi publik kemitraan Pemdes Ngawonggo & SMK Muhammadiyah Bandongan.',
+    category: 'Proyek',
+    imageUrl: '/developer/aditya-arta.jpg',
+    date: '2026',
+  },
+  {
+    id: 'gal-4',
+    title: 'Kredensial & Penghargaan Arsitektur Sistem',
+    description: 'Piagam kredensial resmi terverifikasi dan apresiasi inovasi teknologi web publik.',
+    category: 'Sertifikat',
+    imageUrl: '/developer/about-sec-image.jpeg',
+    date: '2025',
+  },
+  {
+    id: 'gal-5',
+    title: 'Pengembangan 9 Subdomain BikinKilat',
+    description: 'Perancangan antarmuka cerdas dan integrasi pembayaran QRIS instan sub-2 detik.',
+    category: 'Proyek',
+    imageUrl: '/developer/aditya-arta.jpg',
+    date: '2026',
+  },
+];
+
+export const INITIAL_GUESTBOOK: GuestbookEntry[] = [
+  {
+    id: 'gb-1',
+    name: 'Kepala Program TJKT',
+    role: 'Guru Pembimbing SMK Muhammadiyah Bandongan',
+    message: 'Karya nyata yang membanggakan sekolah. Terus kembangkan inovasi digital untuk kemaslahatan masyarakat!',
+    avatar: '🎓',
+    createdAt: '2026-10-20T10:00:00Z',
+    isPinned: true,
+  },
+  {
+    id: 'gb-2',
+    name: 'Pemerintah Desa Ngawonggo',
+    role: 'Mitra Kerjasama Pemdes Ngawonggo',
+    message: 'Terima kasih atas dedikasi dan kepemimpinan sistem portal desa yang sangat andal dan memudahkan warga.',
+    avatar: '🏛️',
+    createdAt: '2026-10-18T14:30:00Z',
+    isPinned: true,
+  },
+  {
+    id: 'gb-3',
+    name: 'Pengguna Setia BikinKilat',
+    role: 'Mahasiswa Magelang',
+    message: 'Bikin slide dan modul kilat banget cuma butuh beberapa detik. Semangat terus Mas Aditya!',
+    avatar: '🚀',
+    createdAt: '2026-10-22T08:15:00Z',
+  },
+];

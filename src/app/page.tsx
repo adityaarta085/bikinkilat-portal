@@ -16,6 +16,7 @@ import { Footer } from '@/components/Footer';
 import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
 import { InfiniteMarquee } from '@/components/InfiniteMarquee';
 import { MagneticButton } from '@/components/MagneticButton';
+import { DeveloperShowcase } from '@/components/DeveloperShowcase';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
 import { useCountUp } from '@/hooks/useCountUp';
@@ -402,6 +403,9 @@ export default function PortalHomePage() {
           </div>
         </div>
       </section>
+
+      {/* Developer Showcase Section */}
+      <DeveloperShowcase />
 
       {/* FAQ Section */}
       <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

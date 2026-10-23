@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
+      url: 'https://bikinkilat.web.id/pengembang',
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
       url: 'https://bikinkilat.web.id/kasir',
       lastModified: now,
       changeFrequency: 'weekly',
