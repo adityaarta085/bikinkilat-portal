@@ -35,7 +35,8 @@ import {
   TOKEN_PACKAGES, 
   CUSTOM_PRESETS, 
   MIN_CUSTOM_TOPUP, 
-  calculateCustomTokens 
+  calculateCustomTokens,
+  DOCUMENT_COST_BREAKDOWN
 } from '@/lib/ecosystem';
 
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://api.bikinkilat.web.id';
@@ -1259,6 +1260,106 @@ export default function KasirPage() {
             )}
           </div>
         )}
+            {/* TRANSPARENCY COST TABLE & ZERO-LOSS TOKEN GUARANTEE */}
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6 mt-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-bold">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Transparansi Biaya &amp; Perlindungan Token</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
+                    Berapa Biaya Riil (Rupiah) Per Dokumen?
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed">
+                    Kami tidak menyembunyikan rumus konversi. Karena harga per token berbeda berdasarkan paket yang Anda beli, berikut perbandingan biaya riil rupiah untuk setiap layanan dokumen:
+                  </p>
+                </div>
+
+                <Link
+                  href="/transparansi"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0"
+                >
+                  <span>Pusat Transparansi Layanan →</span>
+                </Link>
+              </div>
+
+              {/* Responsive Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
+                      <th className="py-3 px-3 font-extrabold">Jenis Dokumen</th>
+                      <th className="py-3 px-3 font-extrabold text-center">Token</th>
+                      <th className="py-3 px-3 font-extrabold text-right">Paket Pelajar (Rp1.050)</th>
+                      <th className="py-3 px-3 font-extrabold text-right text-indigo-600 dark:text-indigo-400">Paket Mhs (Rp680)</th>
+                      <th className="py-3 px-3 font-extrabold text-right text-emerald-600 dark:text-emerald-400">Paket Pro (Rp408)</th>
+                      <th className="py-3 px-3 font-extrabold">Format Luaran</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+                    {DOCUMENT_COST_BREAKDOWN.map((doc) => (
+                      <tr key={doc.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
+                        <td className="py-3 px-3">
+                          <span className="font-bold text-slate-900 dark:text-white block">{doc.name}</span>
+                          <span className="text-[10px] text-slate-400 font-mono">{doc.subdomain}</span>
+                        </td>
+                        <td className="py-3 px-3 text-center">
+                          <span className="font-black px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-mono text-[11px]">
+                            {doc.tokenCost}
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono text-slate-600 dark:text-slate-400">
+                          Rp {doc.pelajarCost.toLocaleString('id-ID')}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-bold text-indigo-700 dark:text-indigo-300">
+                          Rp {doc.mahasiswaCost.toLocaleString('id-ID')}
+                        </td>
+                        <td className="py-3 px-3 text-right font-mono font-bold text-emerald-700 dark:text-emerald-300">
+                          Rp {doc.profesionalCost.toLocaleString('id-ID')}
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="flex items-center gap-1">
+                            {doc.outputFormats.map((fmt) => (
+                              <span key={fmt} className="px-1.5 py-0.5 rounded text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">
+                                {fmt}
+                              </span>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Zero-Loss Token Guarantee Banner */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-700 flex items-center justify-center text-emerald-700 dark:text-emerald-300 shrink-0">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-bold text-emerald-900 dark:text-emerald-200">
+                      Garansi Saldo Token Bebas Risiko (Zero-Loss Guarantee)
+                    </h4>
+                    <p className="text-[11px] text-emerald-700 dark:text-emerald-300 mt-0.5 leading-relaxed">
+                      Jika terjadi eror sistem, berkas gagal diunduh, atau format korup, saldo token Anda dijamin tidak hangus. Laporkan ke WhatsApp resmi kami di <strong>+62 851-3643-6577</strong> atau email <strong>support@bikinkilat.web.id</strong> untuk rekonsiliasi seketika (SLA &lt; 24 jam).
+                    </p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://wa.me/6285136436577?text=Halo%20Admin%20BikinKilat,%20saya%20butuh%20bantuan%20terkait%20transaksi%20token"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs flex items-center gap-1.5"
+                >
+                  <span>Bantuan WhatsApp CS</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
       </main>
 
       <Footer />

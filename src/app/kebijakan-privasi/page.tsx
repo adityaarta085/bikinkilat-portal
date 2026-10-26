@@ -1,9 +1,9 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { PRIVACY_POLICY, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
-import { ShieldCheck, ArrowLeft, Lock, Calendar } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Lock, Calendar, Phone, Mail } from "lucide-react";
 
 export const metadata = {
   title: "Kebijakan Privasi & Perlindungan Data Pribadi • BikinKilat.web.id",
@@ -37,13 +37,13 @@ export default function PrivacyPage() {
             {PRIVACY_POLICY.title}
           </h1>
 
-          <div className="flex items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
             <span className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               <span>Pembaruan Terakhir: {PRIVACY_POLICY.lastUpdated}</span>
             </span>
             <span>•</span>
-            <span>{LEGAL_COMPANY_INFO.name}</span>
+            <span>{LEGAL_COMPANY_INFO.name} ({LEGAL_COMPANY_INFO.address})</span>
           </div>
         </div>
 
@@ -65,17 +65,32 @@ export default function PrivacyPage() {
           ))}
 
           {/* DPO Contact Box */}
-          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-              Petugas Perlindungan Data Pribadi (DPO)
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>Petugas Pelindungan Data Pribadi (DPO) &amp; Pengaduan</span>
             </h3>
-            <p className="text-xs text-slate-600">
-              Untuk mengajukan permohonan akses data, koreksi informasi, atau penghapusan data akun Anda secara permanen, silakan hubungi tim DPO kami melalui email resmi:{" "}
-              <a href={`mailto:${LEGAL_COMPANY_INFO.privacyEmail}`} className="text-indigo-600 font-bold underline">
-                {LEGAL_COMPANY_INFO.privacyEmail}
-              </a>
-              .
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Untuk mengajukan permohonan akses data, koreksi informasi, atau penghapusan data akun Anda secara permanen, Anda dapat menghubungi petugas DPO kami melalui kanal resmi berikut (SLA respons maksimal 7 hari kerja):
             </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+              <a
+                href={`mailto:${LEGAL_COMPANY_INFO.privacyEmail}`}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-indigo-600 font-bold hover:border-indigo-300 transition"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email: {LEGAL_COMPANY_INFO.privacyEmail}</span>
+              </a>
+              <a
+                href={LEGAL_COMPANY_INFO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-600" />
+                <span>WhatsApp DPO: {LEGAL_COMPANY_INFO.whatsapp}</span>
+              </a>
+            </div>
           </div>
         </div>
       </main>

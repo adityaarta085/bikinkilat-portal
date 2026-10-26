@@ -16,7 +16,6 @@ import { Footer } from '@/components/Footer';
 import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
 import { InfiniteMarquee } from '@/components/InfiniteMarquee';
 import { MagneticButton } from '@/components/MagneticButton';
-import { DeveloperShowcase } from '@/components/DeveloperShowcase';
 import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
 import { useCountUp } from '@/hooks/useCountUp';
@@ -116,8 +115,8 @@ export default function PortalHomePage() {
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
-              Akses 9 platform otomasi cerdas berstandar profesional di Indonesia. 
-              Gunakan 1 akun dan 1 saldo token terpadu untuk menyusun slide presentasi, naskah akademik, modul ajar, hingga dokumen hukum sah.
+              Akses 9 platform otomasi cerdas berstandar tata naskah profesional di Indonesia. 
+              Gunakan 1 akun dan 1 saldo token terpadu untuk menyusun draf slide presentasi, kerangka makalah akademik, modul ajar, hingga draf dokumen kerja terstruktur.
             </p>
 
             {/* CTA Buttons */}
@@ -403,9 +402,6 @@ export default function PortalHomePage() {
           </div>
         </div>
       </section>
-
-      {/* Developer Showcase Section */}
-      <DeveloperShowcase />
 
       {/* FAQ Section */}
       <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">

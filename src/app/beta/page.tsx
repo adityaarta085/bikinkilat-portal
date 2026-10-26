@@ -6,7 +6,6 @@ import { useAuth } from '@/lib/auth-context';
 import { CashierModal } from '@/components/CashierModal';
 import { TransactionHistory } from '@/components/TransactionHistory';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { DeveloperShowcase } from '@/components/DeveloperShowcase';
 import {
   Check,
   CheckCircle2,
@@ -2060,9 +2059,6 @@ export default function BetaLandingPage() {
           </ul>
         </div>
       </section>
-
-      {/* Developer Showcase Section */}
-      <DeveloperShowcase />
 
       {/* 13. FOOTER (slice_8.jpg) */}
       <footer className="py-14 bg-slate-50 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 text-xs">

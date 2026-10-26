@@ -1,9 +1,9 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { TERMS_OF_SERVICE, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
-import { ShieldCheck, ArrowLeft, FileText, Calendar } from "lucide-react";
+import { ShieldCheck, ArrowLeft, FileText, Calendar, Phone, Mail } from "lucide-react";
 
 export const metadata = {
   title: "Syarat dan Ketentuan Layanan • BikinKilat.web.id",
@@ -37,13 +37,13 @@ export default function TermsPage() {
             {TERMS_OF_SERVICE.title}
           </h1>
 
-          <div className="flex items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
             <span className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               <span>Pembaruan Terakhir: {TERMS_OF_SERVICE.lastUpdated}</span>
             </span>
             <span>•</span>
-            <span>{LEGAL_COMPANY_INFO.name}</span>
+            <span>{LEGAL_COMPANY_INFO.name} ({LEGAL_COMPANY_INFO.address})</span>
           </div>
         </div>
 
@@ -65,17 +65,32 @@ export default function TermsPage() {
           ))}
 
           {/* Contact Box */}
-          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
-              Pertanyaan Mengenai Ketentuan Layanan?
+          <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-2">
+              <FileText className="w-4 h-4 text-indigo-600" />
+              <span>Pertanyaan Mengenai Ketentuan Layanan?</span>
             </h3>
-            <p className="text-xs text-slate-600">
-              Jika Anda memiliki pertanyaan hukum atau klarifikasi terkait Syarat dan Ketentuan ini, silakan hubungi tim hukum kami melalui email{" "}
-              <a href={`mailto:${LEGAL_COMPANY_INFO.email}`} className="text-indigo-600 font-bold underline">
-                {LEGAL_COMPANY_INFO.email}
-              </a>
-              .
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Jika Anda memiliki pertanyaan hukum atau klarifikasi terkait Syarat dan Ketentuan ini, silakan hubungi tim kami melalui saluran resmi berikut:
             </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+              <a
+                href={`mailto:${LEGAL_COMPANY_INFO.email}`}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-slate-200 text-indigo-600 font-bold hover:border-indigo-300 transition"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email: {LEGAL_COMPANY_INFO.email}</span>
+              </a>
+              <a
+                href={LEGAL_COMPANY_INFO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-600" />
+                <span>WhatsApp: {LEGAL_COMPANY_INFO.whatsapp}</span>
+              </a>
+            </div>
           </div>
         </div>
       </main>

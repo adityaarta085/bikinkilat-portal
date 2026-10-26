@@ -1,13 +1,13 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { REFUND_POLICY, LEGAL_COMPANY_INFO } from "@/lib/legalContent";
-import { ArrowLeft, RefreshCw, Calendar, Mail } from "lucide-react";
+import { ArrowLeft, RefreshCw, Calendar, Mail, Phone, ShieldCheck } from "lucide-react";
 
 export const metadata = {
-  title: "Kebijakan Pengembalian Dana (Refund) • BikinKilat.web.id",
-  description: "Ketentuan pengembalian dana dan rekonsiliasi transaksi pembayaran QRIS BikinKilat.web.id.",
+  title: "Kebijakan Pengembalian Dana & Garansi Token • BikinKilat.web.id",
+  description: "Ketentuan garansi token bebas risiko, pengembalian dana, dan rekonsiliasi transaksi pembayaran QRIS BikinKilat.web.id.",
 };
 
 export default function RefundPage() {
@@ -22,26 +22,26 @@ export default function RefundPage() {
             <span>Kembali ke Beranda</span>
           </Link>
           <span>/</span>
-          <span className="text-slate-800">Kebijakan Pengembalian Dana</span>
+          <span className="text-slate-800">Kebijakan Pengembalian Dana &amp; Garansi Token</span>
         </div>
 
         <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm space-y-3">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">
-            <RefreshCw className="w-4 h-4 text-amber-600" />
-            <span>Standar Transaksi QRIS Real-Time</span>
+          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <span>Garansi Saldo Token Bebas Risiko (Zero-Loss Guarantee)</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
             {REFUND_POLICY.title}
           </h1>
 
-          <div className="flex items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1 border-t border-slate-100">
             <span className="flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5" />
               <span>Pembaruan Terakhir: {REFUND_POLICY.lastUpdated}</span>
             </span>
             <span>•</span>
-            <span>{LEGAL_COMPANY_INFO.name}</span>
+            <span>{LEGAL_COMPANY_INFO.name} ({LEGAL_COMPANY_INFO.address})</span>
           </div>
         </div>
 
@@ -61,18 +61,32 @@ export default function RefundPage() {
             </section>
           ))}
 
-          <div className="p-6 rounded-2xl bg-indigo-50 border border-indigo-200 space-y-2">
+          <div className="p-6 rounded-2xl bg-indigo-50 border border-indigo-200 space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-950 flex items-center gap-2">
               <Mail className="w-4 h-4 text-indigo-600" />
-              <span>Pusat Rekonsiliasi & Klaim Pembayaran</span>
+              <span>Pusat Rekonsiliasi, Penggantian Token &amp; Klaim Transaksi</span>
             </h3>
             <p className="text-xs text-indigo-900 leading-relaxed">
-              Jika ada transaksi QRIS yang sudah terpotong namun token belum masuk, hubungi tim support operasional kami dengan menyertakan bukti transfer dan nomor pesanan ke{" "}
-              <a href={`mailto:${LEGAL_COMPANY_INFO.email}`} className="font-bold underline text-indigo-700">
-                {LEGAL_COMPANY_INFO.email}
-              </a>
-              . Kami siap membantu menyelesaikan dalam 1x24 jam kerja.
+              Jika ada transaksi QRIS yang sudah terpotong namun saldo token belum masuk, atau berkas unduhan mengalami eror sistem, hubungi tim operasional kami dengan menyertakan bukti transfer dan nomor invoice. Kami siap membantu menyelesaikan dalam 1x24 jam kerja:
             </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+              <a
+                href={`mailto:${LEGAL_COMPANY_INFO.email}`}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-indigo-200 text-indigo-700 font-bold hover:bg-indigo-50 transition"
+              >
+                <Mail className="w-3.5 h-3.5 text-indigo-600" />
+                <span>Email: {LEGAL_COMPANY_INFO.email}</span>
+              </a>
+              <a
+                href={LEGAL_COMPANY_INFO.whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 transition"
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span>WhatsApp Pengaduan Cepat: {LEGAL_COMPANY_INFO.whatsapp}</span>
+              </a>
+            </div>
           </div>
         </div>
       </main>

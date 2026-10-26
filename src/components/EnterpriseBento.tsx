@@ -34,7 +34,7 @@ export function EnterpriseBento() {
             Mengapa Otomasi BikinKilat Berbeda Dari AI Biasa?
           </h2>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-            AI umum hanya mencetak teks mentah tanpa format yang membutuhkan penyusunan manual berjam-jam. BikinKilat langsung mengompilasi dokumen resmi siap guna, taat tata naskah, dan berkekuatan hukum.
+            AI umum hanya mencetak teks mentah tanpa format yang membutuhkan penataan manual berjam-jam. BikinKilat langsung merakit draf dokumen biner terstruktur (.pptx, .docx, .xlsx) mengikuti tata naskah dan acuan teknis umum di Indonesia.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export function EnterpriseBento() {
                 Langsung Menghasilkan Berkas Asli (.pptx, .docx, .xlsx, .pdf)
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                Bukan sekadar salin-tempel teks dari chat. Anda langsung mengunduh berkas PowerPoint 16:9 dengan speaker notes, dokumen Word berformat rapi dengan daftar isi otomatis, atau lembar kerja Excel dengan formula aktif.
+                Bukan sekadar salin-tempel teks dari jendela chat. Anda langsung mengunduh berkas PowerPoint 16:9 dengan naskah presenter, dokumen Word berstandar margin rapi dengan daftar isi otomatis, atau lembar kerja Excel dengan formula aktif.
               </p>
             </div>
 
@@ -69,7 +69,7 @@ export function EnterpriseBento() {
               </div>
               <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.DOCX</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Tata Naskah Resmi</div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Tata Naskah Baku</div>
               </div>
               <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                 <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">.XLSX</div>
@@ -93,19 +93,19 @@ export function EnterpriseBento() {
                 <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
-                Kepatuhan Regulasi
+                Acuan Teknis &amp; Standar
               </span>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1 mb-3">
-                100% Sesuai Regulasi Indonesia
+                Mengacu Pedoman &amp; Regulasi Indonesia
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                Tiap generator diprogram mengikuti acuan resmi: Permen PU-PR No. 8/2023, Kurikulum Merdeka Kemendikbudristek, KHI Inpres No. 1/1991, dan standar foto BKN SSCASN.
+                Generator diprogram dengan struktur acuan resmi: Kurikulum Merdeka Kemendikbudristek, Faraidh KHI Inpres No. 1/1991, dan standar foto BKN SSCASN. Wajib ditinjau kembali sebelum pengajuan resmi.
               </p>
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Bebas Klaim Hoaks &amp; Taat UU</span>
+              <span>Draf Terstruktur &amp; Siap Telaah</span>
             </div>
           </SpotlightCard>
 
@@ -147,28 +147,28 @@ export function EnterpriseBento() {
                 <Lock className="w-6 h-6 text-slate-700 dark:text-slate-300" />
               </div>
               <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                Privasi & Kedaulatan Data
+                Privasi &amp; Kedaulatan Data
               </span>
               <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1 mb-3">
-                Kepatuhan Penuh UU PDP No. 27/2022
+                Kepatuhan Prinsip UU PDP No. 27/2022
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                Kami menerapkan prinsip zero-retention untuk isi dokumen dan foto Anda. Data pemrosesan langsung dimusnahkan segera setelah berkas berhasil diunduh, tanpa dijadikan bahan pelatihan model publik.
+                Data naskah dokumen diproses secara ephemeral di memori peladen untuk merender berkas dan dibersihkan otomatis. Menggunakan koneksi enterprise dengan kebijakan Zero-Training sehingga isi naskah Anda tidak pernah digunakan melatih model AI publik.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400">
               <div className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Enkripsi TLS 1.3 End-to-End</span>
+                <span>Enkripsi TLS 1.3 Terverifikasi</span>
               </div>
               <div className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Zero Document Mining</span>
+                <span>Zero Data Training Policy</span>
               </div>
               <div className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Edge Network Global</span>
+                <span>Ephemeral Memory Isolation</span>
               </div>
             </div>
           </SpotlightCard>

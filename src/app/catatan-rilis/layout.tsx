@@ -22,6 +22,21 @@ export const metadata: Metadata = {
     siteName: 'BikinKilat.web.id',
     locale: 'id_ID',
     type: 'website',
+    images: [
+      {
+        url: 'https://bikinkilat.web.id/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Catatan Rilis & Pembaruan Sistem BikinKilat.web.id',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Catatan Rilis & Pembaruan Sistem | BikinKilat.web.id',
+    description:
+      'Riwayat pembaruan sistem BikinKilat: rilis v2.7 slide widescreen 16:9, verifikasi OTP instan, dan optimasi pemrosesan dokumen sub-2 detik.',
+    images: ['https://bikinkilat.web.id/og-image.png'],
   },
 };
 

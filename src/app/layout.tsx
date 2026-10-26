@@ -113,9 +113,9 @@ export default function RootLayout({
         url: 'https://bikinkilat.web.id',
         logo: {
           '@type': 'ImageObject',
-          url: 'https://bikinkilat.web.id/brand/logo-full-color.png',
-          width: 794,
-          height: 724,
+          url: 'https://bikinkilat.web.id/brand/logo-icon-color.png',
+          width: 512,
+          height: 512,
         },
         contactPoint: {
           '@type': 'ContactPoint',

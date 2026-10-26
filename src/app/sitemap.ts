@@ -11,16 +11,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: 'https://bikinkilat.web.id/beta',
+      url: 'https://bikinkilat.web.id/transparansi',
       lastModified: now,
-      changeFrequency: 'daily',
+      changeFrequency: 'weekly',
       priority: 0.95,
     },
     {
-      url: 'https://bikinkilat.web.id/pengembang',
+      url: 'https://bikinkilat.web.id/beta',
       lastModified: now,
       changeFrequency: 'daily',
-      priority: 1.0,
+      priority: 0.9,
     },
     {
       url: 'https://bikinkilat.web.id/kasir',
@@ -74,25 +74,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://bikinkilat.web.id/syarat-ketentuan',
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.6,
     },
     {
       url: 'https://bikinkilat.web.id/kebijakan-privasi',
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.6,
     },
     {
       url: 'https://bikinkilat.web.id/kebijakan-pengembalian-dana',
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.6,
     },
     {
       url: 'https://bikinkilat.web.id/etika-akademik',
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.5,
+      priority: 0.6,
+    },
+    {
+      url: 'https://bikinkilat.web.id/pengembang',
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.4,
     },
   ];
 }
