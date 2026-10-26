@@ -120,9 +120,17 @@ export default function RootLayout({
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer support',
+          telephone: '+62-851-3643-6577',
           email: 'support@bikinkilat.web.id',
           areaServed: 'ID',
           availableLanguage: ['Indonesian'],
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Kabupaten Magelang',
+          addressRegion: 'Jawa Tengah',
+          postalCode: '56152',
+          addressCountry: 'ID',
         },
         sameAs: [
           'https://slide.bikinkilat.web.id',
@@ -262,6 +270,12 @@ export default function RootLayout({
             position: 4,
             name: 'Catatan Rilis & Pembaruan',
             item: 'https://bikinkilat.web.id/catatan-rilis',
+          },
+          {
+            '@type': 'ListItem',
+            position: 5,
+            name: 'Pusat Transparansi Layanan',
+            item: 'https://bikinkilat.web.id/transparansi',
           },
         ],
       },
