@@ -6,6 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { supabase } from "@/lib/supabase";
+import { setSharedSessionCookie } from "@/lib/session";
+import type { User } from "@supabase/supabase-js";
 import {
   Zap,
   Mail,
@@ -19,6 +22,9 @@ import {
   Coins,
   KeyRound,
   ExternalLink,
+  Lock,
+  Eye,
+  EyeOff,
   RefreshCw,
 } from "lucide-react";
 
@@ -34,32 +40,108 @@ function AuthFormContent() {
     signInWithGoogle,
     signInWithEmailOtp,
     verifyEmailOtp,
+    signInWithPassword,
     signOut,
     isLoading: isAuthLoading,
   } = useAuth();
 
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [otpToken, setOtpToken] = useState("");
-  const [authMode, setAuthMode] = useState<"send_code" | "enter_token">("send_code");
+  const [authMode, setAuthMode] = useState<"password" | "send_code" | "enter_token" | "2fa_challenge">("password");
 
+  // 2FA Challenge States
+  const [pending2FaUser, setPending2FaUser] = useState<User | null>(null);
+  const [totpCode, setTotpCode] = useState("");
+  const [isVerifyingTotp, setIsVerifyingTotp] = useState(false);
+  const [isChecking2Fa, setIsChecking2Fa] = useState(false);
+
+  // Submission States
   const [isSubmittingGoogle, setIsSubmittingGoogle] = useState(false);
+  const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
   const [isSubmittingToken, setIsSubmittingToken] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // If already logged in, redirect after short delay
-  useEffect(() => {
-    if (user && !isAuthLoading) {
-      const timer = setTimeout(() => {
-        if (returnUrl && returnUrl !== "/auth") {
-          window.location.href = returnUrl;
-        }
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [user, isAuthLoading, returnUrl]);
+  // Check 2FA requirement for an authenticated user
+  const check2FaAndProceed = async (targetUser: User): Promise<boolean> => {
+    setIsChecking2Fa(true);
+    try {
+      const secRes = await fetch(`/api/user/security?userId=${encodeURIComponent(targetUser.id)}`);
+      if (secRes.ok) {
+        const secData = await secRes.json();
+        if (secData.twoFactorEnabled) {
+          // Check if already verified in this browser session
+          const isSessionVerified =
+            typeof window !== "undefined" &&
+            sessionStorage.getItem(`bikinkilat_2fa_verified_${targetUser.id}`) === "true";
 
+          if (!isSessionVerified) {
+            setPending2FaUser(targetUser);
+            setAuthMode("2fa_challenge");
+            setIsChecking2Fa(false);
+            return false; // Stop! Must challenge 2FA
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Notice checking 2FA requirement:", err);
+    } finally {
+      setIsChecking2Fa(false);
+    }
+    return true; // 2FA passed or not enabled
+  };
+
+  // Complete session & redirect
+  const completeLoginFlow = async (targetUser: User) => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(`bikinkilat_2fa_verified_${targetUser.id}`, "true");
+    }
+
+    try {
+      const res = await fetch(
+        `/api/wallet?userId=${targetUser.id}&email=${encodeURIComponent(targetUser.email || "")}&name=${encodeURIComponent(
+          targetUser.user_metadata?.full_name || targetUser.email?.split("@")[0] || "Pengguna"
+        )}`
+      );
+      const walletData = await res.json();
+      const userTokens = typeof walletData.tokens === "number" ? walletData.tokens : 5;
+      setSharedSessionCookie(targetUser.id, userTokens);
+    } catch (e) {
+      setSharedSessionCookie(targetUser.id, 5);
+    }
+
+    setEmailSuccess("Login berhasil! Mengalihkan ke ruang kerja...");
+    setTimeout(() => {
+      window.location.href = returnUrl;
+    }, 800);
+  };
+
+  // If already logged in, check if 2FA session verification is required
+  useEffect(() => {
+    if (user && !isAuthLoading && authMode !== "2fa_challenge" && !pending2FaUser) {
+      let isCancelled = false;
+
+      check2FaAndProceed(user).then((allowed) => {
+        if (!isCancelled && allowed) {
+          const timer = setTimeout(() => {
+            if (returnUrl && returnUrl !== "/auth") {
+              window.location.href = returnUrl;
+            }
+          }, 1500);
+          return () => clearTimeout(timer);
+        }
+      });
+
+      return () => {
+        isCancelled = true;
+      };
+    }
+  }, [user, isAuthLoading, returnUrl, authMode, pending2FaUser]);
+
+  // Google Login
   const handleGoogleLogin = async () => {
     setIsSubmittingGoogle(true);
     setErrorMessage(null);
@@ -77,11 +159,57 @@ function AuthFormContent() {
     }
   };
 
+  // Login dengan Email & Kata Sandi (Fitur Baru)
+  const handlePasswordLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail.endsWith("@gmail.com")) {
+      setErrorMessage(
+        "Hanya alamat email @gmail.com yang didukung. Mohon gunakan akun Gmail Anda atau masuk langsung dengan Google."
+      );
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      setErrorMessage("Kata sandi minimal 6 karakter.");
+      return;
+    }
+
+    setIsSubmittingPassword(true);
+    setErrorMessage(null);
+    setEmailSuccess(null);
+
+    try {
+      const res = await signInWithPassword(cleanEmail, password);
+      if (res.error) {
+        setErrorMessage(
+          res.message || "Email atau kata sandi tidak cocok. Silakan coba lagi atau gunakan Kode OTP Gmail."
+        );
+        setIsSubmittingPassword(false);
+        return;
+      }
+
+      const loggedUser = res.data?.user;
+      if (loggedUser) {
+        // PERIKSA 2FA SEBELUM MASUK RUANG KERJA
+        const isAllowed = await check2FaAndProceed(loggedUser);
+        if (isAllowed) {
+          await completeLoginFlow(loggedUser);
+        }
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || "Terjadi kendala saat memproses kata sandi akun.");
+    } finally {
+      setIsSubmittingPassword(false);
+    }
+  };
+
+  // Kirim Kode OTP ke Gmail
   const handleSendEmailCode = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanEmail = email.trim().toLowerCase();
 
-    // Enforce @gmail.com strictly
     if (!cleanEmail.endsWith("@gmail.com")) {
       setErrorMessage(
         "Hanya alamat email @gmail.com yang didukung. Mohon gunakan akun Gmail Anda atau masuk langsung dengan Google."
@@ -103,7 +231,6 @@ function AuthFormContent() {
         setEmailSuccess(
           res.message || "Kode token 6-digit dan tautan masuk telah dikirim ke kotak masuk Gmail Anda!"
         );
-        // Automatically switch to token entry mode
         setAuthMode("enter_token");
       }
     } catch (err: any) {
@@ -113,6 +240,7 @@ function AuthFormContent() {
     }
   };
 
+  // Verifikasi Kode Token OTP
   const handleVerifyOtpToken = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanEmail = email.trim().toLowerCase();
@@ -139,21 +267,84 @@ function AuthFormContent() {
         setErrorMessage(
           res.error.message || "Kode token tidak valid atau telah kedaluwarsa. Silakan periksa kembali Gmail Anda."
         );
+        setIsSubmittingToken(false);
       } else {
-        setEmailSuccess("Otentikasi berhasil! Mengalihkan ke ruang kerja...");
-        setTimeout(() => {
-          window.location.href = returnUrl;
-        }, 1000);
+        // Ambil sesi terbaru untuk mengecek apakah 2FA diaktifkan
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const isAllowed = await check2FaAndProceed(session.user);
+          if (isAllowed) {
+            await completeLoginFlow(session.user);
+          }
+        } else {
+          setEmailSuccess("Otentikasi berhasil! Mengalihkan ke ruang kerja...");
+          setTimeout(() => {
+            window.location.href = returnUrl;
+          }, 1000);
+        }
       }
     } catch (err: any) {
       setErrorMessage(err.message || "Terjadi kendala saat verifikasi kode token.");
-    } finally {
       setIsSubmittingToken(false);
     }
   };
 
-  // If already authenticated
-  if (user && !isAuthLoading) {
+  // Submit Verifikasi 2FA
+  const handleSubmit2Fa = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const target = pending2FaUser || user;
+    if (!target) return;
+
+    const cleanCode = totpCode.trim().replace(/\s+/g, "");
+    if (cleanCode.length !== 6) {
+      setErrorMessage("Masukkan 6 digit kode angka dari aplikasi autentikator Anda.");
+      return;
+    }
+
+    setIsVerifyingTotp(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch("/api/user/security", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "verify_2fa",
+          userId: target.id,
+          token: cleanCode,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success && data.verified) {
+        setPending2FaUser(null);
+        await completeLoginFlow(target);
+      } else {
+        setErrorMessage(data.message || "Kode 2FA tidak valid atau telah kedaluwarsa. Periksa kembali aplikasi Anda.");
+      }
+    } catch (err: any) {
+      setErrorMessage(err?.message || "Gagal memverifikasi kode 2FA ke server.");
+    } finally {
+      setIsVerifyingTotp(false);
+    }
+  };
+
+  // Cancel 2FA Challenge & Sign Out
+  const handleCancel2Fa = async () => {
+    try {
+      await signOut();
+    } catch (e) {
+      console.warn("Sign out err:", e);
+    }
+    setPending2FaUser(null);
+    setTotpCode("");
+    setErrorMessage(null);
+    setEmailSuccess(null);
+    setAuthMode("password");
+  };
+
+  // Tampilan "Sudah Masuk" jika user sudah login DAN 2FA sudah valid
+  if (user && !isAuthLoading && authMode !== "2fa_challenge" && !pending2FaUser) {
     const displayName =
       profile?.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Pengguna";
     return (
@@ -197,6 +388,99 @@ function AuthFormContent() {
     );
   }
 
+  // Tampilan SCREEN TANTANGAN 2FA (TOTP)
+  if (authMode === "2fa_challenge") {
+    const activeEmail = pending2FaUser?.email || user?.email || email;
+    return (
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="h-2.5 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-indigo-600" />
+        <div className="p-6 sm:p-8 space-y-6 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-sm">
+            <ShieldCheck className="w-7 h-7" />
+          </div>
+
+          <div className="space-y-1.5">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white">
+              Verifikasi Dua Langkah (2FA)
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
+              Akun Anda dilindungi 2FA. Buka Google Authenticator atau aplikasi autentikator Anda dan masukkan kode 6-digit.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-xl text-xs text-slate-700 dark:text-slate-300 flex items-center justify-center gap-2 font-medium">
+            <Lock className="w-3.5 h-3.5 text-indigo-600" />
+            <span className="truncate">{activeEmail}</span>
+          </div>
+
+          {errorMessage && (
+            <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2 text-left animate-in fade-in">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          {emailSuccess && (
+            <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-2 text-left animate-in fade-in">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+              <span>{emailSuccess}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit2Fa} className="space-y-4 text-left">
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+                Kode Autentikator 6-Digit:
+              </label>
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={6}
+                autoFocus
+                required
+                placeholder="000 000"
+                value={totpCode}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                  setTotpCode(val);
+                }}
+                className="w-full py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-mono text-center text-2xl font-black tracking-[0.35em] placeholder:tracking-widest focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isVerifyingTotp || totpCode.trim().length !== 6}
+              className="w-full py-3.5 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20 transition active:scale-[0.99]"
+            >
+              {isVerifyingTotp ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Memverifikasi Kode...</span>
+                </>
+              ) : (
+                <>
+                  <ShieldCheck className="w-4 h-4 text-emerald-300" />
+                  <span>Konfirmasi & Masuk Ruang Kerja</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCancel2Fa}
+              className="w-full py-2.5 px-3 text-center text-xs font-semibold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition"
+            >
+              Batalkan & Masuk Akun Lain
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Tampilan Form Login Utama (Google, Email & Kata Sandi, Kode OTP)
   return (
     <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-all">
       {/* Decorative Top Accent */}
@@ -243,22 +527,23 @@ function AuthFormContent() {
             <div className="flex items-start gap-3 text-xs text-emerald-800 dark:text-emerald-300">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
-                <p className="font-bold">Email Masuk Terkirim!</p>
+                <p className="font-bold">Status Otentikasi</p>
                 <p className="mt-0.5 leading-relaxed">{emailSuccess}</p>
               </div>
             </div>
 
-            {/* Quick Link to Gmail */}
-            <a
-              href="https://mail.google.com/mail/u/0/#inbox"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 rounded-xl bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"
-            >
-              <Mail className="w-4 h-4 text-rose-500" />
-              <span>Buka Kotak Masuk Gmail Anda</span>
-              <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-            </a>
+            {authMode === "enter_token" && (
+              <a
+                href="https://mail.google.com/mail/u/0/#inbox"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-white dark:bg-slate-900 border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-100/50 dark:hover:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"
+              >
+                <Mail className="w-4 h-4 text-rose-500" />
+                <span>Buka Kotak Masuk Gmail Anda</span>
+                <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+              </a>
+            )}
           </div>
         )}
 
@@ -303,40 +588,132 @@ function AuthFormContent() {
             <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
           </div>
 
-          {/* Mode Tabs: Kirim Kode vs Isi Kode Token */}
+          {/* Mode Tabs: Kata Sandi (Fitur Baru) vs Kode OTP Gmail */}
           <div className="grid grid-cols-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs font-bold">
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("password");
+                setErrorMessage(null);
+              }}
+              className={`py-2 px-3 rounded-xl transition text-center flex items-center justify-center gap-1.5 ${
+                authMode === "password"
+                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+              }`}
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span>Kata Sandi Akun</span>
+            </button>
             <button
               type="button"
               onClick={() => {
                 setAuthMode("send_code");
                 setErrorMessage(null);
               }}
-              className={`py-2 px-3 rounded-xl transition text-center ${
-                authMode === "send_code"
-                  ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
-                  : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
-              }`}
-            >
-              Kirim Kode / Tautan
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setAuthMode("enter_token");
-                setErrorMessage(null);
-              }}
               className={`py-2 px-3 rounded-xl transition text-center flex items-center justify-center gap-1.5 ${
-                authMode === "enter_token"
+                authMode === "send_code" || authMode === "enter_token"
                   ? "bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-sm"
                   : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
             >
               <KeyRound className="w-3.5 h-3.5" />
-              <span>Isi Kode Token</span>
+              <span>Kode OTP Gmail</span>
             </button>
           </div>
 
-          {/* Form Mode 1: Kirim Kode OTP / Tautan Masuk ke Gmail */}
+          {/* FORM MODE: LOGIN DENGAN EMAIL & KATA SANDI (FITUR BARU) */}
+          {authMode === "password" && (
+            <form onSubmit={handlePasswordLogin} className="space-y-3.5 animate-in fade-in duration-150">
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block">
+                  Alamat Gmail Resmi:
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="nama@gmail.com"
+                    required
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800 transition font-medium"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400 block">
+                    Kata Sandi Akun:
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode("send_code");
+                      setErrorMessage(null);
+                    }}
+                    className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                  >
+                    Lupa Kata Sandi?
+                  </button>
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Minimal 6 karakter"
+                    required
+                    minLength={6}
+                    className="w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-800 transition font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmittingPassword || isChecking2Fa}
+                className="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-2xl font-bold text-xs sm:text-sm shadow-md shadow-indigo-600/20 flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                {isSubmittingPassword || isChecking2Fa ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Memeriksa Akun...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-4 h-4" />
+                    <span>Masuk dengan Kata Sandi</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+              <div className="pt-1 text-center">
+                <p className="text-[11px] text-slate-400 dark:text-slate-500">
+                  Belum pernah mengatur kata sandi?{" "}
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode("send_code")}
+                    className="font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                  >
+                    Masuk dengan Kode OTP Gmail
+                  </button>
+                </p>
+              </div>
+            </form>
+          )}
+
+          {/* FORM MODE: KIRIM KODE OTP GMAIL */}
           {authMode === "send_code" && (
             <form onSubmit={handleSendEmailCode} className="space-y-3.5 animate-in fade-in duration-150">
               <div className="space-y-1">
@@ -373,10 +750,20 @@ function AuthFormContent() {
                   </>
                 )}
               </button>
+
+              <div className="flex justify-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => setAuthMode("enter_token")}
+                  className="text-[11px] text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 font-semibold transition"
+                >
+                  Sudah punya kode 6-digit? Masukkan di sini →
+                </button>
+              </div>
             </form>
           )}
 
-          {/* Form Mode 2: Masukkan Kode Token OTP (dari Gmail) */}
+          {/* FORM MODE: MASUKKAN KODE TOKEN OTP GMAIL */}
           {authMode === "enter_token" && (
             <form onSubmit={handleVerifyOtpToken} className="space-y-3.5 animate-in fade-in duration-150">
               <div className="space-y-1">
@@ -427,10 +814,10 @@ function AuthFormContent() {
               <div className="space-y-2 pt-1">
                 <button
                   type="submit"
-                  disabled={isSubmittingToken}
+                  disabled={isSubmittingToken || isChecking2Fa}
                   className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-2xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
-                  {isSubmittingToken ? (
+                  {isSubmittingToken || isChecking2Fa ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <>
@@ -440,17 +827,24 @@ function AuthFormContent() {
                   )}
                 </button>
 
-                {/* Secondary Action: Quick Gmail Button */}
-                <a
-                  href="https://mail.google.com/mail/u/0/#inbox"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center justify-center gap-2 transition"
-                >
-                  <Mail className="w-3.5 h-3.5 text-rose-500" />
-                  <span>Buka Tab Gmail</span>
-                  <ExternalLink className="w-3 h-3 opacity-60" />
-                </a>
+                <div className="flex items-center justify-between pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode("send_code")}
+                    className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition"
+                  >
+                    ← Kirim ulang kode
+                  </button>
+                  <a
+                    href="https://mail.google.com/mail/u/0/#inbox"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1"
+                  >
+                    <span>Buka Gmail</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
               </div>
             </form>
           )}

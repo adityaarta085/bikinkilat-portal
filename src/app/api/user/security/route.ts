@@ -9,16 +9,20 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
+    const email = searchParams.get('email');
 
-    if (!userId) {
-      return NextResponse.json({ success: false, message: 'User ID diperlukan' }, { status: 400 });
+    if (!userId && !email) {
+      return NextResponse.json({ success: false, message: 'User ID atau Email diperlukan' }, { status: 400 });
     }
 
-    const { data: user, error } = await supabaseAdmin
-      .from('users')
-      .select('id, email, two_factor_enabled')
-      .eq('id', userId)
-      .maybeSingle();
+    let query = supabaseAdmin.from('users').select('id, email, two_factor_enabled');
+    if (userId) {
+      query = query.eq('id', userId);
+    } else if (email) {
+      query = query.eq('email', email.trim().toLowerCase());
+    }
+
+    const { data: user, error } = await query.maybeSingle();
 
     if (error) {
       console.error('Error reading user 2fa status:', error);
@@ -27,6 +31,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
+      userId: user?.id,
       twoFactorEnabled: !!user?.two_factor_enabled,
       email: user?.email || '',
     });
@@ -41,8 +46,60 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { action, userId, userEmail, secret, token, reason } = body;
 
-    if (!userId) {
-      return NextResponse.json({ success: false, message: 'User ID diperlukan' }, { status: 400 });
+    if (!userId && !userEmail) {
+      return NextResponse.json({ success: false, message: 'User ID atau Email diperlukan' }, { status: 400 });
+    }
+
+    // 0. Verifikasi Kode 2FA (TOTP) untuk Login, Ubah Password, Ubah Email
+    if (action === 'verify_2fa') {
+      if (!token) {
+        return NextResponse.json({ success: false, message: 'Token 6 digit wajib diisi' }, { status: 400 });
+      }
+
+      let query = supabaseAdmin.from('users').select('id, email, two_factor_secret, two_factor_enabled');
+      if (userId) {
+        query = query.eq('id', userId);
+      } else if (userEmail) {
+        query = query.eq('email', userEmail.trim().toLowerCase());
+      }
+
+      const { data: userRecord, error: fetchErr } = await query.maybeSingle();
+
+      if (fetchErr || !userRecord) {
+        return NextResponse.json({ success: false, message: 'Pengguna tidak ditemukan' }, { status: 404 });
+      }
+
+      // Jika 2FA belum aktif, verifikasi lolos otomatis
+      if (!userRecord.two_factor_enabled || !userRecord.two_factor_secret) {
+        return NextResponse.json({ success: true, verified: true, twoFactorEnabled: false });
+      }
+
+      const totp = new OTPAuth.TOTP({
+        issuer: 'BikinKilat',
+        algorithm: 'SHA1',
+        digits: 6,
+        period: 30,
+        secret: OTPAuth.Secret.fromBase32(userRecord.two_factor_secret),
+      });
+
+      const delta = totp.validate({
+        token: token.trim().replace(/\s+/g, ''),
+        window: 1, // Toleransi drift waktu 30 detik
+      });
+
+      if (delta === null) {
+        return NextResponse.json({
+          success: false,
+          verified: false,
+          message: 'Kode 2FA 6 digit salah atau telah kedaluwarsa. Silakan periksa jam aplikasi autentikator Anda.',
+        }, { status: 400 });
+      }
+
+      return NextResponse.json({
+        success: true,
+        verified: true,
+        message: 'Verifikasi 2FA berhasil!',
+      });
     }
 
     // 1. Setup / Inisialisasi Kunci Rahasia 2FA & QR Code

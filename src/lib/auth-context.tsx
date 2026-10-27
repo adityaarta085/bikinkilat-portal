@@ -24,6 +24,7 @@ interface AuthContextType {
   signInWithGoogle: (redirectTo?: string) => Promise<{ error: any }>;
   signInWithEmailOtp: (email: string, customRedirect?: string) => Promise<{ error: any; message?: string }>;
   verifyEmailOtp: (email: string, token: string) => Promise<{ error: any; message?: string }>;
+  signInWithPassword: (email: string, password: string) => Promise<{ data: any; error: any; message?: string }>;
   signOut: () => Promise<void>;
   setTokens: React.Dispatch<React.SetStateAction<number>>;
   refreshTokens: () => Promise<void>;
@@ -270,6 +271,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithPassword = async (email: string, password: string) => {
+    try {
+      const cleanEmail = email.trim().toLowerCase();
+      if (!cleanEmail.endsWith("@gmail.com")) {
+        return {
+          data: null,
+          error: new Error("Hanya alamat email @gmail.com yang didukung."),
+          message: "Hanya alamat email @gmail.com yang didukung. Mohon gunakan akun Gmail Anda.",
+        };
+      }
+
+      if (!password) {
+        return {
+          data: null,
+          error: new Error("Kata sandi wajib diisi."),
+          message: "Mohon masukkan kata sandi akun Anda.",
+        };
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      });
+
+      if (error) {
+        let friendlyMsg = error.message;
+        if (friendlyMsg.toLowerCase().includes("invalid login credentials")) {
+          friendlyMsg = "Email atau kata sandi tidak cocok. Jika Anda belum pernah mengatur kata sandi, silakan masuk menggunakan Google atau Kode OTP Gmail.";
+        }
+        return { data: null, error, message: friendlyMsg };
+      }
+
+      return { data, error: null };
+    } catch (err: any) {
+      return { data: null, error: err, message: err?.message || "Terjadi kendala saat login dengan kata sandi." };
+    }
+  };
+
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -303,6 +342,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithGoogle,
         signInWithEmailOtp,
         verifyEmailOtp,
+        signInWithPassword,
         signOut,
         setTokens,
         refreshTokens,

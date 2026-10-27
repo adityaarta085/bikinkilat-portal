@@ -55,11 +55,13 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
   const [passwordMsg, setPasswordMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [password2FaCode, setPassword2FaCode] = useState('');
 
   // Email Update Data
   const [newEmail, setNewEmail] = useState('');
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
   const [emailMsg, setEmailMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [email2FaCode, setEmail2FaCode] = useState('');
 
   // Delete Account Confirmation
   const [deleteConfirmationText, setDeleteConfirmationText] = useState('');
@@ -226,7 +228,44 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
       return;
     }
 
-    setIsSubmittingPassword(true);
+    // Jika 2FA aktif, verifikasi kode 6 digit terlebih dahulu
+    if (is2FaEnabled) {
+      const clean2Fa = password2FaCode.trim().replace(/\s+/g, '');
+      if (clean2Fa.length !== 6) {
+        setPasswordMsg({ type: 'error', text: 'Masukkan 6 digit kode 2FA dari aplikasi autentikator Anda.' });
+        return;
+      }
+
+      setIsSubmittingPassword(true);
+      try {
+        const verifyRes = await fetch('/api/user/security', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'verify_2fa',
+            userId: user.id,
+            token: clean2Fa,
+          }),
+        });
+
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success || !verifyData.verified) {
+          setPasswordMsg({
+            type: 'error',
+            text: verifyData.message || 'Kode 2FA tidak valid atau salah. Perubahan kata sandi dibatalkan.',
+          });
+          setIsSubmittingPassword(false);
+          return;
+        }
+      } catch (err: any) {
+        setPasswordMsg({ type: 'error', text: 'Gagal memverifikasi 2FA: ' + (err?.message || 'Gangguan server') });
+        setIsSubmittingPassword(false);
+        return;
+      }
+    } else {
+      setIsSubmittingPassword(true);
+    }
+
     try {
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
@@ -238,6 +277,7 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
         setPasswordMsg({ type: 'success', text: 'Kata sandi berhasil diperbarui!' });
         setNewPassword('');
         setConfirmPassword('');
+        setPassword2FaCode('');
         setTimeout(() => setShowPasswordModal(false), 1800);
       }
     } catch (err: any) {
@@ -258,7 +298,44 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
       return;
     }
 
-    setIsSubmittingEmail(true);
+    // Jika 2FA aktif, verifikasi kode 6 digit terlebih dahulu
+    if (is2FaEnabled) {
+      const clean2Fa = email2FaCode.trim().replace(/\s+/g, '');
+      if (clean2Fa.length !== 6) {
+        setEmailMsg({ type: 'error', text: 'Masukkan 6 digit kode 2FA dari aplikasi autentikator Anda.' });
+        return;
+      }
+
+      setIsSubmittingEmail(true);
+      try {
+        const verifyRes = await fetch('/api/user/security', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'verify_2fa',
+            userId: user.id,
+            token: clean2Fa,
+          }),
+        });
+
+        const verifyData = await verifyRes.json();
+        if (!verifyData.success || !verifyData.verified) {
+          setEmailMsg({
+            type: 'error',
+            text: verifyData.message || 'Kode 2FA tidak valid atau salah. Perubahan email dibatalkan.',
+          });
+          setIsSubmittingEmail(false);
+          return;
+        }
+      } catch (err: any) {
+        setEmailMsg({ type: 'error', text: 'Gagal memverifikasi 2FA: ' + (err?.message || 'Gangguan server') });
+        setIsSubmittingEmail(false);
+        return;
+      }
+    } else {
+      setIsSubmittingEmail(true);
+    }
+
     try {
       const { error } = await supabase.auth.updateUser({
         email: clean,
@@ -272,6 +349,7 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
           text: 'Tautan konfirmasi telah dikirim ke email baru Anda. Silakan periksa kotak masuk untuk menyelesaikan perubahan.',
         });
         setNewEmail('');
+        setEmail2FaCode('');
         setTimeout(() => setShowEmailModal(false), 3000);
       }
     } catch (err: any) {
@@ -435,6 +513,7 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                       setPasswordMsg(null);
                       setNewPassword('');
                       setConfirmPassword('');
+                      setPassword2FaCode('');
                       setShowPasswordModal(true);
                     }}
                     className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition flex items-center gap-1.5"
@@ -467,6 +546,7 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                     onClick={() => {
                       setEmailMsg(null);
                       setNewEmail('');
+                      setEmail2FaCode('');
                       setShowEmailModal(true);
                     }}
                     className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition flex items-center gap-1.5"
@@ -765,6 +845,29 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                 />
               </div>
 
+              {is2FaEnabled && (
+                <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
+                    <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <span className="text-xs font-bold">Verifikasi 2FA Diperlukan</span>
+                  </div>
+                  <p className="text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                    Akun Anda dilindungi 2FA. Buka Google Authenticator atau aplikasi autentikator Anda dan masukkan kode 6-digit:
+                  </p>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    value={password2FaCode}
+                    onChange={(e) => setPassword2FaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="000 000"
+                    className="w-full px-4 py-2.5 rounded-xl border border-amber-300 dark:border-amber-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono text-center text-lg font-bold tracking-[0.25em] focus:outline-hidden focus:ring-2 focus:ring-amber-500"
+                    required
+                  />
+                </div>
+              )}
+
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
                   type="button"
@@ -775,7 +878,12 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmittingPassword || !newPassword || !confirmPassword}
+                  disabled={
+                    isSubmittingPassword ||
+                    !newPassword ||
+                    !confirmPassword ||
+                    (is2FaEnabled && password2FaCode.trim().length !== 6)
+                  }
                   className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition flex items-center gap-2 disabled:opacity-50"
                 >
                   {isSubmittingPassword ? (
@@ -845,6 +953,29 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                 />
               </div>
 
+              {is2FaEnabled && (
+                <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 space-y-2">
+                  <div className="flex items-center gap-2 text-amber-900 dark:text-amber-200">
+                    <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <span className="text-xs font-bold">Verifikasi 2FA Diperlukan</span>
+                  </div>
+                  <p className="text-[11px] text-amber-700 dark:text-amber-300 leading-relaxed">
+                    Akun Anda dilindungi 2FA. Buka Google Authenticator atau aplikasi autentikator Anda dan masukkan kode 6-digit:
+                  </p>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    value={email2FaCode}
+                    onChange={(e) => setEmail2FaCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                    placeholder="000 000"
+                    className="w-full px-4 py-2.5 rounded-xl border border-amber-300 dark:border-amber-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-mono text-center text-lg font-bold tracking-[0.25em] focus:outline-hidden focus:ring-2 focus:ring-amber-500"
+                    required
+                  />
+                </div>
+              )}
+
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
                   type="button"
@@ -855,7 +986,11 @@ export function AccountSecuritySection({ user, onAccountDeleted }: AccountSecuri
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmittingEmail || !newEmail}
+                  disabled={
+                    isSubmittingEmail ||
+                    !newEmail ||
+                    (is2FaEnabled && email2FaCode.trim().length !== 6)
+                  }
                   className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition flex items-center gap-2 disabled:opacity-50"
                 >
                   {isSubmittingEmail ? (
