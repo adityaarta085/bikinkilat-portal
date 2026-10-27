@@ -82,25 +82,53 @@ async function handleVerify(request: Request) {
       );
     }
 
-    // Update waktu penggunaan terakhir
+    const currentTokens = Number(user.tokens) || 0;
+    const shouldDeduct = url.searchParams.get('deduct') !== 'false';
+
+    // Periksa apakah saldo token mencukupi (minimal 1 token)
+    if (shouldDeduct && currentTokens < 1) {
+      return NextResponse.json(
+        {
+          success: false,
+          valid: false,
+          error:
+            'Saldo token akun Anda tidak mencukupi (Sisa: 0 Token). Setiap sesi akses memerlukan 1 saldo token. Silakan isi ulang di Kasir Resmi BikinKilat (https://bikinkilat.web.id/kasir).',
+          tokens: 0,
+          topupUrl: 'https://bikinkilat.web.id/kasir',
+        },
+        { status: 402, headers: CORS_HEADERS }
+      );
+    }
+
+    const newBalance = shouldDeduct ? Math.max(0, currentTokens - 1) : currentTokens;
+
+    // Update saldo token dan waktu penggunaan terakhir
     await supabaseAdmin
       .from('users')
-      .update({ api_token_last_used_at: new Date().toISOString() })
+      .update({
+        tokens: newBalance,
+        api_token_last_used_at: new Date().toISOString(),
+      })
       .eq('id', user.id);
 
     return NextResponse.json(
       {
         success: true,
         valid: true,
+        tokensDeducted: shouldDeduct ? 1 : 0,
+        tokensRemaining: newBalance,
         user: {
           id: user.id,
           name: user.name || 'Pengguna BikinKilat',
           email: user.email,
-          tokens: user.tokens || 0,
+          tokens: newBalance,
           registeredAt: user.created_at,
         },
         ecosystem: 'BikinKilat Unified Micro-SaaS',
-        notice: 'Token ini bersifat pribadi dan terikat ke akun Anda. Dilarang keras diperjualbelikan atau dibagikan ke pihak lain.',
+        service: 'Generator Perangkat Ajar (Deep Learning • Docx Ready)',
+        notice: shouldDeduct
+          ? 'Token terverifikasi. 1 Saldo token telah digunakan untuk sesi ini. Dilarang memperjualbelikan atau membagikan token.'
+          : 'Token terverifikasi dan aktif.',
         timestamp: new Date().toISOString(),
       },
       { status: 200, headers: CORS_HEADERS }
