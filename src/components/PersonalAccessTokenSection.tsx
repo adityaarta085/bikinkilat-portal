@@ -261,11 +261,36 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
 
               <div className="pt-2">
                 <span className="font-bold text-slate-900 dark:text-white block mb-1">
+                  Logo Resmi BikinKilat (Link Gambar Web):
+                </span>
+                <code className="block bg-slate-900 text-indigo-300 p-2.5 rounded-xl font-mono text-[11px] overflow-x-auto select-all">
+                  https://bikinkilat.web.id/brand/logo-horizontal-color.png
+                </code>
+              </div>
+
+              <div className="pt-2">
+                <span className="font-bold text-slate-900 dark:text-white block mb-1">
                   Endpoint Cek Validitas Token (CORS Enabled, Edge 0ms):
                 </span>
-                <code className="block bg-slate-900 text-emerald-400 p-3 rounded-xl font-mono text-[11px] overflow-x-auto select-all">
-                  GET https://api.bikinkilat.web.id/api/auth/verify-token?token=YOUR_TOKEN_HERE
+                <code className="block bg-slate-900 text-emerald-400 p-2.5 rounded-xl font-mono text-[11px] overflow-x-auto select-all">
+                  GET https://bikinkilat.web.id/api/auth/verify-token?token=YOUR_TOKEN_HERE
                 </code>
+              </div>
+
+              <div className="pt-2">
+                <span className="font-bold text-slate-900 dark:text-white block mb-1">
+                  Perintah Prompt Siap Pakai (Salin ke Gemini Canvas):
+                </span>
+                <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl font-mono text-[11px] text-slate-300 whitespace-pre-wrap select-all">
+{`Tolong edit dan sesuaikan halaman login pada aplikasi ini:
+1. Pasang Logo Resmi BikinKilat dari link gambar: https://bikinkilat.web.id/brand/logo-horizontal-color.png di atas form login.
+2. Desain form login dengan tampilan elegan dan modern (Dark mode glassmorphism).
+3. Input 1: Token Akses BikinKilat (bk_live_...) dengan link: 'Salin dari Dashboard BikinKilat (https://bikinkilat.web.id/dashboard)'.
+4. Input 2: Gemini API Key pribadi dengan link: 'Dapatkan gratis di Google AI Studio (https://aistudio.google.com/app/apikey)'.
+5. Pasang banner peringatan resmi: 'PERINGATAN: Token ini bersifat pribadi dan dilarang diperjualbelikan atau dibagikan ke orang lain.'
+6. Validasi token langsung ke API: https://bikinkilat.web.id/api/auth/verify-token?token={TOKEN}
+7. Simpan token di localStorage agar tidak perlu login ulang saat dibuka kembali.`}
+                </div>
               </div>
 
               <div className="pt-1">
