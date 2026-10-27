@@ -33,7 +33,9 @@ import {
   SlidersHorizontal,
   FileCheck2,
   ShieldCheck,
-  Check
+  Check,
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -326,6 +328,179 @@ export default function PortalHomePage() {
               </button>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* LAYANAN TAMBAHAN & ALAT BANTU EKSKLUSIF */}
+      <section id="layanan-tambahan" className="py-20 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-800 text-amber-700 dark:text-amber-400">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Katalog Alat Bantu Tambahan (Koleksi Terus Bertambah)</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Layanan Tambahan &amp; Alat Bantu Cerdas
+              </h2>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+                Koleksi alat bantu digital cerdas untuk melengkapi produktivitas Anda. Masuk dengan mudah menggunakan Kunci Akses Akun BikinKilat Anda.
+              </p>
+            </div>
+
+            {/* Token Notice Banner (Jelas & Transparan, Tanpa Istilah Teknis) */}
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-amber-200 dark:border-amber-800/80 shadow-xs max-w-md space-y-1">
+              <div className="flex items-center gap-2 text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-wide">
+                <Coins className="w-4 h-4 fill-amber-400" />
+                <span>Tarif: 1 Token per Masuk Layanan</span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Setiap kali Anda memasukkan Kunci Akses BikinKilat untuk masuk ke layanan tambahan, saldo akun Anda akan terpotong <strong>1 Token</strong>. Saldo dapat diisi ulang kapan saja melalui menu Kasir.
+              </p>
+            </div>
+          </div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Card 1: Generator Perangkat Ajar */}
+            <div className="group rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="space-y-4">
+                {/* Badges */}
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="px-3 py-1 rounded-full text-[11px] font-black bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1.5">
+                    <Coins className="w-3.5 h-3.5" />
+                    <span>1 Token / Sesi Masuk</span>
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    Format Word (.DOCX) Ready
+                  </span>
+                </div>
+
+                {/* Title & Subtitle */}
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    Generator Perangkat Ajar
+                  </h3>
+                  <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
+                    Kurikulum Merdeka • Pendekatan Pembelajaran Mendalam (Deep Learning)
+                  </p>
+                </div>
+
+                {/* Description */}
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Bantu guru, dosen, dan pendidik menyusun Modul Ajar lengkap, RPP ringkas, Alur Tujuan Pembelajaran (ATP), dan LKPD interaktif berbasis pembelajaran bermakna (Meaningful, Mindful, Joyful). Dokumen langsung siap diunduh ke format Word (.docx) siap telaah.
+                </p>
+
+                {/* Checklist */}
+                <ul className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Format resmi Kurikulum Merdeka Kemendikbudristek</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Integrasi 3 Elemen Pembelajaran Mendalam (Deep Learning)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Ekspor langsung ke Microsoft Word (.docx) &amp; PDF</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-2">
+                <a
+                  href="https://share.gemini.google/QbOMGSuxvreF"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-indigo-600/20"
+                >
+                  <span>Buka Generator Perangkat Ajar</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Card 2: Koleksi Alat Bantu Akan Bertambah */}
+            <div className="rounded-3xl p-6 sm:p-7 bg-slate-100/60 dark:bg-slate-950/40 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-fit block">
+                  Segera Hadir
+                </span>
+
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-800 dark:text-slate-200">
+                    Alat Bantu Otomasi Baru
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+                    Koleksi Akan Terus Bertambah
+                  </p>
+                </div>
+
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  Kami terus merancang berbagai modul otomasi baru untuk guru, dosen, mahasiswa, dan profesional. Semua layanan baru nantinya dapat diakses langsung menggunakan Kunci Akses akun BikinKilat yang sama.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center">
+                <p className="text-xs font-bold text-slate-600 dark:text-slate-400">
+                  Punya usulan alat bantu yang Anda butuhkan?
+                </p>
+                <Link
+                  href="/pengembang"
+                  className="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline inline-block mt-1"
+                >
+                  Kirim Saran ke Pengembang &rarr;
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 3: Cara Menggunakan Kunci Akses */}
+            <div className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit block">
+                  Panduan Penggunaan
+                </span>
+
+                <div>
+                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
+                    Cara Menggunakan Layanan Tambahan
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+                    Cukup 3 Langkah Mudah
+                  </p>
+                </div>
+
+                <ol className="space-y-3 text-xs text-slate-600 dark:text-slate-400 list-decimal pl-4">
+                  <li>
+                    Masuk ke <strong>Dashboard Akun BikinKilat</strong> Anda dan salin <strong>Kunci Akses Pribadi</strong> Anda.
+                  </li>
+                  <li>
+                    Buka layanan tambahan yang Anda pilih, lalu masukkan Kunci Akses tersebut pada halaman masuk.
+                  </li>
+                  <li>
+                    Sistem akan memotong <strong>1 Token Saldo</strong>, dan Anda langsung dapat menggunakan alat bantu tersebut sepuasnya!
+                  </li>
+                </ol>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/dashboard"
+                  className="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center gap-2 transition"
+                >
+                  <span>Lihat Kunci Akses di Dashboard</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </section>
 

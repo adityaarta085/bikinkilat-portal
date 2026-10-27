@@ -10,10 +10,9 @@ import {
   RefreshCw,
   AlertTriangle,
   ShieldCheck,
-  Terminal,
   Sparkles,
   ExternalLink,
-  BookOpen,
+  Coins,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { User } from '@supabase/supabase-js';
@@ -32,9 +31,8 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
   const [isResetting, setIsResetting] = useState(false);
   const [showConfirmResetModal, setShowConfirmResetModal] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
-  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
-  // Fetch token on mount
+  // Ambil token saat komponen dimuat
   useEffect(() => {
     async function loadToken() {
       if (!user?.id) return;
@@ -50,7 +48,7 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
           }
         }
       } catch (err) {
-        console.warn('Gagal memuat token akses:', err);
+        console.warn('Gagal memuat kunci akses:', err);
       } finally {
         setIsLoading(false);
       }
@@ -96,10 +94,10 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
           });
         } catch {}
       } else {
-        setResetError(data.error || 'Gagal meriset token.');
+        setResetError(data.error || 'Gagal meriset kunci akses.');
       }
     } catch (err: any) {
-      setResetError(err?.message || 'Terjadi kesalahan sistem.');
+      setResetError(err?.message || 'Terjadi gangguan jaringan.');
     } finally {
       setIsResetting(false);
     }
@@ -123,7 +121,7 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
 
   const maskedToken = token
     ? `${token.slice(0, 10)}${'•'.repeat(24)}`
-    : 'Memuat token rahasia...';
+    : 'Memuat kunci akses rahasia...';
 
   return (
     <>
@@ -137,39 +135,42 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                  Token Akses Gemini Canvas &amp; Layanan Eksternal
+                  Kunci Akses Layanan &amp; Alat Bantu Tambahan
                 </h2>
                 <span className="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                  Universal Key
+                  Akses Terpadu
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                1 Token pribadi untuk masuk ke Gemini Canvas, Generator Perangkat Ajar, dan mini-tools eksternal.
+                Kunci akses pribadi Anda untuk masuk ke berbagai alat bantu dan layanan otomasi cerdas BikinKilat.
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-            <a
-              href="https://share.gemini.google/6a9KqVAByoeE"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
-              title="Buka Aplikasi Gemini Canvas Resmi"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Buka Generator Perangkat Ajar</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
+          <a
+            href="https://share.gemini.google/QbOMGSuxvreF"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Buka Generator Perangkat Ajar</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
 
-            <button
-              type="button"
-              onClick={() => setIsGuideOpen(!isGuideOpen)}
-              className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-1.5"
-            >
-              <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
-              <span>{isGuideOpen ? 'Tutup Panduan' : 'Dokumentasi'}</span>
-            </button>
+        {/* Info Pemotongan Token (Jelas & Ramah Konsumen) */}
+        <div className="rounded-2xl p-4 bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/60 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 mt-0.5">
+            <Coins className="w-4 h-4" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-xs font-black text-indigo-950 dark:text-indigo-200 uppercase tracking-wide">
+              Biaya Penggunaan: 1 Token Saldo per Sesi Masuk
+            </h4>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Setiap kali Anda memasukkan Kunci Akses ini untuk membuka layanan tambahan (seperti <em>Generator Perangkat Ajar</em>), saldo akun BikinKilat Anda akan otomatis <strong>terpotong 1 Token</strong>. Pastikan saldo Anda mencukupi sebelum masuk.
+            </p>
           </div>
         </div>
 
@@ -178,10 +179,10 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
           <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-wide">
-              PERATURAN PENTING: DILARANG MEMPERJUALBELIKAN ATAU MEMBAGIKAN TOKEN
+              PERATURAN PENTING: DILARANG MEMPERJUALBELIKAN ATAU MEMBAGIKAN KUNCI INI
             </h4>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Token ini bersifat rahasia dan terikat langsung ke akun BikinKilat Anda. Siapapun yang memiliki token ini dapat mengakses akun dan saldo token Anda di semua layanan eksternal. Jika mendeteksi kebocoran, segera tekan tombol <strong>Reset Token</strong> di bawah.
+              Kunci akses ini bersifat rahasia dan terikat langsung ke akun serta saldo Anda. Siapapun yang memiliki kunci ini dapat menggunakan saldo token Anda. Jika mendeteksi kunci Anda bocor, segera tekan tombol <strong>Reset Kunci</strong> di bawah.
             </p>
           </div>
         </div>
@@ -191,7 +192,7 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
-              Kunci Akses Pribadi (Personal Access Token)
+              Kunci Akses Pribadi Akun Anda
             </span>
             <div className="flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
               <span>Dibuat: <strong className="text-slate-700 dark:text-slate-300">{formatDate(createdAt)}</strong></span>
@@ -206,7 +207,7 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
               <span className="truncate select-all">
                 {isLoading ? (
                   <span className="inline-flex items-center gap-2 text-slate-400">
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Memuat token...
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" /> Memuat kunci akses...
                   </span>
                 ) : showToken ? (
                   token
@@ -237,7 +238,7 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
               }`}
             >
               {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'Tersalin!' : 'Salin Token'}</span>
+              <span>{copied ? 'Tersalin!' : 'Salin Kunci'}</span>
             </button>
 
             <button
@@ -248,83 +249,13 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
               }}
               disabled={isLoading || !token}
               className="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 font-bold text-xs flex items-center justify-center gap-2 transition shrink-0 shadow-xs"
-              title="Cabut dan ganti token dengan yang baru"
+              title="Cabut dan ganti kunci dengan yang baru"
             >
               <RefreshCw className="w-3.5 h-3.5" />
-              <span>Reset Token</span>
+              <span>Reset Kunci</span>
             </button>
           </div>
         </div>
-
-        {/* Accordion Documentation Guide */}
-        {isGuideOpen && (
-          <div className="rounded-2xl p-5 border border-indigo-200 dark:border-indigo-900/60 bg-indigo-50/40 dark:bg-indigo-950/20 space-y-4 animate-in fade-in duration-200">
-            <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-300 font-black text-xs uppercase tracking-wider">
-              <Terminal className="w-4 h-4" />
-              <span>Dokumentasi Singkat Integrasi Gemini Canvas (Generator Perangkat Ajar)</span>
-            </div>
-
-            <div className="space-y-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-              <p>
-                Aplikasi Canvas Anda (misal: <strong>Generator Perangkat Ajar</strong>) hanya membutuhkan 2 baris data dari pengguna:
-              </p>
-              <ol className="list-decimal pl-5 space-y-1">
-                <li><strong>Token Akses BikinKilat:</strong> Salin token di atas (contoh: <code className="bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-800 font-mono">bk_live_xxxx</code>).</li>
-                <li><strong>Gemini API Key Pribadi:</strong> Dapatkan gratis dari Google AI Studio (<code className="font-mono text-indigo-600 dark:text-indigo-400">aistudio.google.com</code>) agar kuota AI mandiri &amp; tanpa batas server.</li>
-              </ol>
-
-              <div className="pt-2">
-                <span className="font-bold text-slate-900 dark:text-white block mb-1">
-                  Logo Resmi BikinKilat (Link Gambar Web):
-                </span>
-                <code className="block bg-slate-900 text-indigo-300 p-2.5 rounded-xl font-mono text-[11px] overflow-x-auto select-all">
-                  https://bikinkilat.web.id/brand/logo-horizontal-color.png
-                </code>
-              </div>
-
-              <div className="pt-2">
-                <span className="font-bold text-slate-900 dark:text-white block mb-1">
-                  Endpoint Cek Validitas Token (CORS Enabled, Edge 0ms):
-                </span>
-                <code className="block bg-slate-900 text-emerald-400 p-2.5 rounded-xl font-mono text-[11px] overflow-x-auto select-all">
-                  GET https://bikinkilat.web.id/api/auth/verify-token?token=YOUR_TOKEN_HERE
-                </code>
-              </div>
-
-              <div className="pt-2">
-                <span className="font-bold text-slate-900 dark:text-white block mb-1">
-                  Perintah Prompt Siap Pakai (Salin ke Gemini Canvas):
-                </span>
-                <div className="bg-slate-900 border border-slate-800 p-3 rounded-xl font-mono text-[11px] text-slate-300 whitespace-pre-wrap select-all">
-{`Tolong edit dan sesuaikan halaman login pada aplikasi ini:
-1. Pasang Logo Resmi BikinKilat dari link gambar: https://bikinkilat.web.id/brand/logo-horizontal-color.png di atas form login.
-2. Desain form login dengan tampilan elegan dan modern (Dark mode glassmorphism).
-3. Input 1: Token Akses BikinKilat (bk_live_...) dengan link: 'Salin dari Dashboard BikinKilat (https://bikinkilat.web.id/dashboard)'.
-4. Input 2: Gemini API Key pribadi dengan link: 'Dapatkan gratis di Google AI Studio (https://aistudio.google.com/app/apikey)'.
-5. Pasang banner peringatan resmi: 'PERINGATAN: Token ini bersifat pribadi dan dilarang diperjualbelikan atau dibagikan ke orang lain.'
-6. Validasi token langsung ke API: https://bikinkilat.web.id/api/auth/verify-token?token={TOKEN}
-7. Simpan token di localStorage agar tidak perlu login ulang saat dibuka kembali.`}
-                </div>
-              </div>
-
-              <div className="pt-1">
-                <span className="font-bold text-slate-900 dark:text-white block mb-1">
-                  Respon Sukses JSON:
-                </span>
-                <pre className="bg-slate-900 text-slate-300 p-3 rounded-xl font-mono text-[11px] overflow-x-auto">
-{`{
-  "valid": true,
-  "user": {
-    "name": "Nama Pengguna",
-    "email": "email@gmail.com",
-    "tokens": 15
-  }
-}`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* MODAL CONFIRM RESET TOKEN */}
@@ -337,10 +268,10 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
 
             <div className="text-center space-y-1.5">
               <h3 className="text-lg font-black text-slate-900 dark:text-white">
-                Riset Token Akses?
+                Riset Kunci Akses?
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Token yang sekarang akan <strong>langsung dibatalkan</strong> dan tidak bisa digunakan lagi di Canvas atau aplikasi eksternal manapun. Anda akan mendapatkan token acak baru.
+                Kunci yang sekarang akan <strong>langsung dibatalkan</strong> dan tidak bisa digunakan lagi di layanan tambahan manapun. Anda akan mendapatkan kunci acak baru.
               </p>
             </div>
 
