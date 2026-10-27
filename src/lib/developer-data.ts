@@ -74,31 +74,4 @@ export const INITIAL_GALLERY: GalleryItem[] = [
   },
 ];
 
-export const INITIAL_GUESTBOOK: GuestbookEntry[] = [
-  {
-    id: 'gb-1',
-    name: 'Kepala Program TJKT',
-    role: 'Guru Pembimbing SMK Muhammadiyah Bandongan',
-    message: 'Karya nyata yang membanggakan sekolah. Terus kembangkan inovasi digital untuk kemaslahatan masyarakat!',
-    avatar: '🎓',
-    createdAt: '2026-10-20T10:00:00Z',
-    isPinned: true,
-  },
-  {
-    id: 'gb-2',
-    name: 'Pemerintah Desa Ngawonggo',
-    role: 'Mitra Kerjasama Pemdes Ngawonggo',
-    message: 'Terima kasih atas dedikasi dan kepemimpinan sistem portal desa yang sangat andal dan memudahkan warga.',
-    avatar: '🏛️',
-    createdAt: '2026-10-18T14:30:00Z',
-    isPinned: true,
-  },
-  {
-    id: 'gb-3',
-    name: 'Pengguna Setia BikinKilat',
-    role: 'Mahasiswa Magelang',
-    message: 'Bikin slide dan modul kilat banget cuma butuh beberapa detik. Semangat terus Mas Aditya!',
-    avatar: '🚀',
-    createdAt: '2026-10-22T08:15:00Z',
-  },
-];
+export const INITIAL_GUESTBOOK: GuestbookEntry[] = [];

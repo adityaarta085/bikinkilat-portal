@@ -37,6 +37,7 @@ import {
   User,
   MapPin,
   School,
+  Loader2,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import confetti from 'canvas-confetti';
@@ -85,7 +86,8 @@ export default function DeveloperPage() {
   const [activeLightbox, setActiveLightbox] = useState<GalleryItem | null>(null);
 
   // Guestbook state
-  const [guestbookEntries, setGuestbookEntries] = useState<GuestbookEntry[]>(INITIAL_GUESTBOOK);
+  const [guestbookEntries, setGuestbookEntries] = useState<GuestbookEntry[]>([]);
+  const [isLoadingGb, setIsLoadingGb] = useState(true);
   const [gbName, setGbName] = useState('');
   const [gbRole, setGbRole] = useState('');
   const [gbMessage, setGbMessage] = useState('');
@@ -120,13 +122,18 @@ export default function DeveloperPage() {
 
   const fetchGuestbook = async () => {
     try {
+      setIsLoadingGb(true);
       const res = await fetch('/api/guestbook');
       const data = await res.json();
-      if (data.success && Array.isArray(data.entries) && data.entries.length > 0) {
+      if (data.success && Array.isArray(data.entries)) {
         setGuestbookEntries(data.entries);
+      } else {
+        setGuestbookEntries([]);
       }
     } catch (e) {
-      // Fallback already in INITIAL_GUESTBOOK
+      setGuestbookEntries([]);
+    } finally {
+      setIsLoadingGb(false);
     }
   };
 
@@ -1173,51 +1180,74 @@ export default function DeveloperPage() {
                 </span>
               </div>
 
-              {guestbookEntries.map((entry) => (
-                <div
-                  key={entry.id}
-                  className={`p-4 rounded-2xl border transition-colors ${
-                    entry.isPinned
-                      ? 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200/80 dark:border-indigo-900/60'
-                      : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800'
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-base shrink-0 shadow-2xs">
-                        {entry.avatar}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                            {entry.name}
-                          </h4>
-                          {entry.isPinned && (
-                            <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-500 text-white">
-                              Disematkan
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-                          {entry.role || 'Pengunjung'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <span className="text-[10px] text-slate-400 shrink-0">
-                      {new Date(entry.createdAt).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-normal pl-10.5">
-                    {entry.message}
+              {isLoadingGb ? (
+                <div className="p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 text-center space-y-2.5">
+                  <Loader2 className="w-6 h-6 animate-spin text-indigo-600 mx-auto" />
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Memuat pesan buku tamu dari basis data...
                   </p>
                 </div>
-              ))}
+              ) : guestbookEntries.length === 0 ? (
+                <div className="p-8 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/60 dark:bg-slate-900/40 text-center space-y-2.5">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto">
+                    <MessageSquare className="w-5 h-5" />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                      Belum Ada Pesan Buku Tamu
+                    </h4>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
+                      Jadilah orang pertama yang meninggalkan pesan sapaan, apresiasi, atau masukan untuk Aditya di formulir sebelah kiri!
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                guestbookEntries.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className={`p-4 rounded-2xl border transition-colors ${
+                      entry.isPinned
+                        ? 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200/80 dark:border-indigo-900/60'
+                        : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-base shrink-0 shadow-2xs">
+                          {entry.avatar}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                              {entry.name}
+                            </h4>
+                            {entry.isPinned && (
+                              <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-amber-500 text-white">
+                                Disematkan
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                            {entry.role || 'Pengunjung'}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span className="text-[10px] text-slate-400 shrink-0">
+                        {new Date(entry.createdAt).toLocaleDateString('id-ID', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-normal pl-10.5">
+                      {entry.message}
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

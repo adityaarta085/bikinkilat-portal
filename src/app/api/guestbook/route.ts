@@ -14,8 +14,8 @@ export async function GET() {
       .order('created_at', { ascending: false });
 
     if (error) {
-      console.warn('Supabase guestbook fetch error, fallback to initial:', error);
-      return NextResponse.json({ success: true, entries: INITIAL_GUESTBOOK });
+      console.warn('Database guestbook fetch notice:', error);
+      return NextResponse.json({ success: true, entries: [] });
     }
 
     const mappedDb: GuestbookEntry[] = (dbEntries || []).map((row) => ({
@@ -37,7 +37,7 @@ export async function GET() {
       }
     );
   } catch (err: any) {
-    return NextResponse.json({ success: true, entries: INITIAL_GUESTBOOK });
+    return NextResponse.json({ success: true, entries: [] });
   }
 }
 
