@@ -32,6 +32,7 @@ import { CashierModal } from '@/components/CashierModal';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Footer } from '@/components/Footer';
 import { BrandLogo } from '@/components/BrandLogo';
+import { AccountSecuritySection } from '@/components/AccountSecuritySection';
 import { ECOSYSTEM_APPS } from '@/lib/ecosystem';
 
 interface TransactionItem {
@@ -196,6 +197,13 @@ export default function UserDashboardPage() {
       fetchTransactions(user.id);
     }
     refreshTokens();
+  };
+
+  const handleAccountDeleted = async () => {
+    await signOut();
+    if (typeof window !== 'undefined') {
+      window.location.href = '/';
+    }
   };
 
   const displayName = profile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Pengguna BikinKilat';
@@ -495,6 +503,9 @@ export default function UserDashboardPage() {
             ))}
           </div>
         </section>
+
+        {/* Account Security & Authentication Section (2FA TOTP, Password, Email, Delete Account) */}
+        <AccountSecuritySection user={user} onAccountDeleted={handleAccountDeleted} />
 
         {/* Transaction History Section */}
         <section id="riwayat" className="bg-white dark:bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] transition-colors">
