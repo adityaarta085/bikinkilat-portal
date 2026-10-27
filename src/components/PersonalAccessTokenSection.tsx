@@ -149,14 +149,28 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsGuideOpen(!isGuideOpen)}
-            className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-1.5"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
-            <span>{isGuideOpen ? 'Tutup Panduan' : 'Dokumentasi Singkat'}</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+            <a
+              href="https://share.gemini.google/6a9KqVAByoeE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+              title="Buka Aplikasi Gemini Canvas Resmi"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Buka Generator Perangkat Ajar</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setIsGuideOpen(!isGuideOpen)}
+              className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition flex items-center gap-1.5"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-indigo-500" />
+              <span>{isGuideOpen ? 'Tutup Panduan' : 'Dokumentasi'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Security Warning Banner */}
