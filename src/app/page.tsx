@@ -414,13 +414,11 @@ export default function PortalHomePage() {
               {/* Action Button */}
               <div className="pt-2">
                 <a
-                  href="https://share.gemini.google/QbOMGSuxvreF"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="https://modul.bikinkilat.web.id"
                   className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-indigo-600/20"
                 >
                   <span>Buka Generator Perangkat Ajar</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
