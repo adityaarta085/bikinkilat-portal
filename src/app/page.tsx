@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { EcosystemCard } from '@/components/EcosystemCard';
@@ -35,7 +36,8 @@ import {
   ShieldCheck,
   Check,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  AlertTriangle,
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -44,6 +46,76 @@ export default function PortalHomePage() {
   const [lastTxUpdated, setLastTxUpdated] = useState<number>(Date.now());
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Dynamic External Services State
+  const [externalServices, setExternalServices] = useState<any[]>([]);
+  const [isServicesLoading, setIsServicesLoading] = useState(true);
+  const [launchingServiceId, setLaunchingServiceId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/external-services')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success && Array.isArray(data.items)) {
+          setExternalServices(data.items);
+        }
+      })
+      .catch((err) => console.error('Error loading external services:', err))
+      .finally(() => setIsServicesLoading(false));
+  }, []);
+
+  const handleLaunchService = async (service: any) => {
+    if (service.status === 'maintenance') {
+      alert('Layanan ini sedang dalam pemeliharaan sistem. Kami mohon maaf atas ketidaknyamanannya, silakan coba beberapa saat lagi.');
+      return;
+    }
+
+    if (!user) {
+      if (openAuthModal) {
+        openAuthModal();
+      } else {
+        window.location.href = '/auth?returnUrl=' + encodeURIComponent(window.location.pathname);
+      }
+      return;
+    }
+
+    const cost = Number(service.token_cost) || 0;
+    if (tokens < cost) {
+      alert(`Saldo akun Anda (${tokens} Token) tidak mencukupi untuk membuka layanan ini (${cost} Token). Silakan lakukan pengisian saldo di menu Kasir.`);
+      window.location.href = '/kasir';
+      return;
+    }
+
+    setLaunchingServiceId(service.id);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+
+      const res = await fetch('/api/external-services/launch', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ serviceId: service.id }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || 'Gagal memproses akses layanan.');
+        return;
+      }
+
+      if (typeof data.newTokens === 'number') {
+        setTokens(data.newTokens);
+      }
+      window.open(data.targetUrl, '_blank', 'noopener,noreferrer');
+    } catch (err: any) {
+      alert('Terjadi kendala saat menghubungkan ke layanan.');
+    } finally {
+      setLaunchingServiceId(null);
+    }
+  };
 
   // Scroll reveals for sections
   const { ref: heroMetricsRef, isVisible: isMetricsVisible } = useScrollReveal({ threshold: 0.1 });
@@ -105,7 +177,7 @@ export default function PortalHomePage() {
               </span>
               <span>Slide Widescreen &amp; Verifikasi OTP Instan Aktif</span>
               <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center font-semibold">
-                Catatan Rilis →
+                Catatan Rilis â†’
               </span>
             </Link>
 
@@ -365,66 +437,93 @@ export default function PortalHomePage() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            {/* Card 1: Generator Perangkat Ajar */}
-            <div className="group rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden">
-              <div className="space-y-4">
-                {/* Badges */}
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="px-3 py-1 rounded-full text-[11px] font-black bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1.5">
-                    <Coins className="w-3.5 h-3.5" />
-                    <span>1 Token / Sesi Masuk</span>
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                    Format Word (.DOCX) Ready
-                  </span>
-                </div>
-
-                {/* Title & Subtitle */}
-                <div>
-                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    Generator Perangkat Ajar
-                  </h3>
-                  <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
-                    Kurikulum Merdeka • Pendekatan Pembelajaran Mendalam (Deep Learning)
-                  </p>
-                </div>
-
-                {/* Description */}
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Bantu guru, dosen, dan pendidik menyusun Modul Ajar lengkap, RPP ringkas, Alur Tujuan Pembelajaran (ATP), dan LKPD interaktif berbasis pembelajaran bermakna (Meaningful, Mindful, Joyful). Dokumen langsung siap diunduh ke format Word (.docx) siap telaah.
-                </p>
-
-                {/* Checklist */}
-                <ul className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Format resmi Kurikulum Merdeka Kemendikbudristek</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Integrasi 3 Elemen Pembelajaran Mendalam (Deep Learning)</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Ekspor langsung ke Microsoft Word (.docx) &amp; PDF</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Action Button */}
-              <div className="pt-2">
-                <a
-                  href="https://share.gemini.google/QbOMGSuxvreF"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-indigo-600/20"
+            {/* Dynamic Services from Database (Managed in Admin Panel) */}
+            {externalServices.map((service) => {
+              const isMaintenance = service.status === 'maintenance';
+              return (
+                <div
+                  key={service.id}
+                  className="group rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden"
                 >
-                  <span>Buka Generator Perangkat Ajar</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
+                  <div className="space-y-4">
+                    {/* Badges */}
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="px-3 py-1 rounded-full text-[11px] font-black bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1.5">
+                        <Coins className="w-3.5 h-3.5" />
+                        <span>{service.token_cost || 1} Token / Sesi Masuk</span>
+                      </span>
+                      {service.badge && (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                          {service.badge}
+                        </span>
+                      )}
+                    </div>
 
+                    {/* Title & Subtitle */}
+                    <div>
+                      <h3 className="text-xl font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        {service.title}
+                      </h3>
+                      {service.subtitle && (
+                        <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
+                          {service.subtitle}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    {service.description && (
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {service.description}
+                      </p>
+                    )}
+
+                    {isMaintenance && (
+                      <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-semibold">
+                        <AlertTriangle className="w-4 h-4 shrink-0" />
+                        <span>Sedang dalam pemeliharaan sistem. Mohon coba beberapa saat lagi.</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => handleLaunchService(service)}
+                      disabled={launchingServiceId === service.id || isMaintenance}
+                      className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-indigo-600/20 disabled:opacity-50 cursor-pointer"
+                    >
+                      {launchingServiceId === service.id ? (
+                        <>
+                          <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          <span>Menghubungkan Sesi...</span>
+                        </>
+                      ) : isMaintenance ? (
+                        <>
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          <span>Dalam Pemeliharaan</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Buka {service.title}</span>
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+
+            {isServicesLoading && externalServices.length === 0 && (
+              <div className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 animate-pulse space-y-4">
+                <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-full w-1/3" />
+                <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded-md w-3/4" />
+                <div className="h-16 bg-slate-100 dark:bg-slate-900 rounded-xl" />
+              </div>
+            )}
+            
             {/* Card 2: Koleksi Alat Bantu Akan Bertambah */}
             <div className="rounded-3xl p-6 sm:p-7 bg-slate-100/60 dark:bg-slate-950/40 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
@@ -567,7 +666,7 @@ export default function PortalHomePage() {
               className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 shrink-0 min-h-[48px] group"
             >
               <SlidersHorizontal className="w-4 h-4 text-slate-950 group-hover:rotate-12 transition-transform" />
-              <span>Atur Nominal di Kasir →</span>
+              <span>Atur Nominal di Kasir â†’</span>
             </Link>
           </div>
 
