@@ -13,7 +13,6 @@ import {
   Sparkles,
   ExternalLink,
   Coins,
-  ArrowRight,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { User } from '@supabase/supabase-js';
@@ -149,12 +148,14 @@ export function PersonalAccessTokenSection({ user }: PersonalAccessTokenSectionP
           </div>
 
           <a
-            href="https://modul.bikinkilat.web.id"
+            href="https://share.gemini.google/QbOMGSuxvreF"
+            target="_blank"
+            rel="noopener noreferrer"
             className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm"
           >
             <Sparkles className="w-4 h-4" />
             <span>Buka Generator Perangkat Ajar</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>
 
