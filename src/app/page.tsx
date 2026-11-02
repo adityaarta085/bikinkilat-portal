@@ -38,6 +38,7 @@ import {
   Sparkles,
   ExternalLink,
   AlertTriangle,
+  Heart,
 } from 'lucide-react';
 
 export default function PortalHomePage() {
@@ -623,13 +624,13 @@ export default function PortalHomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800 px-3.5 py-1 rounded-full shadow-2xs">
-              Inisiatif Akses 100% Gratis
+              Akses Gratis &amp; Donasi Sukarela
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
-              20 Kuota Gratis Harian untuk Seluruh Indonesia
+              20 Kuota Gratis Harian
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Semua sistem pembayaran dan kasir resmi telah dinonaktifkan. Setiap pengguna aktif kini mendapatkan 20 generasi dokumen gratis per hari yang otomatis diisi ulang kembali setiap pukul 00:00 WIB.
+              Gunakan seluruh layanan secara gratis setiap hari. Anda juga dapat memberikan apresiasi sukarela untuk mendukung operasional server.
             </p>
           </div>
 
@@ -764,23 +765,26 @@ export default function PortalHomePage() {
             <div className="space-y-1.5 text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 text-xs font-semibold border border-emerald-400/20">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Tanpa Kasir, Tanpa Biaya Tersembunyi</span>
+                <span>Reset Otomatis 00:00 WIB</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Kuota Terisi Ulang Otomatis Setiap 00:00 WIB
+                20 Kuota Gratis / Hari &amp; Donasi Sukarela
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
-                Gunakan 20 kuota generasi setiap hari secara bebas. Sistem pemeliharaan otomatis kami memperbarui saldo seluruh pengguna terdaftar setiap tengah malam.
+                Nikmati akses dokumen harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela.
               </p>
             </div>
 
-            <Link
-              href="/kasir"
-              className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 shrink-0 min-h-[48px] group"
-            >
-              <span>Lihat Status Kuota Lengkap</span>
-              <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
+              <Link
+                href="/kasir"
+                className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 min-h-[48px] group"
+              >
+                <Heart className="w-4 h-4 fill-slate-950" />
+                <span>Status Kuota &amp; Dukung Server</span>
+                <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
 
           {/* Transaction History Section */}

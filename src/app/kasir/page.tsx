@@ -1,18 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Coins, 
   CheckCircle2, 
-  ShieldCheck, 
   Sparkles, 
   ArrowLeft, 
   ArrowRight, 
   Clock, 
-  Layers, 
-  Zap, 
-  Gift, 
+  Heart, 
+  Coffee, 
+  RefreshCw, 
   Check, 
   Presentation, 
   BookOpen, 
@@ -22,15 +22,56 @@ import {
   FileCheck, 
   Camera, 
   TrendingUp,
-  User as UserIcon
+  User as UserIcon,
+  AlertCircle
 } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
-import { ECOSYSTEM_APPS } from '@/lib/ecosystem';
+
+const DONATION_PRESETS = [
+  { amount: 5000, label: 'Kopi Hangat', icon: '☕' },
+  { amount: 10000, label: 'Kopi Susu', icon: '🧋' },
+  { amount: 25000, label: 'Camilan Server', icon: '🥐' },
+  { amount: 50000, label: 'Pendukung Setia', icon: '🍕' },
+  { amount: 100000, label: 'Sponsor Komunitas', icon: '🚀' },
+];
+
+const TOOLS_LIST = [
+  { name: 'Slide & Makalah', cost: '2 Kuota', icon: Presentation, url: 'https://slide.bikinkilat.web.id' },
+  { name: 'Modul Ajar Guru', cost: '2 Kuota', icon: BookOpen, url: 'https://modul.bikinkilat.web.id' },
+  { name: 'Resume Standar ATS', cost: '1 Kuota', icon: FileText, url: 'https://cv.bikinkilat.web.id' },
+  { name: 'Kalkulator RAB Anggaran', cost: '2 Kuota', icon: Calculator, url: 'https://rab.bikinkilat.web.id' },
+  { name: 'Surat Kontrak & Somasi', cost: '2 Kuota', icon: Scale, url: 'https://surat.bikinkilat.web.id' },
+  { name: 'Kalkulator Faraidh Waris', cost: '1 Kuota', icon: FileCheck, url: 'https://waris.bikinkilat.web.id' },
+  { name: 'Proposal Usaha & KUR', cost: '2 Kuota', icon: TrendingUp, url: 'https://proposal.bikinkilat.web.id' },
+  { name: 'Studio Pasfoto CPNS', cost: '3 Kuota', icon: Camera, url: 'https://pasfoto.bikinkilat.web.id' },
+];
 
 export default function KasirPage() {
-  const { user, tokens, openAuthModal, signInWithGoogle } = useAuth();
+  const { user, tokens, openAuthModal, signInWithGoogle, refreshTokens } = useAuth();
+
+  // Donation state
+  const [selectedPreset, setSelectedPreset] = useState<number>(10000);
+  const [isCustom, setIsCustom] = useState(false);
+  const [customAmount, setCustomAmount] = useState('15000');
+  const [donorName, setDonorName] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // QRIS active session
+  const [qrisData, setQrisData] = useState<{
+    transaction_id: string;
+    qris_id: string;
+    qris_image_url: string;
+    amount: number;
+    expired_at?: string;
+  } | null>(null);
+
+  const [timeLeft, setTimeLeft] = useState(900); // 15 mins default
+  const [isChecking, setIsChecking] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleGoogleLogin = async () => {
     try {
@@ -41,96 +82,118 @@ export default function KasirPage() {
     }
   };
 
-  const QUOTA_GUIDE = [
-    {
-      name: 'Slide Presentasi PPTX & Makalah DOCX',
-      subdomain: 'slide.bikinkilat.web.id',
-      cost: '2 Kuota',
-      capacity: 'Hingga 10 proyek / hari',
-      url: 'https://slide.bikinkilat.web.id',
-      icon: Presentation,
-      color: 'text-emerald-600 dark:text-emerald-400',
-      bgColor: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800',
-    },
-    {
-      name: 'Modul Ajar Kurikulum Merdeka',
-      subdomain: 'modul.bikinkilat.web.id',
-      cost: '2 Kuota',
-      capacity: 'Hingga 10 modul / hari',
-      url: 'https://modul.bikinkilat.web.id',
-      icon: BookOpen,
-      color: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-50 dark:bg-blue-950/60 border-blue-200 dark:border-blue-800',
-    },
-    {
-      name: 'Resume Standar ATS & Cover Letter',
-      subdomain: 'cv.bikinkilat.web.id',
-      cost: '1 Kuota',
-      capacity: 'Hingga 20 resume / hari',
-      url: 'https://cv.bikinkilat.web.id',
-      icon: FileText,
-      color: 'text-cyan-600 dark:text-cyan-400',
-      bgColor: 'bg-cyan-50 dark:bg-cyan-950/60 border-cyan-200 dark:border-cyan-800',
-    },
-    {
-      name: 'Kalkulator RAB Anggaran & Event (Excel/PDF)',
-      subdomain: 'rab.bikinkilat.web.id',
-      cost: '2 Kuota',
-      capacity: 'Hingga 10 RAB / hari',
-      url: 'https://rab.bikinkilat.web.id',
-      icon: Calculator,
-      color: 'text-amber-600 dark:text-amber-400',
-      bgColor: 'bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-800',
-    },
-    {
-      name: 'Surat Kontrak Kerja & Somasi Hukum',
-      subdomain: 'surat.bikinkilat.web.id',
-      cost: '2 Kuota',
-      capacity: 'Hingga 10 surat / hari',
-      url: 'https://surat.bikinkilat.web.id',
-      icon: Scale,
-      color: 'text-rose-600 dark:text-rose-400',
-      bgColor: 'bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-800',
-    },
-    {
-      name: 'Kalkulator Faraidh Waris Islam (KHI)',
-      subdomain: 'waris.bikinkilat.web.id',
-      cost: '1 Kuota',
-      capacity: 'Hingga 20 kalkulasi / hari',
-      url: 'https://waris.bikinkilat.web.id',
-      icon: FileCheck,
-      color: 'text-teal-600 dark:text-teal-400',
-      bgColor: 'bg-teal-50 dark:bg-teal-950/60 border-teal-200 dark:border-teal-800',
-    },
-    {
-      name: 'Proposal Usaha & Pengajuan KUR UMKM',
-      subdomain: 'proposal.bikinkilat.web.id',
-      cost: '2 Kuota',
-      capacity: 'Hingga 10 proposal / hari',
-      url: 'https://proposal.bikinkilat.web.id',
-      icon: TrendingUp,
-      color: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-50 dark:bg-purple-950/60 border-purple-200 dark:border-purple-800',
-    },
-    {
-      name: 'AI Studio Pasfoto CPNS & BUMN',
-      subdomain: 'pasfoto.bikinkilat.web.id',
-      cost: '3 Kuota',
-      capacity: 'Hingga 6 foto / hari',
-      url: 'https://pasfoto.bikinkilat.web.id',
-      icon: Camera,
-      color: 'text-orange-600 dark:text-orange-400',
-      bgColor: 'bg-orange-50 dark:bg-orange-950/60 border-orange-200 dark:border-orange-800',
-    },
-  ];
+  const getTargetAmount = () => {
+    if (isCustom) {
+      const parsed = parseInt(customAmount.replace(/[^0-9]/g, ''), 10);
+      return Math.max(1000, isNaN(parsed) ? 1000 : parsed);
+    }
+    return selectedPreset;
+  };
+
+  const handleCreateDonationQRIS = async () => {
+    setIsGenerating(true);
+    setErrorMessage(null);
+
+    const amount = getTargetAmount();
+    const pkgName = `Traktir Kopi BikinKilat (${donorName.trim() || 'Sahabat Kilat'})`;
+
+    try {
+      const res = await fetch('/api/payment/qris/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          packageName: pkgName,
+          userId: user?.id || 'anonymous',
+          tokensToAdd: Math.max(5, Math.floor(amount / 1000)),
+        }),
+      });
+
+      const resData = await res.json();
+
+      if (!res.ok || resData.status !== 'success') {
+        throw new Error(resData?.message || 'Gagal membuat QRIS. Coba lagi.');
+      }
+
+      setQrisData(resData.data);
+      setTimeLeft(900);
+      setIsSuccess(false);
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Terjadi gangguan saat membuat QRIS.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleCheckStatus = async () => {
+    if (!qrisData) return;
+    setIsChecking(true);
+
+    try {
+      const res = await fetch(
+        `/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(
+          user?.id || 'anonymous'
+        )}&txId=${encodeURIComponent(qrisData.transaction_id)}`
+      );
+      const data = await res.json();
+
+      if (data?.status === 'success' && data?.data?.payment_status === 'paid') {
+        setIsSuccess(true);
+        if (refreshTokens) refreshTokens();
+      }
+    } catch (err) {
+      console.warn('Status check warning:', err);
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
+  // Countdown timer
+  useEffect(() => {
+    if (!qrisData || isSuccess) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
+    }
+
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [qrisData, isSuccess]);
+
+  // Polling check every 5s while active
+  useEffect(() => {
+    if (!qrisData || isSuccess || timeLeft <= 0) return;
+
+    const pollInterval = setInterval(() => {
+      handleCheckStatus();
+    }, 5000);
+
+    return () => clearInterval(pollInterval);
+  }, [qrisData, isSuccess, timeLeft]);
+
+  const formatSeconds = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/60 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+    <div className="min-h-screen flex flex-col bg-slate-50/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
 
-      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full space-y-10">
-        {/* Header Breadcrumb */}
-        <div className="flex items-center justify-between">
+      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full space-y-8">
+        {/* Navigation & Status Badge */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition"
@@ -139,199 +202,314 @@ export default function KasirPage() {
             <span>Kembali ke Beranda</span>
           </Link>
 
-          <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3 py-1 rounded-full">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3 py-1 rounded-full">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Semua Kasir Berbayar Dinonaktifkan (100% Gratis)</span>
+            <span>100% Bebas Biaya Layanan</span>
           </div>
         </div>
 
-        {/* Hero Announcement Banner */}
-        <section className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 border border-indigo-200/80 dark:border-indigo-800 text-xs font-bold">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-            <span>Inisiatif Akses Pendidikan & Produktivitas Nasional</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            Layanan BikinKilat Kini 100% Gratis
+        {/* Minimal Header */}
+        <div className="space-y-1.5">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+            Pusat Kuota &amp; Dukungan Server
           </h1>
-
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            Semua sistem pembayaran dan kasir resmi telah dinonaktifkan. Setiap pengguna aktif kini mendapatkan <strong>Kuota Harian Gratis (20 Generasi/Hari)</strong> untuk menyusun slide, makalah, modul ajar, resume ATS, dan dokumen legal tanpa dipungut biaya sepeser pun.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+            Gunakan kuota harian gratis atau traktir kopi sukarela untuk mendukung operasional server bersama.
           </p>
-        </section>
+        </div>
 
-        {/* Live User Quota Status Box */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/80 shadow-xl space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-indigo-800/60">
-            <div>
-              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider block mb-1">
-                Status Akun & Kuota Anda
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-white">
-                {user ? user.email : 'Pengunjung Tamu'}
-              </h2>
+        {/* 2-Column Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Kuota Harian (7 Cols) */}
+          <div className="lg:col-span-7 space-y-5">
+            {/* Quota Card */}
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-5">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 flex items-center justify-center text-amber-500">
+                    <Coins className="w-6 h-6 fill-amber-400" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Saldo Kuota Anda
+                    </span>
+                    <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-white truncate max-w-[220px]">
+                      {user ? user.email : 'Pengunjung Tamu'}
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <div className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white">
+                    {user ? tokens : 0}
+                  </div>
+                  <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 block">
+                    20 Kuota / Hari
+                  </span>
+                </div>
+              </div>
+
+              {/* Status Reset Info */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 flex items-center gap-3 text-xs">
+                <Clock className="w-4 h-4 text-indigo-500 shrink-0" />
+                <p className="text-slate-600 dark:text-slate-300">
+                  Reset otomatis ke <strong>20 kuota</strong> setiap pukul <strong>00:00 WIB</strong> (Tengah Malam).
+                </p>
+              </div>
+
+              {!user && (
+                <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <span className="text-amber-800 dark:text-amber-300 font-semibold text-center sm:text-left">
+                    Masuk akun untuk mengaktifkan kuota harian Anda.
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shrink-0 transition"
+                  >
+                    Masuk Google
+                  </button>
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-white/10 border border-white/15 flex items-center gap-3">
-                <Coins className="w-7 h-7 text-amber-400 fill-amber-400 shrink-0" />
-                <div>
-                  <div className="text-xs text-indigo-200 font-medium">Kuota Harian Aktif</div>
-                  <div className="text-2xl font-black font-mono text-white">
-                    {user ? `${tokens} / 20` : '0 / 20'}
+            {/* Quick Tools Grid */}
+            <div className="space-y-3">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block px-1">
+                Layanan Siap Pakai
+              </span>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {TOOLS_LIST.map((tool) => {
+                  const IconComp = tool.icon;
+                  return (
+                    <a
+                      key={tool.name}
+                      href={tool.url}
+                      className="p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 transition flex flex-col justify-between group shadow-2xs"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <IconComp className="w-4 h-4 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform" />
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                          {tool.cost}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
+                        {tool.name}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Traktir Kopi / Donasi QRIS (5 Cols) */}
+          <div className="lg:col-span-5">
+            <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-5">
+              {/* Header Box */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800/80 flex items-center justify-center text-rose-500">
+                    <Heart className="w-5 h-5 fill-rose-500 text-rose-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-black text-slate-900 dark:text-white">
+                      Traktir Kopi / Dukung Server
+                    </h3>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Sukarela untuk kelancaran operasional
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Highlights Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Biaya Pengguna: Rp 0</span>
-              </div>
-              <p className="text-indigo-200 leading-relaxed text-[11px]">
-                Tidak ada biaya berlangganan, transfer bank, atau tagihan tersembunyi apa pun.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
-              <div className="flex items-center gap-2 text-amber-300 font-bold">
-                <Clock className="w-4 h-4" />
-                <span>Reset Otomatis 00:00 WIB</span>
-              </div>
-              <p className="text-indigo-200 leading-relaxed text-[11px]">
-                Setiap tengah malam WIB, saldo kuota Anda otomatis diisi ulang kembali menjadi 20 kuota.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
-              <div className="flex items-center gap-2 text-sky-300 font-bold">
-                <Layers className="w-4 h-4" />
-                <span>1 Saldo untuk 9 Layanan</span>
-              </div>
-              <p className="text-indigo-200 leading-relaxed text-[11px]">
-                Kuota berlaku serentak di Slide, Modul, CV ATS, RAB, Somasi, Proposal, dan Pasfoto.
-              </p>
-            </div>
-          </div>
-
-          {!user && (
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-amber-400/10 border border-amber-400/30">
-              <div className="text-center sm:text-left">
-                <p className="font-bold text-amber-200 text-sm">Anda Belum Masuk Akun</p>
-                <p className="text-xs text-amber-100/80">Masuk dengan akun Google untuk langsung mengaktifkan 20 kuota gratis harian Anda.</p>
-              </div>
-              <button
-                type="button"
-                onClick={handleGoogleLogin}
-                className="px-5 py-2.5 rounded-xl bg-white text-slate-900 hover:bg-slate-100 font-bold text-xs shadow-md transition shrink-0 flex items-center gap-2"
-              >
-                <span>Masuk dengan Google (Klaim 20 Kuota)</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Table of Quota Consumption */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
-                Panduan Penggunaan Kuota Dokumen
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Alokasi kuota yang dibutuhkan untuk menyusun dan mengunduh berkas asli siap pakai.
-              </p>
-            </div>
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hidden sm:inline">
-              Total 20 Kuota / Hari
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {QUOTA_GUIDE.map((item) => {
-              const IconComp = item.icon;
-              return (
-                <a
-                  key={item.subdomain}
-                  href={item.url}
-                  className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all duration-200 flex items-start gap-4 group"
-                >
-                  <div className={`p-3 rounded-xl border ${item.bgColor} shrink-0`}>
-                    <IconComp className={`w-5 h-5 ${item.color}`} />
+              {/* State 1: Sukses Bayar */}
+              {isSuccess ? (
+                <div className="text-center py-6 px-3 space-y-4 animate-in fade-in">
+                  <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
-                        {item.name}
-                      </h4>
-                      <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-mono font-black text-xs shrink-0">
-                        {item.cost}
+                  <div>
+                    <h4 className="text-lg font-black text-slate-900 dark:text-white">
+                      Terima Kasih Banyak!
+                    </h4>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-xs mx-auto">
+                      Dukungan Anda sangat berarti untuk menjaga server tetap gratis dan cepat bagi ribuan pengguna.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setQrisData(null);
+                      setIsSuccess(false);
+                    }}
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition"
+                  >
+                    Dukung Lagi
+                  </button>
+                </div>
+              ) : qrisData ? (
+                /* State 2: Tampilan QRIS Aktif */
+                <div className="space-y-4 animate-in fade-in">
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-700/80 text-center space-y-3">
+                    <div className="flex items-center justify-between text-xs font-bold text-slate-500">
+                      <span>Scan QRIS</span>
+                      <span className="font-mono text-indigo-600 dark:text-indigo-400">
+                        {formatSeconds(timeLeft)}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Kapasitas harian: <span className="font-semibold text-slate-700 dark:text-slate-300">{item.capacity}</span>
-                    </p>
-                    <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
-                      <span>Buka {item.subdomain}</span>
-                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+
+                    {/* QR Code */}
+                    <div className="bg-white p-3 rounded-2xl shadow-sm inline-block border border-slate-200">
+                      <Image
+                        src={qrisData.qris_image_url}
+                        alt="QRIS Donasi"
+                        width={220}
+                        height={220}
+                        className="rounded-lg object-contain mx-auto"
+                        unoptimized
+                      />
                     </div>
+
+                    <div>
+                      <div className="text-xs text-slate-500 font-medium">Nominal Dukungan:</div>
+                      <div className="text-xl font-black font-mono text-slate-900 dark:text-white">
+                        Rp {Number(qrisData.amount).toLocaleString('id-ID')}
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-slate-500 leading-tight">
+                      BCA, Mandiri, BRI, BNI, GoPay, OVO, Dana, ShopeePay
+                    </p>
                   </div>
-                </a>
-              );
-            })}
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCheckStatus}
+                      disabled={isChecking}
+                      className="py-2.5 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isChecking ? 'animate-spin' : ''}`} />
+                      <span>{isChecking ? 'Mengecek...' : 'Cek Status'}</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setQrisData(null)}
+                      className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                    >
+                      Batal / Ubah
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* State 3: Pemilihan Nominal Donasi */
+                <div className="space-y-4">
+                  {/* Preset Buttons */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {DONATION_PRESETS.map((preset) => {
+                      const isSelected = !isCustom && selectedPreset === preset.amount;
+                      return (
+                        <button
+                          key={preset.amount}
+                          type="button"
+                          onClick={() => {
+                            setSelectedPreset(preset.amount);
+                            setIsCustom(false);
+                          }}
+                          className={`p-3 rounded-xl border text-left transition flex items-center justify-between ${
+                            isSelected
+                              ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
+                              : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 text-slate-700 dark:text-slate-300'
+                          }`}
+                        >
+                          <div>
+                            <span className="text-xs font-black block">
+                              Rp {preset.amount.toLocaleString('id-ID')}
+                            </span>
+                            <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                              {preset.label}
+                            </span>
+                          </div>
+                          <span className="text-base">{preset.icon}</span>
+                        </button>
+                      );
+                    })}
+
+                    {/* Custom Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsCustom(true)}
+                      className={`p-3 rounded-xl border text-left transition flex items-center justify-between ${
+                        isCustom
+                          ? 'border-indigo-600 bg-indigo-50/60 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300'
+                          : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 text-slate-700 dark:text-slate-300'
+                      }`}
+                    >
+                      <div>
+                        <span className="text-xs font-black block">Nominal Bebas</span>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">Tentukan sendiri</span>
+                      </div>
+                      <span className="text-base">✨</span>
+                    </button>
+                  </div>
+
+                  {/* Custom Input */}
+                  {isCustom && (
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-slate-500">Nominal Dukungan (Rp)</label>
+                      <input
+                        type="number"
+                        min="1000"
+                        step="1000"
+                        value={customAmount}
+                        onChange={(e) => setCustomAmount(e.target.value)}
+                        placeholder="Contoh: 15000"
+                        className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs font-mono font-bold focus:outline-hidden focus:border-indigo-500"
+                      />
+                    </div>
+                  )}
+
+                  {/* Donor Name (Optional) */}
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-500">Nama / Catatan (Opsional)</label>
+                    <input
+                      type="text"
+                      maxLength={30}
+                      value={donorName}
+                      onChange={(e) => setDonorName(e.target.value)}
+                      placeholder="Sahabat Kilat"
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-white text-xs focus:outline-hidden focus:border-indigo-500"
+                    />
+                  </div>
+
+                  {errorMessage && (
+                    <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 text-xs flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleCreateDonationQRIS}
+                    disabled={isGenerating}
+                    className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition disabled:opacity-50"
+                  >
+                    <Coffee className="w-4 h-4" />
+                    <span>
+                      {isGenerating
+                        ? 'Menyiapkan QRIS...'
+                        : `Traktir Kopi Rp ${getTargetAmount().toLocaleString('id-ID')}`}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </section>
-
-        {/* Transparent FAQ Section */}
-        <section className="p-6 sm:p-8 rounded-3xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-6">
-          <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
-            Pertanyaan yang Sering Diajukan Seputar Akses Gratis
-          </h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs sm:text-sm">
-            <div className="space-y-1.5">
-              <h4 className="font-bold text-slate-900 dark:text-white">
-                Apakah saya harus membayar setelah kuota 20 generasi habis?
-              </h4>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                Tidak. Anda tidak perlu membayar sepeser pun. Semua kasir telah ditutup. Kuota Anda akan otomatis diisi ulang kembali menjadi 20 kuota setiap pukul 00:00 WIB (tengah malam).
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <h4 className="font-bold text-slate-900 dark:text-white">
-                Mengapa saya tetap wajib masuk menggunakan akun Google?
-              </h4>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                Masuk akun diperlukan agar alokasi kuota harian tersimpan aman di profil Anda dan mencegah server dari eksploitasi bot scraper massal.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <h4 className="font-bold text-slate-900 dark:text-white">
-                Apakah hasil unduhan (.pptx, .docx, .xlsx, .pdf) memiliki watermark?
-              </h4>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                Semua berkas yang Anda unduh adalah dokumen asli yang rapi, terstruktur, dan siap diedit kembali di Microsoft Office atau Google Docs.
-              </p>
-            </div>
-
-            <div className="space-y-1.5">
-              <h4 className="font-bold text-slate-900 dark:text-white">
-                Apakah sisa kuota yang tidak terpakai akan hangus?
-              </h4>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-xs">
-                Setiap malam pukul 00:00 WIB, saldo kuota Anda dipastikan selalu berada di angka 20 kuota baru untuk mendukung produktivitas hari berikutnya.
-              </p>
-            </div>
-          </div>
-        </section>
+        </div>
       </main>
 
       <Footer />
