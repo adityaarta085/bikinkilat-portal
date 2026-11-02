@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://api.bikinkilat.web.id';
+const GATEWAY_URL = 'https://api.bikinkilat.web.id';
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,7 +15,20 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return NextResponse.json(
+        {
+          status: 'error',
+          message: 'Format data dari gateway tidak valid',
+        },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json(data, { status: response.status });
   } catch (error: any) {
     return NextResponse.json(

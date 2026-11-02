@@ -98,7 +98,7 @@ export default function KasirPage() {
     const pkgName = `Traktir Kopi BikinKilat (${donorName.trim() || 'Sahabat Kilat'})`;
 
     try {
-      const res = await fetch('/api/payment/qris/generate', {
+      const res = await fetch('https://api.bikinkilat.web.id/api/payment/qris/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -109,7 +109,13 @@ export default function KasirPage() {
         }),
       });
 
-      const resData = await res.json();
+      const text = await res.text();
+      let resData: any;
+      try {
+        resData = JSON.parse(text);
+      } catch {
+        throw new Error('Terjadi kendala pada gateway pembayaran. Silakan coba lagi.');
+      }
 
       if (!res.ok || resData.status !== 'success') {
         throw new Error(resData?.message || 'Gagal membuat QRIS. Coba lagi.');
@@ -131,11 +137,17 @@ export default function KasirPage() {
 
     try {
       const res = await fetch(
-        `/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(
+        `https://api.bikinkilat.web.id/api/payment/qris/${qrisData.qris_id}/status?userId=${encodeURIComponent(
           user?.id || 'anonymous'
         )}&txId=${encodeURIComponent(qrisData.transaction_id)}`
       );
-      const data = await res.json();
+      const text = await res.text();
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        return;
+      }
 
       if (data?.status === 'success' && data?.data?.payment_status === 'paid') {
         setIsSuccess(true);
