@@ -60,11 +60,11 @@ function AuthCallbackContent() {
         `/api/wallet?userId=${u.id}&email=${encodeURIComponent(uEmail)}&name=${encodeURIComponent(uName)}`
       );
       const walletData = await res.json();
-      const tokens = typeof walletData.tokens === "number" ? walletData.tokens : 5;
+      const tokens = typeof walletData.tokens === "number" ? walletData.tokens : 20;
       setSharedSessionCookie(u.id, tokens);
     } catch (syncErr) {
       console.warn("Wallet sync notice:", syncErr);
-      setSharedSessionCookie(u.id, 5);
+      setSharedSessionCookie(u.id, 20);
     }
 
     if (typeof window !== "undefined") {

@@ -14,7 +14,7 @@ export async function GET(request: Request) {
         success: true,
         tokens: 0,
         isLoggedIn: false,
-        message: 'Pengguna belum masuk. Masuk akun untuk mendapatkan 5 token gratis.',
+        message: 'Pengguna belum masuk. Masuk akun untuk mendapatkan 20 kuota harian gratis.',
       });
     }
 
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       });
     }
 
-    // Jika pengguna baru login pertama kali: berikan 5 token selamat datang
+    // Jika pengguna baru login pertama kali: berikan 20 kuota harian gratis
     if (!user) {
       const { data: newUser, error: insertErr } = await supabaseAdmin
         .from('users')
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
           id: userId,
           email,
           name,
-          tokens: 5, // 5 token gratis khusus pengguna baru yang telah login
+          tokens: 20, // 20 kuota gratis khusus pengguna baru yang telah login
         })
         .select()
         .single();
@@ -54,15 +54,15 @@ export async function GET(request: Request) {
         console.warn('Gagal menyimpan pengguna baru:', insertErr);
         return NextResponse.json({
           success: true,
-          tokens: 5,
+          tokens: 20,
           isLoggedIn: true,
-          user: { id: userId, email, name, tokens: 5 },
+          user: { id: userId, email, name, tokens: 20 },
         });
       }
 
       return NextResponse.json({
         success: true,
-        tokens: newUser ? newUser.tokens : 5,
+        tokens: newUser ? newUser.tokens : 20,
         isLoggedIn: true,
         user: newUser,
       });

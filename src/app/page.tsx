@@ -223,12 +223,12 @@ export default function PortalHomePage() {
               <MagneticButton strength={12}>
                 <button
                   type="button"
-                  data-cursor="TOP-UP"
+                  data-cursor="GRATIS"
                   onClick={handleOpenCashier}
                   className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-2"
                 >
-                  <QrCode className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                  <span>Top-Up Token (QRIS Instan)</span>
+                  <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
+                  <span>Akses 100% Gratis (20 Kuota/Hari)</span>
                 </button>
               </MagneticButton>
             </div>
@@ -245,7 +245,7 @@ export default function PortalHomePage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>1 Saldo Token Terpadu</span>
+                <span>20 Kuota Gratis Otomatis Tiap Hari</span>
               </span>
             </div>
 
@@ -263,12 +263,12 @@ export default function PortalHomePage() {
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Layanan Spesialis</div>
               </div>
               <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">1 Dompet</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Terintegrasi Antar-Layanan</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">20 Kuota</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Gratis Harian Otomatis</div>
               </div>
               <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">QRIS</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Otomatisasi Tanpa Admin</div>
+                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">Rp 0</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Semua Kasir Dinonaktifkan</div>
               </div>
               <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">
@@ -615,49 +615,162 @@ export default function PortalHomePage() {
       {/* Interactive Efficiency & Cost Savings Calculator */}
       <EfficiencyCalculator onOpenCashier={handleOpenCashier} />
 
-      {/* Unified Cashier & Token Packages Section */}
+      {/* Unified Free Quota & Service Showcase Section */}
       <section id="kasir" className="py-24 bg-white dark:bg-slate-950 border-y border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
         {/* Subtle Ambient Light with Aurora */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-gradient-to-tr from-indigo-50/40 via-sky-50/30 to-transparent dark:from-indigo-950/20 dark:via-sky-950/15 dark:to-transparent blur-3xl pointer-events-none -z-10 animate-aurora" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-3.5 py-1 rounded-full shadow-2xs">
-              Tarif Transparan & Terjangkau
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800 px-3.5 py-1 rounded-full shadow-2xs">
+              Inisiatif Akses 100% Gratis
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
-              1 Dompet Token untuk Semua Subdomain
+              20 Kuota Gratis Harian untuk Seluruh Indonesia
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Token yang Anda beli di portal utama ini otomatis terbaca di seluruh layanan: 
-              slide.bikinkilat.web.id, modul.bikinkilat.web.id, cv.bikinkilat.web.id, dan lainnya.
+              Semua sistem pembayaran dan kasir resmi telah dinonaktifkan. Setiap pengguna aktif kini mendapatkan 20 generasi dokumen gratis per hari yang otomatis diisi ulang kembali setiap pukul 00:00 WIB.
             </p>
           </div>
 
-          {/* Pricing Cards (Apple Liquid Glass Cards with Strike-Through Animation) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-6 mb-16 overflow-visible">
-            {TOKEN_PACKAGES.map((pkg, idx) => (
-              <AnimatedPricingCard
-                key={pkg.id}
-                pkg={pkg}
-                index={idx}
-                onSelect={handleOpenCashier}
-              />
-            ))}
+          {/* 3 Free Ecosystem Benefit Pillar Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-4 mb-14 overflow-visible">
+            {/* Card 1: Akademik */}
+            <div className="p-7 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-700 transition flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                    Sektor Akademik
+                  </span>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                    Slide & Modul Ajar
+                  </h3>
+                </div>
+                <div className="text-3xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                </div>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Slide PowerPoint 16:9 & Speaker Notes</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Kerangka Makalah DOCX Siap Telaah</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Modul Ajar Kurikulum Merdeka Guru</span>
+                  </li>
+                </ul>
+              </div>
+              <a
+                href="https://slide.bikinkilat.web.id"
+                className="mt-6 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
+              >
+                Mulai Susun Presentasi
+              </a>
+            </div>
+
+            {/* Card 2: Karier */}
+            <div className="p-7 rounded-3xl bg-indigo-50/50 dark:bg-indigo-950/30 border-2 border-indigo-500/50 dark:border-indigo-500/30 shadow-md transition flex flex-col justify-between relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-indigo-600 text-white font-black text-[10px] uppercase shadow-sm">
+                Paling Sering Digunakan
+              </div>
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+                  <Coins className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-1">
+                    Sektor Karier & Kerja
+                  </span>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                    Resume ATS & Cover Letter
+                  </h3>
+                </div>
+                <div className="text-3xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                </div>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-indigo-500 shrink-0" />
+                    <span>Format Single-Column Standar ATS HRD</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-indigo-500 shrink-0" />
+                    <span>Surat Lamaran Bilingual (ID & EN)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-indigo-500 shrink-0" />
+                    <span>Ekspor PDF & DOCX Bebas Edit</span>
+                  </li>
+                </ul>
+              </div>
+              <a
+                href="https://cv.bikinkilat.web.id"
+                className="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold text-center block transition shadow-sm"
+              >
+                Mulai Buat CV ATS
+              </a>
+            </div>
+
+            {/* Card 3: Bisnis & Legal */}
+            <div className="p-7 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-700 transition flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 block mb-1">
+                    Sektor Bisnis & Hukum
+                  </span>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                    RAB, Kontrak & Proposal
+                  </h3>
+                </div>
+                <div className="text-3xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                </div>
+                <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>Kalkulator RAB Format Excel Otomatis</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>Draf Surat Perjanjian & Somasi Hukum</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-amber-500 shrink-0" />
+                    <span>Proposal Usaha & Pengajuan KUR UMKM</span>
+                  </li>
+                </ul>
+              </div>
+              <a
+                href="https://rab.bikinkilat.web.id"
+                className="mt-6 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
+              >
+                Mulai Hitung RAB
+              </a>
+            </div>
           </div>
 
-          {/* Custom Nominal Flexible Top-Up Banner */}
-          <div className="max-w-5xl mx-auto -mt-6 mb-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-700/80 transition-all duration-300">
+          {/* Reset Banner */}
+          <div className="max-w-5xl mx-auto -mt-4 mb-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-700/80 transition-all duration-300">
             <div className="space-y-1.5 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-amber-400/15 text-amber-300 text-xs font-semibold border border-amber-400/20">
-                <Coins className="w-3.5 h-3.5 text-amber-400" />
-                <span>Fitur Baru: Top-Up Bebas Fleksibel</span>
+              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 text-xs font-semibold border border-emerald-400/20">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Tanpa Kasir, Tanpa Biaya Tersembunyi</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Ingin Nominal Berapapun? Minimal Hanya Rp 10.000!
+                Kuota Terisi Ulang Otomatis Setiap 00:00 WIB
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
-                Tentukan anggaran Anda sendiri tanpa terpaku paket. Dapatkan bonus ekstra token bertingkat hingga +50% dengan kalkulator transparan di Kasir Resmi kami.
+                Gunakan 20 kuota generasi setiap hari secara bebas. Sistem pemeliharaan otomatis kami memperbarui saldo seluruh pengguna terdaftar setiap tengah malam.
               </p>
             </div>
 
@@ -665,8 +778,8 @@ export default function PortalHomePage() {
               href="/kasir"
               className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 shrink-0 min-h-[48px] group"
             >
-              <SlidersHorizontal className="w-4 h-4 text-slate-950 group-hover:rotate-12 transition-transform" />
-              <span>Atur Nominal di Kasir â†’</span>
+              <span>Lihat Status Kuota Lengkap</span>
+              <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
