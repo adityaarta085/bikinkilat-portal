@@ -413,7 +413,7 @@ export function AuthModal() {
                 </div>
                 <div className="text-xs">
                   <span className="font-bold text-amber-950 dark:text-amber-200 block">Bonus Pengguna Baru</span>
-                  <span className="text-amber-800 dark:text-amber-300">Dapatkan langsung 5 Token Gratis saat pertama kali masuk!</span>
+                  <span className="text-amber-800 dark:text-amber-300">Dapatkan langsung 20 Kuota Harian saat pertama kali masuk!</span>
                 </div>
               </div>
 

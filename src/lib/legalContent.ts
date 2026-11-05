@@ -55,7 +55,7 @@ export const TERMS_OF_SERVICE = {
       title: "4. Ketentuan Pembelian & Penggunaan Saldo Token",
       content: [
         "BikinKilat.web.id menerapkan model pembayaran mikro fleksibel (Pay-As-You-Go) berbasis token tanpa kewajiban biaya langganan bulanan berkala.",
-        "Setiap pengguna baru yang berhasil mendaftar berhak menerima kuota bonus selamat datang sebesar 5 Token gratis satu kali.",
+        "Setiap pengguna baru yang berhasil mendaftar berhak menerima kuota selamat datang sebesar 20 Kuota Harian.",
         "Pengisian ulang (Top-Up) token dapat dilakukan melalui saluran pembayaran QRIS resmi yang mendukung seluruh bank dan dompet digital berizin Bank Indonesia.",
         "Saldo Token yang telah dibeli tidak memiliki masa kedaluwarsa (tidak akan hangus) dan dapat digunakan kapan saja di seluruh lini layanan BikinKilat.web.id.",
         "Nilai token tertera secara transparan pada kasir resmi: Paket Pelajar (Rp1.050/token), Paket Mahasiswa (Rp680/token), dan Paket Profesional (Rp408/token). Biaya token per generator tertera jelas sebelum pengguna memutuskan membuka kunci berkas.",
@@ -226,7 +226,7 @@ export const REFUND_POLICY = {
         "Kanal WhatsApp Cepat: Kirim pesan ke +62 851-3643-6577 dengan menyertakan alamat email akun dan tangkapan layar bukti transfer QRIS.",
         "Kanal Email: Kirim email ke support@bikinkilat.web.id dengan subjek: [KLAIM QRIS] - (Email Akun Anda).",
         "Waktu Penanganan (SLA): Tim kami akan memverifikasi catatan mutasi kliring dalam waktu maksimal 1x24 jam kerja.",
-        "Solusi yang Disediakan: 1) Pengisian token seketika disertai bonus kompensasi gratis, atau 2) Pengembalian dana penuh via transfer bank/dompet digital pengirim.",
+        "Solusi yang Disediakan: 1) Pengisian token seketika disertai bonus kompensasi kuota, atau 2) Pengembalian dana penuh via transfer bank/dompet digital pengirim.",
       ],
     },
   ],

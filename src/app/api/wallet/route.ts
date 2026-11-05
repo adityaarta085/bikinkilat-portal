@@ -14,7 +14,7 @@ export async function GET(request: Request) {
         success: true,
         tokens: 0,
         isLoggedIn: false,
-        message: 'Pengguna belum masuk. Masuk akun untuk mendapatkan 20 kuota harian gratis.',
+        message: 'Pengguna belum masuk. Masuk akun untuk mengaktifkan 20 kuota harian.',
       });
     }
 
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
       });
     }
 
-    // Jika pengguna baru login pertama kali: berikan 20 kuota harian gratis
+    // Jika pengguna baru login pertama kali: berikan 20 kuota harian
     if (!user) {
       const { data: newUser, error: insertErr } = await supabaseAdmin
         .from('users')
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
           id: userId,
           email,
           name,
-          tokens: 20, // 20 kuota gratis khusus pengguna baru yang telah login
+          tokens: 20, // 20 kuota harian khusus pengguna baru yang telah login
         })
         .select()
         .single();

@@ -508,7 +508,7 @@ function AuthFormContent() {
           <div className="text-xs leading-snug">
             <span className="font-bold text-amber-950 dark:text-amber-200 block">Bonus Pengguna Baru</span>
             <span className="text-amber-800 dark:text-amber-300">
-              Dapatkan langsung <strong>5 Token Gratis</strong> saat pertama kali masuk akun!
+              Dapatkan langsung <strong>20 Kuota Harian</strong> saat pertama kali masuk akun!
             </span>
           </div>
         </div>

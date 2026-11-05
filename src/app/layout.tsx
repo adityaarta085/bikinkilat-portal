@@ -227,10 +227,10 @@ export default function RootLayout({
           },
           {
             '@type': 'Question',
-            name: 'Apakah ada kuota bonus token gratis untuk mencoba?',
+            name: 'Berapa kuota yang saya dapatkan setiap hari?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Ya, setiap pengguna baru yang mendaftar dan masuk ke akun BikinKilat mendapatkan bonus 5 token gratis untuk mencoba layanan langsung.',
+              text: 'Setiap pengguna yang masuk ke akun BikinKilat otomatis mendapatkan 20 kuota harian untuk menyusun dokumen langsung.',
             },
           },
           {

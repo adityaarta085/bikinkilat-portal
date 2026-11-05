@@ -20,15 +20,15 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     name: 'Portal Bikinkilat',
     subdomain: 'bikinkilat.web.id',
     url: 'https://bikinkilat.web.id',
-    title: 'Pusat Ekosistem & Kuota Harian Gratis',
-    tagline: 'Satu akun terpusat dengan 20 kuota harian gratis untuk seluruh 9 layanan otomasi cerdas.',
+    title: 'Pusat Ekosistem & Kuota Harian',
+    tagline: 'Satu akun terpusat dengan 20 alokasi kuota harian untuk seluruh 9 layanan otomasi cerdas.',
     category: 'Bisnis',
     tokenCost: 0,
-    outputFormats: ['Dashboard', 'Akses Gratis'],
+    outputFormats: ['Dashboard', 'Akses Terbuka'],
     status: 'live',
     badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     iconName: 'LayoutGrid',
-    features: ['Single Sign-On Terpusat', '20 Kuota Gratis Harian', 'Reset Tiap 00:00 WIB']
+    features: ['Single Sign-On Terpusat', '20 Alokasi Kuota Harian', 'Reset Tiap 00:00 WIB']
   },
   {
     id: '02-slide',

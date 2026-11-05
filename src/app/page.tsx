@@ -224,12 +224,12 @@ export default function PortalHomePage() {
               <MagneticButton strength={12}>
                 <button
                   type="button"
-                  data-cursor="GRATIS"
+                  data-cursor="KUOTA"
                   onClick={handleOpenCashier}
                   className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span>Akses 100% Gratis (20 Kuota/Hari)</span>
+                  <span>Akses Publik Termasuk (20 Kuota/Hari)</span>
                 </button>
               </MagneticButton>
             </div>
@@ -246,7 +246,7 @@ export default function PortalHomePage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>20 Kuota Gratis Otomatis Tiap Hari</span>
+                <span>20 Alokasi Kuota Otomatis Tiap Hari</span>
               </span>
             </div>
 
@@ -265,7 +265,7 @@ export default function PortalHomePage() {
               </div>
               <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">20 Kuota</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Gratis Harian Otomatis</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Alokasi Harian Otomatis</div>
               </div>
               <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                 <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">Rp 0</div>
@@ -624,13 +624,13 @@ export default function PortalHomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800 px-3.5 py-1 rounded-full shadow-2xs">
-              Akses Gratis &amp; Donasi Sukarela
+              Akses Harian &amp; Dukungan Server
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
-              20 Kuota Gratis Harian
+              20 Alokasi Kuota Harian
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Gunakan seluruh layanan secara gratis setiap hari. Anda juga dapat memberikan apresiasi sukarela untuk mendukung operasional server.
+              Gunakan seluruh layanan dengan 20 kuota harian setiap hari. Anda juga dapat memberikan apresiasi sukarela untuk mendukung operasional server.
             </p>
           </div>
 
@@ -768,7 +768,7 @@ export default function PortalHomePage() {
                 <span>Reset Otomatis 00:00 WIB</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                20 Kuota Gratis / Hari &amp; Donasi Sukarela
+                20 Kuota Harian &amp; Dukungan Server
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
                 Nikmati akses dokumen harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela.
@@ -845,10 +845,10 @@ export default function PortalHomePage() {
 
           <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
             <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Apakah ada bonus token gratis untuk mencoba?
+              Berapa kuota yang saya dapatkan setiap hari?
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Ya, setiap pengguna baru yang mendaftar dan masuk ke akun BikinKilat otomatis mendapatkan bonus 5 token gratis untuk mencoba langsung pembuatan slide presentasi, naskah, atau modul tanpa biaya awal.
+              Setiap pengguna yang masuk ke akun BikinKilat otomatis memiliki 20 kuota harian yang diperbarui setiap pukul 00:00 WIB untuk menyusun dokumen langsung tanpa biaya langganan.
             </p>
           </div>
         </div>

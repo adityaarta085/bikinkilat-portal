@@ -123,7 +123,7 @@ const TRANSPARENCY_FAQS = [
   },
   {
     q: '6. Kapan token saya dipotong dan bagaimana garansi penggantiannya?',
-    a: 'Saldo token Anda HANYA dipotong saat Anda memutuskan untuk membuka kunci dan mengunduh berkas utuh (.pptx, .docx, .xlsx, .pdf). Pratinjau di layar selalu gratis. Jika terjadi eror server (misal error 500) atau file yang diunduh rusak, kami memberikan Garansi Saldo Token Bebas Risiko (Zero-Loss Guarantee) di mana saldo token Anda akan dikembalikan 100%.',
+    a: 'Saldo token Anda HANYA dipotong saat Anda memutuskan untuk membuka kunci dan mengunduh berkas utuh (.pptx, .docx, .xlsx, .pdf). Pratinjau di layar selalu dapat diakses langsung tanpa biaya. Jika terjadi eror server (misal error 500) atau file yang diunduh rusak, kami memberikan Garansi Saldo Token Bebas Risiko (Zero-Loss Guarantee) di mana saldo token Anda akan dikembalikan 100%.',
   },
   {
     q: '7. Bagaimana saya bisa berbicara dengan manusia jika mengalami kendala transaksi?',

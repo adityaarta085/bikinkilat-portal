@@ -466,7 +466,7 @@ const SERVICE_CARDS: ServiceCardItem[] = [
       'Isi token lewat QRIS',
       'Catatan transaksi lengkap',
     ],
-    costLabel: 'Gratis',
+    costLabel: 'Termasuk',
     formatLabel: 'Dashboard, QRIS',
     actionText: 'Buka Portal',
   },
@@ -837,7 +837,7 @@ export default function BetaLandingPage() {
                   onClick={openAuthModal}
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs sm:text-sm shadow-xs transition active:scale-95 flex items-center gap-1.5"
                 >
-                  <span>Klaim 5 token gratis</span>
+                  <span>Aktifkan 20 kuota harian</span>
                 </button>
               </div>
             )}
@@ -1857,8 +1857,8 @@ export default function BetaLandingPage() {
           ) : (
             <div className="space-y-4 max-w-xl">
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                Anda belum masuk. Masuk untuk melihat riwayat pembelian token. Pengguna baru mendapat
-                5 token gratis.
+                Anda belum masuk. Masuk untuk melihat riwayat aktivitas akun. Pengguna aktif mendapatkan
+                20 kuota harian.
               </p>
               <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                 Saldo saat ini: {tokens} token.
@@ -1976,15 +1976,15 @@ export default function BetaLandingPage() {
                 onClick={() => setOpenFaqIndex(openFaqIndex === 4 ? null : 4)}
                 className="w-full flex items-center justify-between text-left font-bold text-base text-slate-900 dark:text-white"
               >
-                <span>Bagaimana cara mendapatkan bonus 5 token gratis?</span>
+                <span>Bagaimana cara mengaktifkan 20 kuota harian?</span>
                 <span className="text-slate-400 text-lg ml-4">
-                  {openFaqIndex === 4 ? '—' : '+'}
+                  {openFaqIndex === 4 ? '-' : '+'}
                 </span>
               </button>
               {openFaqIndex === 4 && (
                 <p className="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
-                  Cukup buat akun baru atau masuk menggunakan email @gmail.com Anda. Bonus 5 token
-                  gratis langsung aktif di saldo akun tanpa syarat kartu kredit.
+                  Cukup buat akun baru atau masuk menggunakan email @gmail.com Anda. Alokasi 20 kuota
+                  harian langsung aktif di profil akun Anda.
                 </p>
               )}
             </div>

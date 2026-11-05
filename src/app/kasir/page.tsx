@@ -216,7 +216,7 @@ export default function KasirPage() {
 
           <div className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3 py-1 rounded-full">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>100% Bebas Biaya Layanan</span>
+            <span>Akses Terbuka Tanpa Biaya Layanan</span>
           </div>
         </div>
 
@@ -226,7 +226,7 @@ export default function KasirPage() {
             Pusat Kuota &amp; Dukungan Server
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-            Gunakan kuota harian gratis atau traktir kopi sukarela untuk mendukung operasional server bersama.
+            Gunakan alokasi 20 kuota harian atau traktir kopi sukarela untuk mendukung operasional server bersama.
           </p>
         </div>
 
@@ -347,7 +347,7 @@ export default function KasirPage() {
                       Terima Kasih Banyak!
                     </h4>
                     <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-xs mx-auto">
-                      Dukungan Anda sangat berarti untuk menjaga server tetap gratis dan cepat bagi ribuan pengguna.
+                      Dukungan Anda sangat berarti untuk menjaga server tetap andal, cepat, dan dapat diakses bersama.
                     </p>
                   </div>
                   <button

@@ -57,7 +57,7 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
               <h2 id="cashier-modal-title" className="text-sm font-bold">
                 Kuota &amp; Dukungan Server
               </h2>
-              <p className="text-[10px] text-indigo-200">100% Bebas Biaya Layanan</p>
+              <p className="text-[10px] text-indigo-200">Akses Publik Tanpa Biaya</p>
             </div>
           </div>
           <button
@@ -80,10 +80,10 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
 
               <div className="space-y-1">
                 <h3 className="text-base font-black text-slate-900 dark:text-white">
-                  Klaim 20 Kuota Harian Gratis
+                  20 Alokasi Kuota Harian
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
-                  Masuk dengan akun Google Anda untuk langsung mengaktifkan kuota gratis harian.
+                  Masuk dengan akun Google untuk mengaktifkan 20 kuota harian Anda.
                 </p>
               </div>
 

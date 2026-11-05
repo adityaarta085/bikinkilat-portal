@@ -97,7 +97,7 @@ export function EcosystemCard({ app }: EcosystemCardProps) {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
             <Coins className="w-4 h-4 text-amber-500 fill-amber-500 group-hover:rotate-12 transition-transform" />
-            <span>{app.tokenCost === 0 ? 'Gratis' : `${app.tokenCost} Token / File`}</span>
+            <span>{app.tokenCost === 0 ? 'Termasuk' : `${app.tokenCost} Token / File`}</span>
           </div>
           <div className="flex items-center gap-1">
             {app.outputFormats.map((fmt, i) => (
