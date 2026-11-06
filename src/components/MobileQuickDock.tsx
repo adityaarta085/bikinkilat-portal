@@ -8,11 +8,19 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface MobileQuickDockProps {
   tokens?: number;
-  onOpenCashier: () => void;
+  onOpenCashier?: () => void;
 }
 
 export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockProps) {
   const { user } = useAuth();
+
+  const handleCashierClick = () => {
+    if (onOpenCashier) {
+      onOpenCashier();
+    } else {
+      window.location.href = '/kasir';
+    }
+  };
 
   return (
     <div className="fixed bottom-3 inset-x-3 z-40 md:hidden pointer-events-none pb-[env(safe-area-inset-bottom)]">
@@ -51,7 +59,7 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
         {/* Action item: Kuota Harian */}
         <button
           type="button"
-          onClick={onOpenCashier}
+          onClick={handleCashierClick}
           className="relative overflow-hidden flex items-center gap-1.5 min-h-[44px] px-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-90 active:bg-indigo-800 text-white rounded-xl shadow-xs transition-all duration-150"
           aria-label="Status kuota harian akun"
         >

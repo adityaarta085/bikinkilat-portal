@@ -5,7 +5,6 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { EcosystemCard } from '@/components/EcosystemCard';
-import { CashierModal } from '@/components/CashierModal';
 import { MobileQuickDock } from '@/components/MobileQuickDock';
 import { Footer } from '@/components/Footer';
 import { ECOSYSTEM_APPS } from '@/lib/ecosystem';
@@ -14,7 +13,6 @@ import {
   Coins, 
   ArrowRight, 
   Layers, 
-  CheckCircle2, 
   HelpCircle,
   Search, 
   X, 
@@ -25,22 +23,40 @@ import {
   ExternalLink, 
   AlertTriangle, 
   Heart,
-  Zap,
-  Clock,
-  FileText,
+  Clock, 
+  FileText, 
   ChevronDown,
-  ArrowUpRight
+  Scale,
+  Award,
+  Zap,
+  CheckCircle2,
+  FileSpreadsheet
 } from 'lucide-react';
 
+// Pre-seeded fallback data for instant zero-CLS rendering
+const INITIAL_EXTERNAL_SERVICES = [
+  {
+    id: '67c4b48e-a1e9-4112-a604-27dc4677582e',
+    slug: 'generator-perangkat-ajar',
+    title: 'Generator Perangkat Ajar',
+    subtitle: 'Kurikulum Merdeka • Pendekatan Pembelajaran Mendalam (Deep Learning)',
+    description: 'Bantu guru dan pendidik menyusun Modul Ajar lengkap, RPP ringkas, Alur Tujuan Pembelajaran (ATP), dan LKPD interaktif berbasis pembelajaran bermakna (Meaningful, Mindful, Joyful). Dokumen langsung siap diunduh ke Word (.docx).',
+    target_url: 'https://share.gemini.google/QbOMGSuxvreF',
+    category: 'Pendidikan',
+    icon: 'BookOpen',
+    badge: 'Format Word (.DOCX) Ready',
+    token_cost: 1,
+    status: 'active',
+  }
+];
+
 export default function PortalHomePage() {
-  const { tokens, setTokens, user, refreshTokens, openAuthModal } = useAuth();
-  const [isCashierOpen, setIsCashierOpen] = useState(false);
+  const { tokens, setTokens, user, openAuthModal } = useAuth();
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Dynamic External Services State
-  const [externalServices, setExternalServices] = useState<any[]>([]);
-  const [isServicesLoading, setIsServicesLoading] = useState(true);
+  // Dynamic External Services State with initial fallback
+  const [externalServices, setExternalServices] = useState<any[]>(INITIAL_EXTERNAL_SERVICES);
   const [launchingServiceId, setLaunchingServiceId] = useState<string | null>(null);
 
   // FAQ interactive accordion state
@@ -50,12 +66,14 @@ export default function PortalHomePage() {
     fetch('/api/external-services')
       .then((res) => res.json())
       .then((data) => {
-        if (data?.success && Array.isArray(data.items)) {
+        if (data?.success && Array.isArray(data.items) && data.items.length > 0) {
           setExternalServices(data.items);
         }
       })
-      .catch((err) => console.error('Error loading external services:', err))
-      .finally(() => setIsServicesLoading(false));
+      .catch((err) => {
+        // Silent catch: Keep initial fallback items without breaking layout
+        console.warn('Using cached external services catalog:', err);
+      });
   }, []);
 
   const handleLaunchService = async (service: any) => {
@@ -75,7 +93,7 @@ export default function PortalHomePage() {
 
     const cost = Number(service.token_cost) || 0;
     if (tokens < cost) {
-      alert(`Saldo akun Anda (${tokens} Token) tidak mencukupi untuk membuka layanan ini (${cost} Token). Silakan lakukan pengisian saldo di menu Kasir.`);
+      alert(`Alokasi kuota harian akun Anda (${tokens} Kuota) tidak mencukupi untuk membuka layanan ini (${cost} Kuota). Kuota akan otomatis diperbarui kembali menjadi 20 Kuota setiap malam pukul 00:00 WIB, atau Anda dapat mendukung operasional server di menu Kasir.`);
       window.location.href = '/kasir';
       return;
     }
@@ -111,19 +129,6 @@ export default function PortalHomePage() {
     }
   };
 
-  const handlePaymentSuccess = (addedTokens: number) => {
-    setTokens((prev) => prev + addedTokens);
-    refreshTokens();
-  };
-
-  const handleOpenCashier = () => {
-    if (!user) {
-      window.location.href = '/auth?returnUrl=/kasir';
-    } else {
-      window.location.href = '/kasir';
-    }
-  };
-
   const categories = ['Semua', 'Akademik', 'Karier', 'Bisnis', 'Legal', 'Kreatif'];
 
   const filteredApps = ECOSYSTEM_APPS.filter((app) => {
@@ -135,6 +140,9 @@ export default function PortalHomePage() {
       app.name.toLowerCase().includes(q) ||
       app.tagline.toLowerCase().includes(q) ||
       app.subdomain.toLowerCase().includes(q) ||
+      (app.targetAudience && app.targetAudience.toLowerCase().includes(q)) ||
+      (app.complianceStandard && app.complianceStandard.toLowerCase().includes(q)) ||
+      (app.exampleUseCase && app.exampleUseCase.toLowerCase().includes(q)) ||
       app.outputFormats.some(f => f.toLowerCase().includes(q)) ||
       app.features.some(f => f.toLowerCase().includes(q));
 
@@ -144,35 +152,43 @@ export default function PortalHomePage() {
   const faqs = [
     {
       q: 'Apakah benar seluruh 9 layanan dapat digunakan dengan 20 kuota gratis setiap hari?',
-      a: 'Ya, benar 100%. Setiap pengguna yang masuk menggunakan akun Google terdaftar otomatis menerima 20 alokasi kuota harian. Kuota ini dapat digunakan di seluruh 9 subdomain (Slide, Modul, CV, RAB, Surat, Waris, Proposal, PasFoto, dan Portal) tanpa perlu membayar biaya langganan bulanan.',
+      a: 'Ya, benar 100%. Setiap pengguna yang masuk menggunakan akun resmi Google terdaftar otomatis menerima 20 alokasi kuota harian. Kuota ini berlaku di seluruh 9 subdomain (Slide, Modul, CV, RAB, Surat, Waris, Proposal, PasFoto, dan Portal) tanpa ada kewajiban biaya langganan bulanan maupun komitmen berbayar apapun.',
     },
     {
-      q: 'Apakah file dokumen hasil unduhan benar-benar bisa diedit di Microsoft Office atau Google Docs?',
-      a: 'Ya. Dokumen yang dihasilkan oleh ekosistem BikinKilat adalah file dokumen asli (.pptx widescreen 16:9, .docx Word berstruktur naskah, .xlsx Excel berumus otomatis, dan .pdf siap cetak). Dokumen bukan berupa tangkapan layar atau teks statis, sehingga Anda bebas mengedit font, menambahkan logo, atau memodifikasi tabel di komputer dan ponsel.',
+      q: 'Apakah file dokumen hasil unduhan benar-benar bisa diedit di Microsoft Office, Google Docs, atau HP?',
+      a: 'Ya. Seluruh berkas yang dihasilkan adalah format dokumen standar industri terbuka (.pptx widescreen 16:9, .docx Word berstruktur naskah, .xlsx Excel lengkap dengan formula kalkulasi aktif, serta .pdf resolusi tinggi). Dokumen bukan berupa tangkapan layar atau gambar statis, sehingga Anda bebas mengedit jenis huruf, menambahkan logo institusi, atau mengubah angka pada komputer (Windows/Mac) maupun aplikasi ponsel cerdas (Android/iOS).',
     },
     {
-      q: 'Bagaimana keamanan data dan kerahasiaan dokumen yang saya buat di BikinKilat?',
-      a: 'Keamanan dan privasi Anda adalah prioritas utama. Seluruh transmisi data dienkripsi dengan standar industri TLS 1.3. Kami tidak menyimpan atau menjual isi naskah draf dokumen Anda ke pihak ketiga manapun. Pemrosesan dokumen berlangsung secara real-time dan langsung dikirimkan ke peramban Anda.',
+      q: 'Bagaimana keamanan data dan kerahasiaan naskah dokumen yang saya buat di BikinKilat?',
+      a: 'Keamanan dan privasi naskah Anda adalah prioritas utama. Seluruh transmisi jaringan dienkripsi menggunakan protokol TLS 1.3 standar perbankan nasional. Pemrosesan data berlangsung pada memori kerja real-time dan langsung dikirimkan ke peramban Anda. Kami tidak menyimpan draf naskah sensitif Anda secara permanen dan tidak pernah menjual atau membagikan konten dokumen Anda kepada pihak ketiga.',
     },
     {
-      q: 'Apa bedanya format Resume ATS BikinKilat dengan template desain grafis biasa?',
-      a: 'Template resume desain grafis umumnya menggunakan multi-kolom, grafik, dan tabel rumit yang sering gagal dibaca atau dibuang otomatis oleh mesin Applicant Tracking System (ATS) perusahaan besar. Resume BikinKilat dirancang dengan tata letak single-column berstandar internasional, urutan kronologis jelas, dan hierarki heading semantik yang terbukti 100% terbaca mulus oleh parser ATS HRD.',
+      q: 'Mengapa format Resume BikinKilat terbukti lebih efektif menembus ATS dibanding template grafis umum?',
+      a: 'Template resume grafis umum (seperti format kanvas grafis dua kolom) sering menggunakan tabel bersarang, ikon raster, dan kotak teks mengambang yang membingungkan algoritma Applicant Tracking System (ATS) perusahaan besar. Format CV BikinKilat dirancang secara ketat mengikuti standar single-column internasional dengan hierarki judul semantik, urutan kronologis teruji, dan penataan kata kunci relevan sehingga dapat diekstrak 100% mulus oleh parser HRD.',
     },
     {
-      q: 'Bagaimana cara kerja 1 akun terpadu untuk mengakses seluruh 9 layanan?',
-      a: 'Ekosistem BikinKilat menggunakan arsitektur Single Sign-On (SSO) terpadu. Begitu Anda masuk di portal utama bikinkilat.web.id, sesi login dan saldo kuota Anda langsung tersinkronisasi otomatis ke seluruh subdomain (seperti slide.bikinkilat.web.id, cv.bikinkilat.web.id, dll.) tanpa harus mendaftar atau mengingat banyak kata sandi.',
+      q: 'Apakah modul ajar dan RPP yang dihasilkan sudah selaras dengan regulasi Kurikulum Merdeka Kemendikbud?',
+      a: 'Ya. Modul ajar yang dirakit melalui modul.bikinkilat.web.id disusun mengacu pada Kepmendikbudristek Standar Proses Kurikulum Merdeka. Struktur modul memuat Komponen Inti lengkap: Alur Tujuan Pembelajaran (ATP), dimensi Profil Pelajar Pancasila, asesmen diagnostik & formatif berbasis rubrik, lembar kerja peserta didik (LKPD), serta rangkuman kisi-kisi soal evaluasi HOTS (Higher Order Thinking Skills).',
+    },
+    {
+      q: 'Bagaimana akurasi matematis kalkulator RAB SNI dan perhitungan Faraidh Waris Islam?',
+      a: 'Kalkulator RAB mengintegrasikan simulasi koefisien Analisis Harga Satuan Pekerjaan (AHSP) standar SNI yang memisahkan komponen bahan, upah tukang, dan peralatan dengan formula hitung volume otomatis di file Excel (.xlsx). Sementara kalkulator Waris Islam berpedoman pada fiqih mawaris dan Kompilasi Hukum Islam (KHI) Buku II, dengan verifikasi otomatis porsi dzawil furudh, sisa ashabah, serta mekanisme penyesuaian aul dan rad bila ada.',
+    },
+    {
+      q: 'Bagaimana cara kerja 1 akun terpadu untuk mengakses seluruh 9 layanan ekosistem?',
+      a: 'Ekosistem BikinKilat menggunakan arsitektur Single Sign-On (SSO) terpadu. Ketika Anda masuk di portal utama bikinkilat.web.id, sesi terenkripsi dan saldo kuota harian Anda langsung tersinkronisasi otomatis ke seluruh subdomain (seperti slide.bikinkilat.web.id, cv.bikinkilat.web.id, dsb.) secara seamless tanpa perlu membuat banyak akun atau mengingat kata sandi terpisah.',
     },
     {
       q: 'Apa yang terjadi jika 20 kuota harian saya habis sebelum hari berakhir?',
-      a: 'Alokasi kuota Anda akan diperbarui kembali menjadi 20 kuota secara otomatis setiap tengah malam tepat pukul 00:00 WIB. Bagi Anda yang memiliki kebutuhan mendesak atau volume dokumen tinggi, Anda dapat mendukung operasional server dengan traktiran kopi sukarela di menu Kasir untuk mendapatkan kuota tambahan.',
+      a: 'Alokasi kuota Anda akan diperbarui kembali menjadi 20 kuota secara otomatis setiap tengah malam tepat pukul 00:00 WIB tanpa pungutan biaya apapun. Bagi pengguna profesional dengan kebutuhan volume dokumen intensif yang mendesak, Anda dapat mendukung kelangsungan infrastruktur server melalui kontribusi sukarela di halaman Kasir untuk memperoleh kuota cadangan instan.',
     },
   ];
 
   return (
     <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
-      <Navbar tokens={tokens} onOpenCashier={handleOpenCashier} />
+      <Navbar tokens={tokens} />
 
-      {/* Hero Section: Simple, High Impact, Fast to Load */}
+      {/* Hero Section: Fast, High-Substance, Zero CLS */}
       <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-14 pb-18 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-6">
@@ -199,7 +215,7 @@ export default function PortalHomePage() {
               </span>
             </h1>
 
-            {/* Subheadline (Deep, Clear Context) */}
+            {/* Subheadline: Deep Contextual Explanation */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
               Akses 9 platform otomasi cerdas berstandar tata naskah resmi Indonesia: slide presentasi PPTX 16:9, modul ajar Kurikulum Merdeka, resume ATS, kalkulator RAB SNI, hingga instrumen hukum perdata. Dilengkapi 1 akun terpadu dengan 20 alokasi kuota harian otomatis tiap malam.
             </p>
@@ -223,18 +239,17 @@ export default function PortalHomePage() {
                   <span>Buka Dashboard Saya</span>
                 </Link>
               ) : (
-                <button
-                  type="button"
-                  onClick={handleOpenCashier}
+                <Link
+                  href="/auth"
                   className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs transition-all duration-150 flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span>Akses Termasuk (20 Kuota/Hari)</span>
-                </button>
+                  <span>Masuk &amp; Aktifkan 20 Kuota</span>
+                </Link>
               )}
             </div>
 
-            {/* Grounded Capabilities Strip */}
+            {/* Trust Badges Strip */}
             <div className="pt-2 flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-slate-500 dark:text-slate-400 font-medium">
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
@@ -242,7 +257,7 @@ export default function PortalHomePage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>Kepatuhan Regulasi &amp; Standar RI</span>
+                <span>Kepatuhan Standar Regulasi RI</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
@@ -286,7 +301,7 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* Katalog 9 Layanan Utama */}
+      {/* Katalog 9 Layanan Utama (Interactive, High Depth, Blazing Fast) */}
       <section 
         id="layanan" 
         className="py-16 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800"
@@ -303,7 +318,7 @@ export default function PortalHomePage() {
                 Pilih Layanan Sesuai Kebutuhan Anda
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
-                Setiap layanan menghasilkan file dokumen asli (.pptx, .docx, .xlsx) yang siap diunduh dan bebas diedit.
+                Setiap layanan menghasilkan file dokumen asli (.pptx, .docx, .xlsx, .pdf) berstandar nasional yang 100% bebas Anda unduh dan modifikasi.
               </p>
             </div>
 
@@ -399,7 +414,7 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* Panduan Alur Cepat 3 Langkah (Deep Workflow) */}
+      {/* Panduan Alur Kerja 3 Langkah Presisi (Deep Workflow) */}
       <section id="alur" className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
@@ -423,10 +438,10 @@ export default function PortalHomePage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
-                    Pilih Layanan Sesuai Kebutuhan
+                    Pilih Spesialis Dokumen
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Tentukan modul spesialis yang sesuai dengan tugas Anda: presentasi slide PPTX widescreen 16:9, modul ajar Kurikulum Merdeka, resume standar ATS, kalkulator RAB proyek, atau surat hukum resmi.
+                    Tentukan modul yang sesuai: presentasi slide PPTX 16:9, modul ajar Kurikulum Merdeka, resume ATS, kalkulator RAB proyek SNI, atau surat perjanjian resmi KUHPerdata. Tata letak langsung mengikuti standar resmi Indonesia.
                   </p>
                 </div>
               </div>
@@ -444,10 +459,10 @@ export default function PortalHomePage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
-                    Ketik Data atau Topik Ringkas
+                    Masukkan Pokok Pikiran / Parameter
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Cukup masukkan topik utama, parameter proyek, atau rancangan naskah dasar. Sistem otomasi cerdas menyusun tata naskah berstandar resmi dalam sub-2 detik dengan akurasi tinggi.
+                    Ketik judul paparan, capaian pembelajaran, pengalaman karier, atau spesifikasi fisik bangunan. Sistem otomasi cerdas menyusun tata naskah berstandar resmi dalam sub-2 detik dengan akurasi tinggi.
                   </p>
                 </div>
               </div>
@@ -465,10 +480,10 @@ export default function PortalHomePage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
-                    Unduh Dokumen Asli Bebas Edit
+                    Unduh File Dokumen Asli Bebas Edit
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Unduh file dokumen asli (.pptx widescreen 16:9, .docx Word berstruktur, atau .xlsx Excel lengkap rumus) yang 100% bebas Anda edit kembali di komputer atau ponsel Anda.
+                    Unduh berkas asli (.pptx widescreen 16:9, .docx Word berstruktur, atau .xlsx Excel lengkap rumus) yang 100% bebas Anda buka, modifikasi font, atau cetak langsung di komputer dan aplikasi HP Anda.
                   </p>
                 </div>
               </div>
@@ -481,8 +496,101 @@ export default function PortalHomePage() {
         </div>
       </section>
 
+      {/* Tabel Perbandingan Efisiensi & Standar Dokumen (Deep Substance) */}
+      <section className="py-20 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-3.5 py-1 rounded-full shadow-2xs">
+              Keunggulan Substantif
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
+              Mengapa BikinKilat Lebih Efisien?
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+              Perbandingan objektif antara cara manual / agensi jasa pengetikan konvensional dengan otomasi cerdas terpadu BikinKilat.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
+            <table className="w-full text-left text-xs sm:text-sm">
+              <thead className="bg-slate-100/70 dark:bg-slate-800/60 text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800">
+                <tr>
+                  <th className="py-4 px-6 font-bold w-1/4">Parameter Evaluasi</th>
+                  <th className="py-4 px-6 font-bold w-3/8 text-slate-500 dark:text-slate-400">Jasa Ketik / Manual Konvensional</th>
+                  <th className="py-4 px-6 font-bold w-3/8 text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/30">
+                    Ekosistem BikinKilat
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/70">
+                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                  <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-slate-400" />
+                    <span>Waktu Pengerjaan</span>
+                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
+                    2 sampai 3 hari kerja, bergantung pada beban antrean pengetik.
+                  </td>
+                  <td className="py-4 px-6 font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20">
+                    Sub-2 Detik (Instan di peramban)
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                  <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Coins className="w-4 h-4 text-slate-400" />
+                    <span>Biaya Finansial</span>
+                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
+                    Rp 50.000 - Rp 350.000 per naskah atau biaya langganan bulanan mahal.
+                  </td>
+                  <td className="py-4 px-6 font-bold text-emerald-600 dark:text-emerald-400 bg-indigo-50/30 dark:bg-indigo-950/20">
+                    Rp 0 (20 Alokasi Kuota Harian Otomatis)
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                  <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4 text-slate-400" />
+                    <span>Format &amp; Fleksibilitas File</span>
+                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
+                    Sering dikirim dalam bentuk PDF terkunci atau gambar; biaya tambahan untuk berkas mentah.
+                  </td>
+                  <td className="py-4 px-6 font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20">
+                    Berkas Asli Terbuka (.docx, .pptx 16:9, .xlsx, .pdf) 100% bebas modifikasi
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                  <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Award className="w-4 h-4 text-slate-400" />
+                    <span>Kepatuhan Standar Indonesia</span>
+                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
+                    Format acak, sering tidak mematuhi kaidah KHI, SNI AHSP, atau Kurikulum Merdeka.
+                  </td>
+                  <td className="py-4 px-6 font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20">
+                    Sesuai Regulasi Resmi (SNI PUPR, KHI Buku II, KUHPerdata, SSCASN BKN, ATS)
+                  </td>
+                </tr>
+                <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/40">
+                  <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-slate-400" />
+                    <span>Keamanan &amp; Kerahasiaan Data</span>
+                  </td>
+                  <td className="py-4 px-6 text-slate-600 dark:text-slate-400">
+                    Dokumen Anda tersimpan di komputer agensi/jasa perorangan tanpa proteksi enkripsi resmi.
+                  </td>
+                  <td className="py-4 px-6 font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/30 dark:bg-indigo-950/20">
+                    Transmisi TLS 1.3 Terenkripsi, Pemrosesan Volatile, Tanpa Penjualan Data
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       {/* Layanan Tambahan & Alat Bantu Modular */}
-      <section id="layanan-tambahan" className="py-16 bg-slate-50/80 dark:bg-slate-900/50 border-b border-slate-200/80 dark:border-slate-800">
+      <section id="layanan-tambahan" className="py-16 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -499,13 +607,13 @@ export default function PortalHomePage() {
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-white dark:bg-slate-950 border border-amber-200 dark:border-amber-800/80 shadow-xs max-w-md space-y-1">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-amber-200 dark:border-amber-800/80 shadow-xs max-w-md space-y-1">
               <div className="flex items-center gap-2 text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-wide">
                 <Coins className="w-4 h-4 fill-amber-400" />
-                <span>Tarif: 1 Token per Masuk Layanan</span>
+                <span>Tarif: 1 Kuota per Akses Masuk</span>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                Setiap kali Anda memasukkan Kunci Akses BikinKilat untuk masuk ke layanan tambahan, saldo akun Anda akan terpotong <strong>1 Token</strong>. Saldo dapat diisi ulang kapan saja melalui menu Kasir.
+                Setiap kali membuka layanan modular tambahan, kuota harian akun Anda terpotong <strong>1 Kuota</strong>. Kuota otomatis terisi kembali 20 Kuota setiap malam pukul 00:00 WIB.
               </p>
             </div>
           </div>
@@ -516,13 +624,13 @@ export default function PortalHomePage() {
               return (
                 <div
                   key={service.id}
-                  className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between space-y-5"
+                  className="rounded-2xl p-6 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between space-y-5"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
                       <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1">
                         <Coins className="w-3.5 h-3.5" />
-                        <span>{service.token_cost || 1} Token / Masuk</span>
+                        <span>{service.token_cost || 1} Kuota / Masuk</span>
                       </span>
                       {service.badge && (
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
@@ -561,7 +669,7 @@ export default function PortalHomePage() {
                       type="button"
                       onClick={() => handleLaunchService(service)}
                       disabled={launchingServiceId === service.id || isMaintenance}
-                      className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer"
+                      className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer shadow-xs"
                     >
                       {launchingServiceId === service.id ? (
                         <>
@@ -579,19 +687,11 @@ export default function PortalHomePage() {
                 </div>
               );
             })}
-
-            {isServicesLoading && externalServices.length === 0 && (
-              <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 animate-pulse space-y-4">
-                <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded-md w-1/3" />
-                <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded-md w-3/4" />
-                <div className="h-12 bg-slate-100 dark:bg-slate-900 rounded-xl" />
-              </div>
-            )}
             
             {/* Card 2: Koleksi Alat Bantu Baru */}
-            <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-4">
+            <div className="rounded-2xl p-6 bg-slate-50/70 dark:bg-slate-900/60 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-fit block">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-200/80 dark:bg-slate-800 text-slate-700 dark:text-slate-300 w-fit block">
                   Segera Hadir
                 </span>
                 <div>
@@ -599,12 +699,12 @@ export default function PortalHomePage() {
                     Modul Otomasi Baru
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Koleksi terus bertambah secara berkala untuk mendukung produktivitas kerja dan akademis Anda.
+                    Koleksi alat bantu digital terus dikembangkan secara berkala untuk mendukung produktivitas kerja dan riset akademis di seluruh Indonesia.
                   </p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-center">
+              <div className="p-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 text-center">
                 <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
                   Punya usulan alat bantu yang Anda butuhkan?
                 </p>
@@ -618,7 +718,7 @@ export default function PortalHomePage() {
             </div>
 
             {/* Card 3: Cara Akses Kunci Satu Pintu */}
-            <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-4">
+            <div className="rounded-2xl p-6 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit block">
                   Panduan Akses
@@ -628,21 +728,21 @@ export default function PortalHomePage() {
                     Kunci Akses Universal
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Cukup 1 kunci akses pribadi untuk seluruh alat bantu eksternal.
+                    Cukup 1 kunci akses pribadi untuk seluruh alat bantu modular eksternal.
                   </p>
                 </div>
 
                 <ol className="space-y-2 text-xs text-slate-600 dark:text-slate-400 list-decimal pl-4">
                   <li>Buka <strong>Dashboard Akun</strong> Anda dan salin Kunci Akses Pribadi.</li>
                   <li>Masukkan Kunci Akses pada halaman masuk layanan tambahan.</li>
-                  <li>Sistem memotong 1 Token dan Anda langsung dapat menggunakannya sepuasnya.</li>
+                  <li>Sistem mendeteksi validitas kuota dan Anda langsung dapat menggunakannya sepuasnya.</li>
                 </ol>
               </div>
 
               <div className="pt-2">
                 <Link
                   href="/dashboard"
-                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition"
+                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition"
                 >
                   <span>Lihat Kunci Akses di Dashboard</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -656,7 +756,7 @@ export default function PortalHomePage() {
       </section>
 
       {/* Free Quota & Server Support Section */}
-      <section id="kuota" className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
+      <section id="kuota" className="py-20 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -675,7 +775,7 @@ export default function PortalHomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
             
             {/* Card 1: Akademik */}
-            <div className="p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between shadow-2xs">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                   <Sparkles className="w-5 h-5" />
@@ -702,7 +802,7 @@ export default function PortalHomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Modul Ajar Kurikulum Merdeka Guru</span>
+                    <span>Modul Ajar Kurikulum Merdeka Lengkap</span>
                   </li>
                 </ul>
               </div>
@@ -717,7 +817,7 @@ export default function PortalHomePage() {
             </div>
 
             {/* Card 2: Karier */}
-            <div className="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border-2 border-indigo-500/40 dark:border-indigo-500/30 flex flex-col justify-between relative">
+            <div className="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border-2 border-indigo-500/40 dark:border-indigo-500/30 flex flex-col justify-between relative shadow-xs">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                   <Coins className="w-5 h-5" />
@@ -759,7 +859,7 @@ export default function PortalHomePage() {
             </div>
 
             {/* Card 3: Bisnis & Legal */}
-            <div className="p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between shadow-2xs">
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
                   <ShieldCheck className="w-5 h-5" />
@@ -813,7 +913,7 @@ export default function PortalHomePage() {
                 20 Kuota Harian &amp; Dukungan Server
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
-                Nikmati akses dokumen harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela di halaman Kasir.
+                Nikmati akses seluruh 9 layanan harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela di halaman Kasir.
               </p>
             </div>
 
@@ -832,18 +932,18 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* FAQ Section: Comprehensive, Deep Answers */}
+      {/* FAQ Section: 8 Comprehensive, Deep Expert Answers */}
       <section id="faq" className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-2">
             <HelpCircle className="w-4 h-4" />
-            <span>Tanya Jawab Lengkap</span>
+            <span>Tanya Jawab Lengkap &amp; Transparan</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Pertanyaan Umum Seputar Ekosistem BikinKilat
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-lg mx-auto">
-            Semua yang perlu Anda ketahui tentang alokasi kuota harian, format dokumen, dan kebijakan layanan.
+            Semua yang perlu Anda ketahui tentang alokasi kuota harian, format dokumen, kepatuhan hukum, dan keamanan data.
           </p>
         </div>
 
@@ -877,14 +977,7 @@ export default function PortalHomePage() {
       <Footer />
 
       {/* Mobile Floating Quick Dock */}
-      <MobileQuickDock tokens={tokens} onOpenCashier={handleOpenCashier} />
-
-      {/* Cashier Modal */}
-      <CashierModal
-        isOpen={isCashierOpen}
-        onClose={() => setIsCashierOpen(false)}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
+      <MobileQuickDock tokens={tokens} />
     </div>
   );
 }

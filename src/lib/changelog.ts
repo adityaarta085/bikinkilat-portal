@@ -70,11 +70,11 @@ export const RELEASES: ReleaseNote[] = [
     badge: 'Stabil',
     badgeColor: 'sky',
     summary:
-      'Standardisasi alamat email resmi support@bikinkilat.web.id di seluruh footer dan widget bantuan 9 subdomain, template notifikasi email Supabase 6-kategori, dan penyelarasan dokumen legalitas UU PDP & UU ITE.',
+      'Standardisasi alamat email resmi support@bikinkilat.web.id di seluruh footer dan widget bantuan 9 subdomain, template notifikasi email sistem akun terenkripsi 6-kategori, dan penyelarasan dokumen legalitas UU PDP & UU ITE.',
     impactedServices: [
       { name: 'Seluruh 9 Subdomain', subdomain: 'portal', url: 'https://bikinkilat.web.id' },
       { name: 'Admin Command Center', subdomain: 'admin', url: 'https://admin.bikinkilat.web.id' },
-      { name: 'Edge Gateway', subdomain: 'api', url: 'https://api.bikinkilat.web.id' },
+      { name: 'Jaringan Cloud Cepat 24/7', subdomain: 'api', url: 'https://api.bikinkilat.web.id' },
     ],
     categories: ['Ekosistem', 'Portal', 'Legalitas'],
     changes: [
@@ -92,7 +92,7 @@ export const RELEASES: ReleaseNote[] = [
       },
       {
         type: 'added',
-        text: 'Cloudflare Email Routing handler untuk mencerna email pertanyaan pengguna secara otomatis ke sistem tiket bantuan BikinKilat.',
+        text: 'Sistem perutean email cerdas untuk mencerna email pertanyaan pengguna secara otomatis ke sistem tiket bantuan BikinKilat.',
       },
     ],
     githubCommitUrl: 'https://github.com/adityaarta085/bikinkilat-portal/commit/5522201',

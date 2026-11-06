@@ -14,6 +14,9 @@ export interface EcosystemApp {
   features: string[];
   targetAudience?: string;
   deliverableHighlight?: string;
+  complianceStandard?: string;
+  exampleUseCase?: string;
+  turnaroundTime?: string;
 }
 
 export const ECOSYSTEM_APPS: EcosystemApp[] = [
@@ -32,7 +35,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'LayoutGrid',
     features: ['Single Sign-On Google Terpadu', '20 Alokasi Kuota Harian Otomatis', 'Reset Terjadwal Tiap Pukul 00:00 WIB'],
     targetAudience: 'Seluruh Pengguna (Pelajar, Guru, Dosen, Profesional & UMKM)',
-    deliverableHighlight: 'Kunci Akses Universal & Status Sinkronisasi Seluruh Layanan'
+    deliverableHighlight: 'Kunci Akses Universal & Status Sinkronisasi Seluruh Layanan',
+    complianceStandard: 'Autentikasi Terenkripsi & TLS 1.3',
+    exampleUseCase: 'Kelola kuota, sinkronisasi sesi 9 subdomain, dan pantau status server',
+    turnaroundTime: 'Instan'
   },
   {
     id: '02-slide',
@@ -49,7 +55,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'Presentation',
     features: ['Slide Widescreen 16:9 Tema Modern', 'Kerangka Makalah DOCX Format Kampus', 'Speaker Notes & Contekan Tanya Jawab Sidang'],
     targetAudience: 'Mahasiswa, Dosen, Peneliti, Pembicara & Eksekutif Bisnis',
-    deliverableHighlight: '10-15 Slide Lengkap + Speaker Notes + Makalah DOCX Pendamping'
+    deliverableHighlight: '10-15 Slide Lengkap + Speaker Notes + Makalah DOCX Pendamping',
+    complianceStandard: 'Widescreen 16:9 + Sitasi APA/IEEE Ilmiah',
+    exampleUseCase: 'Sidang skripsi, pitch deck bisnis investor, paparan kuliah tamu & webinar',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '03-modul',
@@ -66,7 +75,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'BookOpen',
     features: ['Standar Kurikulum Merdeka Kemendikbud', 'Rubrik Asesmen Diagnostik & Formatif', 'Kisi-kisi Soal Evaluasi HOTS Lengkap'],
     targetAudience: 'Guru PAUD, SD, SMP, SMA/SMK, Dosen & Pengajar Kursus',
-    deliverableHighlight: 'Modul Ajar DOCX + Lembar Kerja Siswa (LKPD) + Format Penilaian'
+    deliverableHighlight: 'Modul Ajar DOCX + Lembar Kerja Siswa (LKPD) + Format Penilaian',
+    complianceStandard: 'Kepmendikbudristek No. 16/2022 & Taksonomi Bloom',
+    exampleUseCase: 'RPP 1 lembar, modul tematik fase D, LKPD kontekstual & bank soal PAS/PAT',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '04-cv',
@@ -83,7 +95,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'FileText',
     features: ['Format Tata Letak Single-Column Standar ATS', 'Surat Lamaran Bilingual (Bahasa Indonesia & Inggris)', 'Ekspor File Asli PDF & DOCX Bebas Modifikasi'],
     targetAudience: 'Fresh Graduate, Jobseeker, Profesional Lintas Karier & Freelancer',
-    deliverableHighlight: 'Resume Single-Column Standar ATS + Cover Letter Siap Seleksi HRD'
+    deliverableHighlight: 'Resume Single-Column Standar ATS + Cover Letter Siap Seleksi HRD',
+    complianceStandard: 'International ATS Parser 2026 (Single Column)',
+    exampleUseCase: 'Seleksi MT BUMN, software engineer unicorn, posisi admin & korporasi multinasional',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '05-rab',
@@ -100,7 +115,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'Calculator',
     features: ['Simulasi Harga Satuan AHSP Standar SNI', 'Format Tabel Excel (.xlsx) Lengkap Rumus', 'Rekapitulasi Kebutuhan Material & Biaya Upah'],
     targetAudience: 'Kontraktor, Pemilik Rumah, Arsitek, Surveyor & Bendahara Panitia',
-    deliverableHighlight: 'File Excel (.xlsx) dengan Rumus Otomatis + Rekap Anggaran PDF'
+    deliverableHighlight: 'File Excel (.xlsx) dengan Rumus Otomatis + Rekap Anggaran PDF',
+    complianceStandard: 'Standar Nasional Indonesia (SNI) & AHSP PUPR',
+    exampleUseCase: 'Renovasi rumah 100m2, pembangunan ruko, tender pengadaan & anggaran event akbar',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '06-surat',
@@ -117,7 +135,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'Scale',
     features: ['Klausul Hukum Mengacu KUHPerdata Indonesia', 'Tata Letak Format Penempatan E-Meterai Resmi', 'Draf Perjanjian Kerja, Sewa, Kerjasama & Somasi'],
     targetAudience: 'Pelaku Usaha, Pemilik Bisnis, Freelancer, Pemilik Aset & Klien Jasa',
-    deliverableHighlight: 'Surat Perjanjian DOCX Rapi Siap Tanda Tangan & E-Meterai'
+    deliverableHighlight: 'Surat Perjanjian DOCX Rapi Siap Tanda Tangan & E-Meterai',
+    complianceStandard: 'Kitab Undang-Undang Hukum Perdata (KUHPerdata)',
+    exampleUseCase: 'Perjanjian kerja waktu tertentu (PKWT), sewa-menyewa ruko, MoU kemitraan & somasi',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '07-waris',
@@ -134,7 +155,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'GitFork',
     features: ['Perhitungan Porsi Akurat Sesuai Fiqih KHI RI', 'Diagram Visual Bagan Silsilah Ahli Waris Lengkap', 'Tabel Pembagian Harta Bersih Bebas Sengketa'],
     targetAudience: 'Keluarga Ahli Waris, Notaris Syariah, Penyuluh Agama & Praktisi Hukum',
-    deliverableHighlight: 'Tabel Porsi Harta Bersih + Diagram Silsilah Keluarga Format PDF/PNG'
+    deliverableHighlight: 'Tabel Porsi Harta Bersih + Diagram Silsilah Keluarga Format PDF/PNG',
+    complianceStandard: 'Kompilasi Hukum Islam (KHI) Buku II RI',
+    exampleUseCase: 'Simulasi pembagian harta waris keluarga besar, kalkulasi rad, hajib & ashabah',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '08-proposal',
@@ -151,7 +175,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'TrendingUp',
     features: ['Kerangka Business Plan & Pengajuan KUR Perbankan', 'Skema Paket Sponsorship & Kontraprestasi Mitra', 'Simulasi Proyeksi Finansial, Biaya & Arus Kas'],
     targetAudience: 'Pengusaha UMKM, Pendiri Usaha Rintisan, Panitia Acara & Komunitas',
-    deliverableHighlight: 'Draf Proposal Lengkap DOCX + Ringkasan Eksekutif (One-Pager)'
+    deliverableHighlight: 'Draf Proposal Lengkap DOCX + Ringkasan Eksekutif (One-Pager)',
+    complianceStandard: 'Format Standar Perbankan KUR Mandiri/BRI/BNI',
+    exampleUseCase: 'Pengajuan kredit usaha KUR Rp 50jt - 500jt, proposal sponsorship festival kampus',
+    turnaroundTime: '< 2 Detik'
   },
   {
     id: '09-pasfoto',
@@ -168,7 +195,10 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     iconName: 'Camera',
     features: ['Ganti Jas Hitam, Kemeja Putih & Dasi Otomatis', 'Latar Merah & Biru Standar Instansi Pemerintah RI', 'Lembar Cetak Multi Ukuran (2x3, 3x4, 4x6) Siap Cetak'],
     targetAudience: 'Pelamar CPNS/PPPK, Calon Pegawai BUMN, Pendaftar Beasiswa & Paspor',
-    deliverableHighlight: 'Pasfoto HD Siap Upload Portal SSCASN + Lembar Cetak Siap Print'
+    deliverableHighlight: 'Pasfoto HD Siap Upload Portal SSCASN + Lembar Cetak Siap Print',
+    complianceStandard: 'Standar Resmi SSCASN BKN RI (Format JPEG)',
+    exampleUseCase: 'Foto pendaftaran CPNS/PPPK 2026, kartu ujian BUMN, paspor imigrasi & visa',
+    turnaroundTime: '< 2 Detik'
   }
 ];
 
