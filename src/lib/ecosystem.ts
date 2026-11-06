@@ -12,6 +12,8 @@ export interface EcosystemApp {
   badgeColor: string;
   iconName: string;
   features: string[];
+  targetAudience?: string;
+  deliverableHighlight?: string;
 }
 
 export const ECOSYSTEM_APPS: EcosystemApp[] = [
@@ -21,74 +23,84 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     subdomain: 'bikinkilat.web.id',
     url: 'https://bikinkilat.web.id',
     title: 'Pusat Ekosistem & Kuota Harian',
-    tagline: 'Satu akun terpusat dengan 20 alokasi kuota harian untuk seluruh 9 layanan otomasi cerdas.',
+    tagline: 'Satu akun terpusat dengan 20 alokasi kuota harian otomatis untuk seluruh 9 layanan otomasi cerdas.',
     category: 'Bisnis',
     tokenCost: 0,
     outputFormats: ['Dashboard', 'Akses Terbuka'],
     status: 'live',
-    badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800',
     iconName: 'LayoutGrid',
-    features: ['Single Sign-On Terpusat', '20 Alokasi Kuota Harian', 'Reset Tiap 00:00 WIB']
+    features: ['Single Sign-On Google Terpadu', '20 Alokasi Kuota Harian Otomatis', 'Reset Terjadwal Tiap Pukul 00:00 WIB'],
+    targetAudience: 'Seluruh Pengguna (Pelajar, Guru, Dosen, Profesional & UMKM)',
+    deliverableHighlight: 'Kunci Akses Universal & Status Sinkronisasi Seluruh Layanan'
   },
   {
     id: '02-slide',
     name: 'Slide BikinKilat',
     subdomain: 'slide.bikinkilat.web.id',
     url: 'https://slide.bikinkilat.web.id',
-    title: 'Generator Presentasi PPTX & Makalah DOCX',
-    tagline: 'Bantu susun draf slide presentasi 16:9 dan naskah makalah akademik terstruktur siap telaah.',
+    title: 'Generator Presentasi PPTX 16:9 & Makalah DOCX',
+    tagline: 'Susun draf slide presentasi widescreen 16:9 siap paparan, speaker notes pemateri, serta draf makalah DOCX berstruktur bab lengkap.',
     category: 'Akademik',
     tokenCost: 2,
     outputFormats: ['.pptx', '.docx', '.md'],
     status: 'live',
-    badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
     iconName: 'Presentation',
-    features: ['Slide 16:9 Tema Modern', 'Kerangka Makalah Format Kampus', 'Contekan Tanya Jawab Sidang']
+    features: ['Slide Widescreen 16:9 Tema Modern', 'Kerangka Makalah DOCX Format Kampus', 'Speaker Notes & Contekan Tanya Jawab Sidang'],
+    targetAudience: 'Mahasiswa, Dosen, Peneliti, Pembicara & Eksekutif Bisnis',
+    deliverableHighlight: '10-15 Slide Lengkap + Speaker Notes + Makalah DOCX Pendamping'
   },
   {
     id: '03-modul',
     name: 'Modul BikinKilat',
     subdomain: 'modul.bikinkilat.web.id',
     url: 'https://modul.bikinkilat.web.id',
-    title: 'Modul Ajar Kurikulum Merdeka & Bank Soal',
-    tagline: 'Otomasi RPP, modul ajar interaktif, rubrik asesmen, dan bank soal HOTS untuk guru hebat.',
+    title: 'Penyusun Modul Ajar Kurikulum Merdeka & Bank Soal',
+    tagline: 'Otomasi penyusunan RPP 1 lembar, modul ajar interaktif fase A-F, lembar kerja siswa (LKPD), rubrik penilaian, dan soal evaluasi HOTS.',
     category: 'Akademik',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
     status: 'live',
-    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800',
     iconName: 'BookOpen',
-    features: ['Format Kurikulum Merdeka', 'Rubrik Asesmen Diagnostik', 'Kisi-kisi Soal HOTS']
+    features: ['Standar Kurikulum Merdeka Kemendikbud', 'Rubrik Asesmen Diagnostik & Formatif', 'Kisi-kisi Soal Evaluasi HOTS Lengkap'],
+    targetAudience: 'Guru PAUD, SD, SMP, SMA/SMK, Dosen & Pengajar Kursus',
+    deliverableHighlight: 'Modul Ajar DOCX + Lembar Kerja Siswa (LKPD) + Format Penilaian'
   },
   {
     id: '04-cv',
     name: 'CV BikinKilat',
     subdomain: 'cv.bikinkilat.web.id',
     url: 'https://cv.bikinkilat.web.id',
-    title: 'Generator Resume ATS & Surat Lamaran',
-    tagline: 'Draf resume profesional berstruktur single-column ramah sistem ATS untuk persiapan melamar kerja.',
+    title: 'Generator Resume Standar ATS & Surat Lamaran',
+    tagline: 'Rancang resume tata letak single-column yang 100% ramah parser ATS HRD serta surat lamaran kerja terstruktur bilingual.',
     category: 'Karier',
     tokenCost: 1,
     outputFormats: ['.pdf', '.docx'],
     status: 'live',
-    badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/60 dark:text-cyan-300 dark:border-cyan-800',
     iconName: 'FileText',
-    features: ['Format Tata Letak Standar ATS', 'Surat Lamaran Bilingual', 'Ekspor PDF & DOCX']
+    features: ['Format Tata Letak Single-Column Standar ATS', 'Surat Lamaran Bilingual (Bahasa Indonesia & Inggris)', 'Ekspor File Asli PDF & DOCX Bebas Modifikasi'],
+    targetAudience: 'Fresh Graduate, Jobseeker, Profesional Lintas Karier & Freelancer',
+    deliverableHighlight: 'Resume Single-Column Standar ATS + Cover Letter Siap Seleksi HRD'
   },
   {
     id: '05-rab',
     name: 'RAB BikinKilat',
     subdomain: 'rab.bikinkilat.web.id',
     url: 'https://rab.bikinkilat.web.id',
-    title: 'Kalkulator RAB Proyek, Renovasi & Event',
-    tagline: 'Estimasi anggaran biaya material dan upah berdasarkan simulasi Analisis Harga Satuan Pekerjaan (AHSP).',
+    title: 'Kalkulator RAB Proyek Konstruksi, Renovasi & Event',
+    tagline: 'Estimasi anggaran biaya material dan upah tenaga kerja berdasarkan simulasi Analisis Harga Satuan Pekerjaan (AHSP) standar SNI.',
     category: 'Bisnis',
     tokenCost: 3,
     outputFormats: ['.xlsx', '.pdf'],
     status: 'live',
-    badgeColor: 'bg-amber-50 text-amber-700 border-amber-200',
+    badgeColor: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
     iconName: 'Calculator',
-    features: ['Simulasi Harga Satuan AHSP', 'Format Tabel Excel Otomatis', 'Ringkasan Alokasi Anggaran']
+    features: ['Simulasi Harga Satuan AHSP Standar SNI', 'Format Tabel Excel (.xlsx) Lengkap Rumus', 'Rekapitulasi Kebutuhan Material & Biaya Upah'],
+    targetAudience: 'Kontraktor, Pemilik Rumah, Arsitek, Surveyor & Bendahara Panitia',
+    deliverableHighlight: 'File Excel (.xlsx) dengan Rumus Otomatis + Rekap Anggaran PDF'
   },
   {
     id: '06-surat',
@@ -96,59 +108,67 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
     subdomain: 'surat.bikinkilat.web.id',
     url: 'https://surat.bikinkilat.web.id',
     title: 'Generator Perjanjian Kontrak & Somasi Hukum',
-    tagline: 'Draf kerangka perjanjian kerja sama dan somasi bisnis mengacu tata format hukum lazim di Indonesia.',
+    tagline: 'Susun draf kerangka perjanjian kerja, surat sewa properti, MoU bisnis, dan somasi resmi mengacu tata regulasi KUHPerdata Indonesia.',
     category: 'Legal',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
     status: 'live',
-    badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
+    badgeColor: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800',
     iconName: 'Scale',
-    features: ['Draf Klausul Standar KUHPerdata', 'Format Penempatan E-Meterai', 'Draf Perjanjian & Somasi']
+    features: ['Klausul Hukum Mengacu KUHPerdata Indonesia', 'Tata Letak Format Penempatan E-Meterai Resmi', 'Draf Perjanjian Kerja, Sewa, Kerjasama & Somasi'],
+    targetAudience: 'Pelaku Usaha, Pemilik Bisnis, Freelancer, Pemilik Aset & Klien Jasa',
+    deliverableHighlight: 'Surat Perjanjian DOCX Rapi Siap Tanda Tangan & E-Meterai'
   },
   {
     id: '07-waris',
     name: 'Waris BikinKilat',
     subdomain: 'waris.bikinkilat.web.id',
     url: 'https://waris.bikinkilat.web.id',
-    title: 'Kalkulator Faraidh Islam & Bagan Silsilah',
-    tagline: 'Simulasi perhitungan waris Islam Faraidh mengacu ketentuan Kompilasi Hukum Islam (KHI).',
+    title: 'Kalkulator Faraidh Waris Islam & Bagan Silsilah',
+    tagline: 'Hitung porsi waris dzawil furudh dan ashabah secara adil dan transparan berlandaskan Kompilasi Hukum Islam (KHI) dan fiqih mawaris.',
     category: 'Legal',
     tokenCost: 2,
     outputFormats: ['.pdf', '.png'],
     status: 'live',
-    badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
+    badgeColor: 'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800',
     iconName: 'GitFork',
-    features: ['Hitungan Porsi Dzawil Furudh', 'Diagram Silsilah Keluarga', 'Tabel Pembagian Harta Bersih']
+    features: ['Perhitungan Porsi Akurat Sesuai Fiqih KHI RI', 'Diagram Visual Bagan Silsilah Ahli Waris Lengkap', 'Tabel Pembagian Harta Bersih Bebas Sengketa'],
+    targetAudience: 'Keluarga Ahli Waris, Notaris Syariah, Penyuluh Agama & Praktisi Hukum',
+    deliverableHighlight: 'Tabel Porsi Harta Bersih + Diagram Silsilah Keluarga Format PDF/PNG'
   },
   {
     id: '08-proposal',
     name: 'Proposal BikinKilat',
     subdomain: 'proposal.bikinkilat.web.id',
     url: 'https://proposal.bikinkilat.web.id',
-    title: 'Generator Proposal Sponsorship & KUR UMKM',
-    tagline: 'Draf proposal bisnis dan sponsorship terstruktur dengan proyeksi finansial awal untuk akselerasi pengajuan.',
+    title: 'Generator Proposal Usaha, Sponsorship & KUR UMKM',
+    tagline: 'Rancang proposal bisnis meyakinkan untuk pengajuan permodalan perbankan (KUR), kemitraan investor, dan permohonan sponsor kegiatan.',
     category: 'Bisnis',
     tokenCost: 3,
     outputFormats: ['.docx', '.pdf'],
     status: 'live',
-    badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+    badgeColor: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800',
     iconName: 'TrendingUp',
-    features: ['Kerangka Proposal Usaha & KUR', 'Struktur Paket Sponsorship', 'Simulasi Proyeksi Laba Rugi']
+    features: ['Kerangka Business Plan & Pengajuan KUR Perbankan', 'Skema Paket Sponsorship & Kontraprestasi Mitra', 'Simulasi Proyeksi Finansial, Biaya & Arus Kas'],
+    targetAudience: 'Pengusaha UMKM, Pendiri Usaha Rintisan, Panitia Acara & Komunitas',
+    deliverableHighlight: 'Draf Proposal Lengkap DOCX + Ringkasan Eksekutif (One-Pager)'
   },
   {
     id: '09-pasfoto',
     name: 'PasFoto BikinKilat',
     subdomain: 'pasfoto.bikinkilat.web.id',
     url: 'https://pasfoto.bikinkilat.web.id',
-    title: 'Studio Pas Foto CPNS, BUMN & Kedutaan',
-    tagline: 'Ubah pakaian ke kemeja putih jas formal dan ganti latar merah/biru ukuran 2x3, 3x4, 4x6.',
+    title: 'Studio Pas Foto Formal CPNS, BUMN & Kedutaan',
+    tagline: 'Ubah pakaian ke kemeja putih atau jas formal berdasi dan ganti latar belakang foto ke warna merah atau biru ukuran 2x3, 3x4, 4x6.',
     category: 'Kreatif',
     tokenCost: 1,
     outputFormats: ['.png', '.jpg', '.pdf'],
     status: 'live',
-    badgeColor: 'bg-orange-50 text-orange-700 border-orange-200',
+    badgeColor: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/60 dark:text-orange-300 dark:border-orange-800',
     iconName: 'Camera',
-    features: ['Ganti Jas dan Dasi Otomatis', 'Latar Merah dan Biru Standar', 'Lembar Cetak Multi Ukuran']
+    features: ['Ganti Jas Hitam, Kemeja Putih & Dasi Otomatis', 'Latar Merah & Biru Standar Instansi Pemerintah RI', 'Lembar Cetak Multi Ukuran (2x3, 3x4, 4x6) Siap Cetak'],
+    targetAudience: 'Pelamar CPNS/PPPK, Calon Pegawai BUMN, Pendaftar Beasiswa & Paspor',
+    deliverableHighlight: 'Pasfoto HD Siap Upload Portal SSCASN + Lembar Cetak Siap Print'
   }
 ];
 

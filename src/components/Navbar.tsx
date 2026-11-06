@@ -84,8 +84,8 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             <Link href="/#layanan" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
               9 Layanan
             </Link>
-            <Link href="/#live-preview" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
-              Live Studio
+            <Link href="/#alur" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              Cara Kerja
             </Link>
             <Link href="/kasir" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
               Pusat Kuota &amp; Dukungan
@@ -93,8 +93,8 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
             <Link href="/transparansi" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap text-emerald-600 dark:text-emerald-400 font-bold">
               Transparansi
             </Link>
-            <Link href="/#riwayat" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
-              Riwayat
+            <Link href="/#faq" className="hover:text-slate-900 dark:hover:text-white transition-colors whitespace-nowrap">
+              Tanya Jawab
             </Link>
             {user && (
               <Link 
@@ -330,12 +330,12 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               <span>9 Layanan Cerdas</span>
             </Link>
             <Link
-              href="/#live-preview"
+              href="/#alur"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             >
               <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Live Studio Preview</span>
+              <span>Cara Kerja 3 Langkah</span>
             </Link>
             <Link
               href="/kasir"
@@ -354,12 +354,12 @@ export function Navbar({ tokens: propTokens, onOpenCashier }: NavbarProps) {
               <span>Pusat Transparansi Layanan</span>
             </Link>
             <Link
-              href="/#riwayat"
+              href="/#faq"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             >
               <Zap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Riwayat Transaksi</span>
+              <span>Tanya Jawab (FAQ)</span>
             </Link>
             {user && (
               <Link

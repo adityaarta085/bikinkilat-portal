@@ -6,45 +6,35 @@ import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { EcosystemCard } from '@/components/EcosystemCard';
 import { CashierModal } from '@/components/CashierModal';
-import { TransactionHistory } from '@/components/TransactionHistory';
-import { InteractiveShowcase } from '@/components/InteractiveShowcase';
-import { EnterpriseBento } from '@/components/EnterpriseBento';
-import { QuickWorkflow } from '@/components/QuickWorkflow';
-import { InteractiveComparison } from '@/components/InteractiveComparison';
-import { EfficiencyCalculator } from '@/components/EfficiencyCalculator';
 import { MobileQuickDock } from '@/components/MobileQuickDock';
 import { Footer } from '@/components/Footer';
-import { AnimatedPricingCard } from '@/components/AnimatedPricingCard';
-import { InfiniteMarquee } from '@/components/InfiniteMarquee';
-import { MagneticButton } from '@/components/MagneticButton';
-import { ECOSYSTEM_APPS, TOKEN_PACKAGES } from '@/lib/ecosystem';
+import { ECOSYSTEM_APPS } from '@/lib/ecosystem';
 import { useAuth } from '@/lib/auth-context';
-import { useCountUp } from '@/hooks/useCountUp';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { 
   Coins, 
   ArrowRight, 
   Layers, 
   CheckCircle2, 
   HelpCircle,
-  QrCode,
-  Search,
-  X,
+  Search, 
+  X, 
   LayoutDashboard,
-  SlidersHorizontal,
-  FileCheck2,
-  ShieldCheck,
-  Check,
-  Sparkles,
-  ExternalLink,
-  AlertTriangle,
+  ShieldCheck, 
+  Check, 
+  Sparkles, 
+  ExternalLink, 
+  AlertTriangle, 
   Heart,
+  Zap,
+  Clock,
+  FileText,
+  ChevronDown,
+  ArrowUpRight
 } from 'lucide-react';
 
 export default function PortalHomePage() {
   const { tokens, setTokens, user, refreshTokens, openAuthModal } = useAuth();
   const [isCashierOpen, setIsCashierOpen] = useState(false);
-  const [lastTxUpdated, setLastTxUpdated] = useState<number>(Date.now());
   const [activeCategory, setActiveCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -52,6 +42,9 @@ export default function PortalHomePage() {
   const [externalServices, setExternalServices] = useState<any[]>([]);
   const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [launchingServiceId, setLaunchingServiceId] = useState<string | null>(null);
+
+  // FAQ interactive accordion state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   useEffect(() => {
     fetch('/api/external-services')
@@ -111,24 +104,15 @@ export default function PortalHomePage() {
         setTokens(data.newTokens);
       }
       window.open(data.targetUrl, '_blank', 'noopener,noreferrer');
-    } catch (err: any) {
+    } catch {
       alert('Terjadi kendala saat menghubungkan ke layanan.');
     } finally {
       setLaunchingServiceId(null);
     }
   };
 
-  // Scroll reveals for sections
-  const { ref: heroMetricsRef, isVisible: isMetricsVisible } = useScrollReveal({ threshold: 0.1 });
-  const { ref: layananRef, isVisible: isLayananVisible } = useScrollReveal({ threshold: 0.05 });
-
-  // Animated Count-Up Metrics
-  const animatedAppsCount = useCountUp({ end: 9, duration: 1000, enabled: isMetricsVisible });
-  const animatedPercentFormat = useCountUp({ end: 100, duration: 1200, enabled: isMetricsVisible });
-
   const handlePaymentSuccess = (addedTokens: number) => {
     setTokens((prev) => prev + addedTokens);
-    setLastTxUpdated(Date.now());
     refreshTokens();
   };
 
@@ -157,81 +141,97 @@ export default function PortalHomePage() {
     return matchesCategory && matchesSearch;
   });
 
+  const faqs = [
+    {
+      q: 'Apakah benar seluruh 9 layanan dapat digunakan dengan 20 kuota gratis setiap hari?',
+      a: 'Ya, benar 100%. Setiap pengguna yang masuk menggunakan akun Google terdaftar otomatis menerima 20 alokasi kuota harian. Kuota ini dapat digunakan di seluruh 9 subdomain (Slide, Modul, CV, RAB, Surat, Waris, Proposal, PasFoto, dan Portal) tanpa perlu membayar biaya langganan bulanan.',
+    },
+    {
+      q: 'Apakah file dokumen hasil unduhan benar-benar bisa diedit di Microsoft Office atau Google Docs?',
+      a: 'Ya. Dokumen yang dihasilkan oleh ekosistem BikinKilat adalah file dokumen asli (.pptx widescreen 16:9, .docx Word berstruktur naskah, .xlsx Excel berumus otomatis, dan .pdf siap cetak). Dokumen bukan berupa tangkapan layar atau teks statis, sehingga Anda bebas mengedit font, menambahkan logo, atau memodifikasi tabel di komputer dan ponsel.',
+    },
+    {
+      q: 'Bagaimana keamanan data dan kerahasiaan dokumen yang saya buat di BikinKilat?',
+      a: 'Keamanan dan privasi Anda adalah prioritas utama. Seluruh transmisi data dienkripsi dengan standar industri TLS 1.3. Kami tidak menyimpan atau menjual isi naskah draf dokumen Anda ke pihak ketiga manapun. Pemrosesan dokumen berlangsung secara real-time dan langsung dikirimkan ke peramban Anda.',
+    },
+    {
+      q: 'Apa bedanya format Resume ATS BikinKilat dengan template desain grafis biasa?',
+      a: 'Template resume desain grafis umumnya menggunakan multi-kolom, grafik, dan tabel rumit yang sering gagal dibaca atau dibuang otomatis oleh mesin Applicant Tracking System (ATS) perusahaan besar. Resume BikinKilat dirancang dengan tata letak single-column berstandar internasional, urutan kronologis jelas, dan hierarki heading semantik yang terbukti 100% terbaca mulus oleh parser ATS HRD.',
+    },
+    {
+      q: 'Bagaimana cara kerja 1 akun terpadu untuk mengakses seluruh 9 layanan?',
+      a: 'Ekosistem BikinKilat menggunakan arsitektur Single Sign-On (SSO) terpadu. Begitu Anda masuk di portal utama bikinkilat.web.id, sesi login dan saldo kuota Anda langsung tersinkronisasi otomatis ke seluruh subdomain (seperti slide.bikinkilat.web.id, cv.bikinkilat.web.id, dll.) tanpa harus mendaftar atau mengingat banyak kata sandi.',
+    },
+    {
+      q: 'Apa yang terjadi jika 20 kuota harian saya habis sebelum hari berakhir?',
+      a: 'Alokasi kuota Anda akan diperbarui kembali menjadi 20 kuota secara otomatis setiap tengah malam tepat pukul 00:00 WIB. Bagi Anda yang memiliki kebutuhan mendesak atau volume dokumen tinggi, Anda dapat mendukung operasional server dengan traktiran kopi sukarela di menu Kasir untuk mendapatkan kuota tambahan.',
+    },
+  ];
+
   return (
     <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       <Navbar tokens={tokens} onOpenCashier={handleOpenCashier} />
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-16 pb-20 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
-        {/* Subtle Ambient Depth */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[480px] bg-gradient-to-b from-indigo-50/70 via-slate-50/30 to-transparent dark:from-indigo-950/20 dark:via-slate-950/40 dark:to-transparent pointer-events-none -z-10 blur-3xl" />
-
+      {/* Hero Section: Simple, High Impact, Fast to Load */}
+      <section className="relative overflow-hidden bg-white dark:bg-slate-950 pt-14 pb-18 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto space-y-6">
-            {/* Pill Badge Announcement */}
+            
+            {/* Version Announcement Pill */}
             <Link
               href="/catatan-rilis"
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium shadow-2xs transition-all duration-200 group active:scale-95"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-medium transition group active:scale-95"
             >
-              <span className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 font-mono text-[11px] font-bold">
-                v2.7
+              <span className="px-2 py-0.5 rounded-full bg-indigo-600 text-white font-mono text-[11px] font-bold">
+                v2.8
               </span>
-              <span>Slide Widescreen &amp; Verifikasi OTP Instan Aktif</span>
-              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform flex items-center font-semibold">
-                Catatan Rilis â†’
+              <span>Ekosistem Terpadu 9 Layanan • 20 Kuota Harian Otomatis</span>
+              <span className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform font-semibold">
+                &rarr;
               </span>
             </Link>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.08]">
-              Selesaikan Dokumen &amp; Presentasi{' '}
+            {/* Main Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.12]">
+              Susun Dokumen &amp; Presentasi Standar Nasional{' '}
               <span className="text-indigo-600 dark:text-indigo-400">
-                10x Lebih Kilat
+                dalam Hitungan Detik
               </span>
             </h1>
 
+            {/* Subheadline (Deep, Clear Context) */}
             <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
-              Akses 9 platform otomasi cerdas berstandar tata naskah profesional di Indonesia. 
-              Gunakan 1 akun dan 1 saldo token terpadu untuk menyusun draf slide presentasi, kerangka makalah akademik, modul ajar, hingga draf dokumen kerja terstruktur.
+              Akses 9 platform otomasi cerdas berstandar tata naskah resmi Indonesia: slide presentasi PPTX 16:9, modul ajar Kurikulum Merdeka, resume ATS, kalkulator RAB SNI, hingga instrumen hukum perdata. Dilengkapi 1 akun terpadu dengan 20 alokasi kuota harian otomatis tiap malam.
             </p>
 
-            {/* CTA Buttons */}
+            {/* Primary Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              <a
+                href="#layanan"
+                className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-150 flex items-center gap-2 group"
+              >
+                <span>Jelajahi 9 Layanan Utama</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+
               {user ? (
-                <MagneticButton strength={14}>
-                  <Link
-                    href="/dashboard"
-                    data-cursor="DASHBOARD"
-                    className="px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 active:bg-indigo-800 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center gap-2 group"
-                  >
-                    <LayoutDashboard className="w-4 h-4" />
-                    <span>Buka Dashboard Saya</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                </MagneticButton>
-              ) : null}
-
-              <MagneticButton strength={16}>
-                <a
-                  href="#live-preview"
-                  data-cursor="STUDIO"
-                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-bold text-sm shadow-xs hover:shadow-md transition-all duration-200 flex items-center gap-2 group"
+                <Link
+                  href="/dashboard"
+                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-95 active:bg-black dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-sm shadow-xs transition-all duration-150 flex items-center gap-2"
                 >
-                  <span>Coba Live Studio Preview</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </a>
-              </MagneticButton>
-
-              <MagneticButton strength={12}>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Buka Dashboard Saya</span>
+                </Link>
+              ) : (
                 <button
                   type="button"
-                  data-cursor="KUOTA"
                   onClick={handleOpenCashier}
-                  className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 active:scale-95 active:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-200 text-slate-800 border border-slate-200/90 dark:border-slate-800 font-bold text-sm shadow-2xs transition-all duration-150 flex items-center gap-2"
                 >
                   <Sparkles className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span>Akses Publik Termasuk (20 Kuota/Hari)</span>
+                  <span>Akses Termasuk (20 Kuota/Hari)</span>
                 </button>
-              </MagneticButton>
+              )}
             </div>
 
             {/* Grounded Capabilities Strip */}
@@ -242,74 +242,69 @@ export default function PortalHomePage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>Kepatuhan Standar Regulasi RI</span>
+                <span>Kepatuhan Regulasi &amp; Standar RI</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>20 Alokasi Kuota Otomatis Tiap Hari</span>
+                <span>20 Kuota Otomatis Setiap Hari</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span>Pemrosesan Sub-2 Detik</span>
               </span>
             </div>
 
-            {/* Metrics Ribbon with Dynamic Rolling Numbers */}
-            <div 
-              ref={heroMetricsRef}
-              className={`pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isMetricsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-              }`}
-            >
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+            {/* Metrics Ribbon (Instant, Pure CSS) */}
+            <div className="pt-8 grid grid-cols-2 sm:grid-cols-4 gap-3.5 max-w-3xl mx-auto border-t border-slate-200/70 dark:border-slate-800">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
                 <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
-                  {animatedAppsCount}
+                  9 Layanan
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Layanan Spesialis</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Spesialis Dokumen</div>
               </div>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">20 Kuota</div>
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+                <div className="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">
+                  20 Kuota
+                </div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Alokasi Harian Otomatis</div>
               </div>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">Rp 0</div>
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                  Rp 0
+                </div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Semua Kasir Dinonaktifkan</div>
               </div>
-              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+              <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">
-                  {animatedPercentFormat}%
+                  &lt; 2 Detik
                 </div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Standar Format Indonesia</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">Waktu Komputasi Kilat</div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* Infinite Kinetic Marquee (Emotion Agency Style) */}
-      <InfiniteMarquee />
-
-      {/* Flagship Interactive Document Studio Showcase */}
-      <div id="live-preview">
-        <InteractiveShowcase />
-      </div>
-
-      {/* Ecosystem Apps Grid */}
+      {/* Katalog 9 Layanan Utama */}
       <section 
         id="layanan" 
-        ref={layananRef}
-        className="py-20 bg-slate-50/50 dark:bg-slate-950/50 border-b border-slate-200/80 dark:border-slate-800 relative transition-colors"
+        className="py-16 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/80 dark:border-slate-800"
       >
-        <div 
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            isLayananVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
             <div>
               <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-1.5">
                 <Layers className="w-4 h-4" />
-                <span>Katalog Lengkap Layanan</span>
+                <span>Katalog Lengkap Ekosistem</span>
               </div>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Pilih Layanan Sesuai Kebutuhan Anda
               </h2>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
+                Setiap layanan menghasilkan file dokumen asli (.pptx, .docx, .xlsx) yang siap diunduh dan bebas diedit.
+              </p>
             </div>
 
             {/* Search Input & Category Filter */}
@@ -321,7 +316,7 @@ export default function PortalHomePage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari layanan (slide, cv, modul)..."
+                  placeholder="Cari layanan (slide, cv, modul, rab)..."
                   className="w-full pl-9 pr-8 py-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition shadow-2xs"
                 />
                 {searchQuery && (
@@ -336,15 +331,15 @@ export default function PortalHomePage() {
                 )}
               </div>
 
-              {/* Category Filter Pills (Apple Segmented Group) */}
-              <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 p-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+              {/* Category Filter Pills */}
+              <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0 p-1 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-2xs">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all duration-150 ${
                       activeCategory === cat
-                        ? 'bg-slate-900 dark:bg-indigo-600 text-white shadow-2xs'
+                        ? 'bg-indigo-600 text-white shadow-2xs'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
@@ -355,7 +350,7 @@ export default function PortalHomePage() {
             </div>
           </div>
 
-          {/* Search Result Count or Feedback */}
+          {/* Search Result Feedback */}
           {searchQuery && (
             <div className="mb-6 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
               <span>
@@ -371,7 +366,7 @@ export default function PortalHomePage() {
             </div>
           )}
 
-          {/* Cards Grid */}
+          {/* Cards Grid: Fast & Pure CSS */}
           {filteredApps.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredApps.map((app) => (
@@ -379,7 +374,7 @@ export default function PortalHomePage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-200/80 dark:border-slate-800 p-8 max-w-lg mx-auto">
+            <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-8 max-w-lg mx-auto">
               <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 flex items-center justify-center mx-auto mb-4 text-indigo-600 dark:text-indigo-400">
                 <Search className="w-6 h-6" />
               </div>
@@ -395,7 +390,7 @@ export default function PortalHomePage() {
                   setSearchQuery('');
                   setActiveCategory('Semua');
                 }}
-                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white text-xs font-bold transition shadow-xs"
+                className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition shadow-xs"
               >
                 Tampilkan Semua 9 Layanan
               </button>
@@ -404,27 +399,107 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* LAYANAN TAMBAHAN & ALAT BANTU EKSKLUSIF */}
-      <section id="layanan-tambahan" className="py-20 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+      {/* Panduan Alur Cepat 3 Langkah (Deep Workflow) */}
+      <section id="alur" className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-14">
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-3.5 py-1 rounded-full shadow-2xs">
+              Alur Kerja Simpel &amp; Presisi
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
+              3 Langkah dari Ide ke Dokumen Jadi
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+              Tanpa perlu prompt berbelit. Cukup tentukan kebutuhan Anda, masukkan data pokok, dan unduh dokumen asli siap pakai.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Step 1 */}
+            <div className="p-7 rounded-2xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between relative">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+                  01
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
+                    Pilih Layanan Sesuai Kebutuhan
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Tentukan modul spesialis yang sesuai dengan tugas Anda: presentasi slide PPTX widescreen 16:9, modul ajar Kurikulum Merdeka, resume standar ATS, kalkulator RAB proyek, atau surat hukum resmi.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800 text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-500" />
+                <span>9 Subdomain Siap Akses</span>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-7 rounded-2xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between relative">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+                  02
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
+                    Ketik Data atau Topik Ringkas
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Cukup masukkan topik utama, parameter proyek, atau rancangan naskah dasar. Sistem otomasi cerdas menyusun tata naskah berstandar resmi dalam sub-2 detik dengan akurasi tinggi.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800 text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-indigo-500" />
+                <span>Komputasi Sub-2 Detik</span>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="p-7 rounded-2xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between relative">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-extrabold text-lg shadow-sm">
+                  03
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1.5">
+                    Unduh Dokumen Asli Bebas Edit
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Unduh file dokumen asli (.pptx widescreen 16:9, .docx Word berstruktur, atau .xlsx Excel lengkap rumus) yang 100% bebas Anda edit kembali di komputer atau ponsel Anda.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-slate-200/60 dark:border-slate-800 text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <FileText className="w-4 h-4 text-emerald-500" />
+                <span>Format Asli .pptx, .docx, .xlsx</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Layanan Tambahan & Alat Bantu Modular */}
+      <section id="layanan-tambahan" className="py-16 bg-slate-50/80 dark:bg-slate-900/50 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-800 text-amber-700 dark:text-amber-400">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div className="max-w-2xl space-y-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200/80 dark:border-amber-800 text-amber-700 dark:text-amber-400">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Katalog Alat Bantu Tambahan (Koleksi Terus Bertambah)</span>
+                <span>Alat Bantu Tambahan (Koleksi Modular)</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Layanan Tambahan &amp; Alat Bantu Cerdas
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-                Koleksi alat bantu digital cerdas untuk melengkapi produktivitas Anda. Masuk dengan mudah menggunakan Kunci Akses Akun BikinKilat Anda.
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
+                Koleksi alat bantu digital cerdas pelengkap produktivitas Anda. Masuk dengan mudah menggunakan Kunci Akses Akun BikinKilat Anda.
               </p>
             </div>
 
-            {/* Token Notice Banner (Jelas & Transparan, Tanpa Istilah Teknis) */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-amber-200 dark:border-amber-800/80 shadow-xs max-w-md space-y-1">
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-950 border border-amber-200 dark:border-amber-800/80 shadow-xs max-w-md space-y-1">
               <div className="flex items-center gap-2 text-xs font-black text-amber-600 dark:text-amber-400 uppercase tracking-wide">
                 <Coins className="w-4 h-4 fill-amber-400" />
                 <span>Tarif: 1 Token per Masuk Layanan</span>
@@ -435,44 +510,38 @@ export default function PortalHomePage() {
             </div>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            {/* Dynamic Services from Database (Managed in Admin Panel) */}
             {externalServices.map((service) => {
               const isMaintenance = service.status === 'maintenance';
               return (
                 <div
                   key={service.id}
-                  className="group rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden"
+                  className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 hover:border-indigo-400 dark:hover:border-indigo-600 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between space-y-5"
                 >
-                  <div className="space-y-4">
-                    {/* Badges */}
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="px-3 py-1 rounded-full text-[11px] font-black bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1.5">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 inline-flex items-center gap-1">
                         <Coins className="w-3.5 h-3.5" />
-                        <span>{service.token_cost || 1} Token / Sesi Masuk</span>
+                        <span>{service.token_cost || 1} Token / Masuk</span>
                       </span>
                       {service.badge && (
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                           {service.badge}
                         </span>
                       )}
                     </div>
 
-                    {/* Title & Subtitle */}
                     <div>
-                      <h3 className="text-xl font-extrabold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white">
                         {service.title}
                       </h3>
                       {service.subtitle && (
-                        <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-1">
+                        <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">
                           {service.subtitle}
                         </p>
                       )}
                     </div>
 
-                    {/* Description */}
                     {service.description && (
                       <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                         {service.description}
@@ -480,30 +549,24 @@ export default function PortalHomePage() {
                     )}
 
                     {isMaintenance && (
-                      <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-semibold">
+                      <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-2 text-amber-600 dark:text-amber-400 text-xs font-semibold">
                         <AlertTriangle className="w-4 h-4 shrink-0" />
-                        <span>Sedang dalam pemeliharaan sistem. Mohon coba beberapa saat lagi.</span>
+                        <span>Sedang pemeliharaan sistem.</span>
                       </div>
                     )}
                   </div>
 
-                  {/* Action Button */}
-                  <div className="pt-2">
+                  <div>
                     <button
                       type="button"
                       onClick={() => handleLaunchService(service)}
                       disabled={launchingServiceId === service.id || isMaintenance}
-                      className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-indigo-600/20 disabled:opacity-50 cursor-pointer"
+                      className="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer"
                     >
                       {launchingServiceId === service.id ? (
                         <>
                           <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                           <span>Menghubungkan Sesi...</span>
-                        </>
-                      ) : isMaintenance ? (
-                        <>
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          <span>Dalam Pemeliharaan</span>
                         </>
                       ) : (
                         <>
@@ -518,80 +581,68 @@ export default function PortalHomePage() {
             })}
 
             {isServicesLoading && externalServices.length === 0 && (
-              <div className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 animate-pulse space-y-4">
-                <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-full w-1/3" />
+              <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 animate-pulse space-y-4">
+                <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded-md w-1/3" />
                 <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded-md w-3/4" />
-                <div className="h-16 bg-slate-100 dark:bg-slate-900 rounded-xl" />
+                <div className="h-12 bg-slate-100 dark:bg-slate-900 rounded-xl" />
               </div>
             )}
             
-            {/* Card 2: Koleksi Alat Bantu Akan Bertambah */}
-            <div className="rounded-3xl p-6 sm:p-7 bg-slate-100/60 dark:bg-slate-950/40 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-fit block">
+            {/* Card 2: Koleksi Alat Bantu Baru */}
+            <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-800 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 w-fit block">
                   Segera Hadir
                 </span>
-
                 <div>
-                  <h3 className="text-xl font-extrabold text-slate-800 dark:text-slate-200">
-                    Alat Bantu Otomasi Baru
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                    Modul Otomasi Baru
                   </h3>
-                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-                    Koleksi Akan Terus Bertambah
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Koleksi terus bertambah secara berkala untuk mendukung produktivitas kerja dan akademis Anda.
                   </p>
                 </div>
-
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Kami terus merancang berbagai modul otomasi baru untuk guru, dosen, mahasiswa, dan profesional. Semua layanan baru nantinya dapat diakses langsung menggunakan Kunci Akses akun BikinKilat yang sama.
-                </p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-white/70 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center">
-                <p className="text-xs font-bold text-slate-600 dark:text-slate-400">
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-center">
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">
                   Punya usulan alat bantu yang Anda butuhkan?
                 </p>
                 <Link
                   href="/pengembang"
                   className="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline inline-block mt-1"
                 >
-                  Kirim Saran ke Pengembang &rarr;
+                  Kirim Usulan ke Pengembang &rarr;
                 </Link>
               </div>
             </div>
 
-            {/* Card 3: Cara Menggunakan Kunci Akses */}
-            <div className="rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit block">
-                  Panduan Penggunaan
+            {/* Card 3: Cara Akses Kunci Satu Pintu */}
+            <div className="rounded-2xl p-6 bg-white dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 w-fit block">
+                  Panduan Akses
                 </span>
-
                 <div>
-                  <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">
-                    Cara Menggunakan Layanan Tambahan
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                    Kunci Akses Universal
                   </h3>
-                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-                    Cukup 3 Langkah Mudah
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Cukup 1 kunci akses pribadi untuk seluruh alat bantu eksternal.
                   </p>
                 </div>
 
-                <ol className="space-y-3 text-xs text-slate-600 dark:text-slate-400 list-decimal pl-4">
-                  <li>
-                    Masuk ke <strong>Dashboard Akun BikinKilat</strong> Anda dan salin <strong>Kunci Akses Pribadi</strong> Anda.
-                  </li>
-                  <li>
-                    Buka layanan tambahan yang Anda pilih, lalu masukkan Kunci Akses tersebut pada halaman masuk.
-                  </li>
-                  <li>
-                    Sistem akan memotong <strong>1 Token Saldo</strong>, dan Anda langsung dapat menggunakan alat bantu tersebut sepuasnya!
-                  </li>
+                <ol className="space-y-2 text-xs text-slate-600 dark:text-slate-400 list-decimal pl-4">
+                  <li>Buka <strong>Dashboard Akun</strong> Anda dan salin Kunci Akses Pribadi.</li>
+                  <li>Masukkan Kunci Akses pada halaman masuk layanan tambahan.</li>
+                  <li>Sistem memotong 1 Token dan Anda langsung dapat menggunakannya sepuasnya.</li>
                 </ol>
               </div>
 
               <div className="pt-2">
                 <Link
                   href="/dashboard"
-                  className="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center gap-2 transition"
+                  className="w-full py-2.5 px-4 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-800 dark:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition"
                 >
                   <span>Lihat Kunci Akses di Dashboard</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -604,59 +655,46 @@ export default function PortalHomePage() {
         </div>
       </section>
 
-      {/* Architecture & Standards Bento Grid */}
-      <EnterpriseBento />
-
-      {/* 3-Step Simple Workflow */}
-      <QuickWorkflow />
-
-      {/* Interactive Comparison: Cara Lama vs BikinKilat */}
-      <InteractiveComparison />
-
-      {/* Interactive Efficiency & Cost Savings Calculator */}
-      <EfficiencyCalculator onOpenCashier={handleOpenCashier} />
-
-      {/* Unified Free Quota & Service Showcase Section */}
-      <section id="kasir" className="py-24 bg-white dark:bg-slate-950 border-y border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
-        {/* Subtle Ambient Light with Aurora */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[450px] bg-gradient-to-tr from-indigo-50/40 via-sky-50/30 to-transparent dark:from-indigo-950/20 dark:via-sky-950/15 dark:to-transparent blur-3xl pointer-events-none -z-10 animate-aurora" />
-
+      {/* Free Quota & Server Support Section */}
+      <section id="kuota" className="py-20 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
+          
+          <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800 px-3.5 py-1 rounded-full shadow-2xs">
               Akses Harian &amp; Dukungan Server
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
-              20 Alokasi Kuota Harian
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
+              20 Alokasi Kuota Harian Terpadu
             </h2>
             <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Gunakan seluruh layanan dengan 20 kuota harian setiap hari. Anda juga dapat memberikan apresiasi sukarela untuk mendukung operasional server.
+              Gunakan seluruh 9 layanan dengan 20 alokasi kuota setiap hari. Tanpa sistem langganan terkunci, tanpa potongan biaya tersembunyi.
             </p>
           </div>
 
           {/* 3 Free Ecosystem Benefit Pillar Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-4 mb-14 overflow-visible">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+            
             {/* Card 1: Akademik */}
-            <div className="p-7 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-700 transition flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
-                  <Sparkles className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+                  <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
                     Sektor Akademik
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                    Slide & Modul Ajar
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                    Slide 16:9 &amp; Modul Ajar
                   </h3>
                 </div>
-                <div className="text-3xl font-black text-slate-900 dark:text-white">
-                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                <div className="text-2xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-normal text-slate-400">/ 20 Kuota Hari</span>
                 </div>
                 <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span>Slide PowerPoint 16:9 & Speaker Notes</span>
+                    <span>Slide PowerPoint 16:9 &amp; Speaker Notes</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-500 shrink-0" />
@@ -670,31 +708,30 @@ export default function PortalHomePage() {
               </div>
               <a
                 href="https://slide.bikinkilat.web.id"
-                className="mt-6 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
               >
-                Mulai Susun Presentasi
+                Mulai Susun Presentasi &rarr;
               </a>
             </div>
 
             {/* Card 2: Karier */}
-            <div className="p-7 rounded-3xl bg-indigo-50/50 dark:bg-indigo-950/30 border-2 border-indigo-500/50 dark:border-indigo-500/30 shadow-md transition flex flex-col justify-between relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-indigo-600 text-white font-black text-[10px] uppercase shadow-sm">
-                Paling Sering Digunakan
-              </div>
+            <div className="p-6 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border-2 border-indigo-500/40 dark:border-indigo-500/30 flex flex-col justify-between relative">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
-                  <Coins className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
+                  <Coins className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-1">
-                    Sektor Karier & Kerja
+                  <span className="text-[11px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-1">
+                    Sektor Karier &amp; Kerja
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                    Resume ATS & Cover Letter
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                    Resume ATS &amp; Cover Letter
                   </h3>
                 </div>
-                <div className="text-3xl font-black text-slate-900 dark:text-white">
-                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                <div className="text-2xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-normal text-slate-400">/ 20 Kuota Hari</span>
                 </div>
                 <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
                   <li className="flex items-center gap-2">
@@ -703,38 +740,40 @@ export default function PortalHomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <span>Surat Lamaran Bilingual (ID & EN)</span>
+                    <span>Surat Lamaran Bilingual (ID &amp; EN)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <span>Ekspor PDF & DOCX Bebas Edit</span>
+                    <span>Ekspor PDF &amp; DOCX Bebas Modifikasi</span>
                   </li>
                 </ul>
               </div>
               <a
                 href="https://cv.bikinkilat.web.id"
-                className="mt-6 w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold text-center block transition shadow-sm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold text-center block transition shadow-xs"
               >
-                Mulai Buat CV ATS
+                Mulai Buat CV ATS &rarr;
               </a>
             </div>
 
             {/* Card 3: Bisnis & Legal */}
-            <div className="p-7 rounded-3xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-700 transition flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-                  <ShieldCheck className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 block mb-1">
-                    Sektor Bisnis & Hukum
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 block mb-1">
+                    Sektor Bisnis &amp; Hukum
                   </span>
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                    RAB, Kontrak & Proposal
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                    RAB, Kontrak &amp; Proposal
                   </h3>
                 </div>
-                <div className="text-3xl font-black text-slate-900 dark:text-white">
-                  Rp 0 <span className="text-xs font-semibold text-slate-400">/ 20 Kuota Hari</span>
+                <div className="text-2xl font-black text-slate-900 dark:text-white">
+                  Rp 0 <span className="text-xs font-normal text-slate-400">/ 20 Kuota Hari</span>
                 </div>
                 <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
                   <li className="flex items-center gap-2">
@@ -743,25 +782,28 @@ export default function PortalHomePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span>Draf Surat Perjanjian & Somasi Hukum</span>
+                    <span>Draf Perjanjian &amp; Somasi KUHPerdata</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-amber-500 shrink-0" />
-                    <span>Proposal Usaha & Pengajuan KUR UMKM</span>
+                    <span>Proposal Usaha &amp; Pengajuan KUR UMKM</span>
                   </li>
                 </ul>
               </div>
               <a
                 href="https://rab.bikinkilat.web.id"
-                className="mt-6 w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-xs font-bold text-center block transition"
               >
-                Mulai Hitung RAB
+                Mulai Hitung RAB &rarr;
               </a>
             </div>
+
           </div>
 
           {/* Reset Banner */}
-          <div className="max-w-5xl mx-auto -mt-4 mb-16 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-900 text-white border border-indigo-800/60 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-indigo-700/80 transition-all duration-300">
+          <div className="max-w-5xl mx-auto p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-900/60 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-1.5 text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 text-xs font-semibold border border-emerald-400/20">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
@@ -771,92 +813,70 @@ export default function PortalHomePage() {
                 20 Kuota Harian &amp; Dukungan Server
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
-                Nikmati akses dokumen harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela.
+                Nikmati akses dokumen harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela di halaman Kasir.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
               <Link
                 href="/kasir"
-                className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 active:bg-amber-500 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 min-h-[48px] group"
+                className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition flex items-center gap-2 min-h-[44px]"
               >
                 <Heart className="w-4 h-4 fill-slate-950" />
-                <span>Status Kuota &amp; Dukung Server</span>
-                <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
+                <span>Status Kuota &amp; Traktir Server</span>
+                <ArrowRight className="w-4 h-4 text-slate-950" />
               </Link>
             </div>
           </div>
 
-          {/* Transaction History Section */}
-          <div id="riwayat" className="max-w-4xl mx-auto">
-            <TransactionHistory lastUpdated={lastTxUpdated} />
-          </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      {/* FAQ Section: Comprehensive, Deep Answers */}
+      <section id="faq" className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-2">
+          <div className="flex items-center justify-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider mb-2">
             <HelpCircle className="w-4 h-4" />
-            <span>Pertanyaan Umum</span>
+            <span>Tanya Jawab Lengkap</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Pertanyaan Seputar Ekosistem BikinKilat
+            Pertanyaan Umum Seputar Ekosistem BikinKilat
           </h2>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-lg mx-auto">
+            Semua yang perlu Anda ketahui tentang alokasi kuota harian, format dokumen, dan kebijakan layanan.
+          </p>
         </div>
 
-        <div className="space-y-4">
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Apakah token yang saya beli di bikinkilat.web.id bisa dipakai di slide.bikinkilat.web.id?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Ya, sistem BikinKilat menggunakan satu dompet token terpadu. Token yang Anda beli di kasir otomatis tersinkronisasi langsung ke seluruh layanan tanpa perlu login ulang.
-            </p>
-          </div>
-
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Format file apa saja yang bisa diunduh?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Setiap layanan menghasilkan file dokumen asli yang dapat diedit bebas: PowerPoint (.pptx), Microsoft Word (.docx), Excel (.xlsx), PDF, dan Markdown (.md), bukan sekadar screenshot atau teks web.
-            </p>
-          </div>
-
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Bagaimana jika proses pembayaran QRIS mengalami kendala?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Pembayaran diproses secara instan dan aman. Begitu transfer berhasil diverifikasi oleh bank atau e-wallet Anda, saldo token langsung bertambah otomatis dalam hitungan detik.
-            </p>
-          </div>
-
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Berapa lama proses pembuatan slide dan dokumen di BikinKilat?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Proses pembuatan dokumen, modul ajar, dan slide presentasi di BikinKilat berjalan dalam hitungan detik (sub-2 detik) menggunakan komputasi teroptimasi dan file siap langsung diunduh serta diedit.
-            </p>
-          </div>
-
-          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl p-6 sm:p-7 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-200">
-            <h3 className="font-bold text-slate-900 dark:text-white text-base mb-2">
-              Berapa kuota yang saya dapatkan setiap hari?
-            </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-              Setiap pengguna yang masuk ke akun BikinKilat otomatis memiliki 20 kuota harian yang diperbarui setiap pukul 00:00 WIB untuk menyusun dokumen langsung tanpa biaya langganan.
-            </p>
-          </div>
+        <div className="space-y-3">
+          {faqs.map((faq, index) => {
+            const isOpen = openFaqIndex === index;
+            return (
+              <div 
+                key={index}
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-2xs overflow-hidden transition-all duration-150"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-white text-sm sm:text-base hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                >
+                  <span>{faq.q}</span>
+                  <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed pt-0 border-t border-slate-100 dark:border-slate-800/60 mt-1">
+                    <p className="pt-3">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 
       <Footer />
 
-      {/* Mobile Floating Quick Dock for 1-Thumb Fast Access */}
+      {/* Mobile Floating Quick Dock */}
       <MobileQuickDock tokens={tokens} onOpenCashier={handleOpenCashier} />
 
       {/* Cashier Modal */}

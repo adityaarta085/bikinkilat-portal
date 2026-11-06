@@ -29,7 +29,7 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
           <span className="text-[10px] font-bold">Layanan</span>
         </Link>
 
-        {/* Nav item 2: Dashboard or Studio */}
+        {/* Nav item 2: Dashboard or Cara Kerja */}
         {user ? (
           <Link
             href="/dashboard"
@@ -40,24 +40,24 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
           </Link>
         ) : (
           <Link
-            href="/#live-preview"
+            href="/#alur"
             className="flex flex-col items-center justify-center min-h-[44px] min-w-[48px] py-1 px-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white active:scale-90 active:bg-slate-100 dark:active:bg-slate-800 transition-all duration-150"
           >
             <Presentation className="w-4 h-4 mb-0.5 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-[10px] font-bold">Studio</span>
+            <span className="text-[10px] font-bold">Alur</span>
           </Link>
         )}
 
-        {/* Action item: Top-Up QRIS */}
+        {/* Action item: Kuota Harian */}
         <button
           type="button"
           onClick={onOpenCashier}
           className="relative overflow-hidden flex items-center gap-1.5 min-h-[44px] px-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-90 active:bg-indigo-800 text-white rounded-xl shadow-xs transition-all duration-150"
-          aria-label="Isi ulang saldo token QRIS"
+          aria-label="Status kuota harian akun"
         >
           <div className="absolute inset-0 -translate-x-full animate-shimmer-sweep bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
           <PlusCircle className="w-4 h-4" />
-          <span className="text-[11px] font-bold whitespace-nowrap">Top-Up</span>
+          <span className="text-[11px] font-bold whitespace-nowrap">Kuota</span>
         </button>
 
         {/* Theme Toggle on mobile dock */}
@@ -65,16 +65,16 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
           <ThemeToggle className="w-9 h-9 rounded-xl active:scale-90 transition-transform" />
         </div>
 
-        {/* Nav item 3: Token Wallet / History */}
+        {/* Nav item 3: Token Wallet / Status Kuota */}
         <Link
-          href={user ? "/dashboard" : "/#riwayat"}
+          href={user ? "/dashboard" : "/kasir"}
           className="flex flex-col items-center justify-center min-h-[44px] min-w-[48px] py-1 px-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white active:scale-90 active:bg-slate-100 dark:active:bg-slate-800 transition-all duration-150"
         >
           <div className="flex items-center gap-1">
             <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
             <span className="text-[11px] font-extrabold text-slate-900 dark:text-white font-mono">{tokens}</span>
           </div>
-          <span className="text-[9px] font-semibold text-slate-500 dark:text-slate-400">Saldo</span>
+          <span className="text-[9px] font-semibold text-slate-500 dark:text-slate-400">Kuota</span>
         </Link>
       </nav>
     </div>
