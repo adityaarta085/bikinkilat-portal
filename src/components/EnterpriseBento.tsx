@@ -120,19 +120,19 @@ export function EnterpriseBento() {
                 <Coins className="w-5 h-5 text-amber-600 dark:text-amber-400" />
               </div>
               <span className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">
-                Satu Dompet Terpadu
+                Alokasi Akses Terpadu
               </span>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mt-1 mb-3">
-                Satu Saldo untuk 9 Subdomain
+                20 Kuota Gratis di 9 Subdomain
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                Tidak ada biaya langganan yang menumpuk. Beli saldo token sekali via QRIS, dan gunakan bebas di slide, modul ajar, CV, RAB, hingga pasfoto tanpa registrasi ulang.
+                Tidak ada biaya apa pun. Cukup login sekali dengan akun Google, alokasi 20 kuota harian otomatis aktif dan dapat digunakan bebas di slide, modul ajar, CV, RAB, hingga pasfoto tanpa registrasi ulang.
               </p>
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 font-semibold flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-500" />
-              <span>Token permanen tanpa masa kedaluwarsa.</span>
+              <span>Otomatis terisi ulang setiap 00:00 WIB tanpa biaya.</span>
             </div>
           </SpotlightCard>
 

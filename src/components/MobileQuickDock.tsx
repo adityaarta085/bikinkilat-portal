@@ -18,7 +18,7 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
     if (onOpenCashier) {
       onOpenCashier();
     } else {
-      window.location.href = '/kasir';
+      window.location.href = '/kapasitas';
     }
   };
 
@@ -75,7 +75,7 @@ export function MobileQuickDock({ tokens = 0, onOpenCashier }: MobileQuickDockPr
 
         {/* Nav item 3: Token Wallet / Status Kuota */}
         <Link
-          href={user ? "/dashboard" : "/kasir"}
+          href={user ? "/dashboard" : "/kapasitas"}
           className="flex flex-col items-center justify-center min-h-[44px] min-w-[48px] py-1 px-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white active:scale-90 active:bg-slate-100 dark:active:bg-slate-800 transition-all duration-150"
         >
           <div className="flex items-center gap-1">

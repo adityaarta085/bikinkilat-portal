@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PiggyBank, ShieldCheck } from 'lucide-react';
+import { Sparkles, ShieldCheck, Clock, Zap, ArrowRight, Layers } from 'lucide-react';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { useCountUp } from '@/hooks/useCountUp';
 
@@ -11,19 +11,13 @@ interface EfficiencyCalculatorProps {
 
 export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProps) {
   const [hoursPerWeek, setHoursPerWeek] = useState<number>(8);
-  const [costPerDoc, setCostPerDoc] = useState<number>(100000);
+  const [docsPerMonth, setDocsPerMonth] = useState<number>(10);
   const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
 
-  // Perhitungan:
-  // Rata-rata 1 dokumen butuh 2-3 jam manual vs 1-2 menit BikinKilat (efisiensi 90%)
+  // Efisiensi waktu:
+  // Rata-rata 1 dokumen butuh 2-3 jam manual vs < 1 menit di BikinKilat (efisiensi ~85-90%)
   const rawHoursSaved = Math.round(hoursPerWeek * 4 * 0.85);
-  const estimatedDocsPerMonth = Math.max(2, Math.round(hoursPerWeek * 4 / 2.5));
-  const freelanceCostPerMonth = estimatedDocsPerMonth * costPerDoc;
-  
-  // Biaya token di BikinKilat (rata-rata 1-2 token per dokumen, ~Rp 2.500 per token)
-  const bikinkilatCost = estimatedDocsPerMonth * 2500;
-  const rawNetSavings = freelanceCostPerMonth - bikinkilatCost;
-  const rawSavingsPercent = Math.min(96, Math.max(70, Math.round((rawNetSavings / freelanceCostPerMonth) * 100)));
+  const rawPercentEfficiency = 90;
 
   // Animated Count-Up Numbers
   const animatedHours = useCountUp({
@@ -32,21 +26,21 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
     enabled: isVisible
   });
 
-  const animatedSavings = useCountUp({
-    end: rawNetSavings,
-    duration: 1000,
+  const animatedPercent = useCountUp({
+    end: rawPercentEfficiency,
+    duration: 900,
     enabled: isVisible
   });
 
-  const animatedPercent = useCountUp({
-    end: rawSavingsPercent,
-    duration: 900,
+  const animatedDocs = useCountUp({
+    end: docsPerMonth,
+    duration: 700,
     enabled: isVisible
   });
 
   return (
     <section className="py-24 bg-gradient-to-b from-white via-slate-50/40 to-white dark:from-slate-950 dark:via-slate-900/40 dark:to-slate-950 border-b border-slate-200/80 dark:border-slate-800 relative overflow-hidden transition-colors">
-      {/* Apple Ambient Iridescent Light */}
+      {/* Iridescent Light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-gradient-to-tr from-indigo-100/30 via-emerald-50/20 to-sky-100/30 dark:from-indigo-950/25 dark:via-emerald-950/15 dark:to-sky-950/20 blur-3xl rounded-full pointer-events-none -z-10 animate-aurora" />
 
       <div 
@@ -58,13 +52,13 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-3.5 py-1 rounded-full shadow-2xs">
-            Kalkulator Efisiensi & Hemat Biaya
+            Kalkulator Efisiensi Waktu &amp; Produktivitas
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white mt-3 mb-4 tracking-tight">
-            Berapa Banyak Waktu & Anggaran yang Dihemat?
+            Berapa Banyak Waktu yang Dapat Dioptimalkan?
           </h2>
           <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
-            Tanpa perlu langganan bulanan mahal. Anda hanya membayar token saat dokumen dibutuhkan, dengan hasil berstandar hukum dan tata naskah resmi.
+            Layanan utilitas publik terbuka 100% tanpa biaya. Optimalkan waktu penyusunan administrasi pendidikan, karier, dan dokumen formal Anda secara instan.
           </p>
         </div>
 
@@ -77,17 +71,17 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
             {/* Quick Persona Presets */}
             <div>
               <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">
-                Pilih Profil Penggunaan (1-Klik):
+                Pilih Profil Penggunaan:
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button
                   type="button"
                   onClick={() => {
                     setHoursPerWeek(4);
-                    setCostPerDoc(50000);
+                    setDocsPerMonth(5);
                   }}
                   className={`p-2.5 rounded-xl border text-left text-xs transition-all duration-200 active:scale-95 ${
-                    hoursPerWeek === 4 && costPerDoc === 50000
+                    hoursPerWeek === 4 && docsPerMonth === 5
                       ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-900 dark:text-indigo-200 font-bold shadow-2xs scale-[1.02]'
                       : 'bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
@@ -100,10 +94,10 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
                   type="button"
                   onClick={() => {
                     setHoursPerWeek(10);
-                    setCostPerDoc(100000);
+                    setDocsPerMonth(12);
                   }}
                   className={`p-2.5 rounded-xl border text-left text-xs transition-all duration-200 active:scale-95 ${
-                    hoursPerWeek === 10 && costPerDoc === 100000
+                    hoursPerWeek === 10 && docsPerMonth === 12
                       ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-900 dark:text-indigo-200 font-bold shadow-2xs scale-[1.02]'
                       : 'bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
@@ -116,10 +110,10 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
                   type="button"
                   onClick={() => {
                     setHoursPerWeek(16);
-                    setCostPerDoc(150000);
+                    setDocsPerMonth(20);
                   }}
                   className={`p-2.5 rounded-xl border text-left text-xs transition-all duration-200 active:scale-95 ${
-                    hoursPerWeek === 16 && costPerDoc === 150000
+                    hoursPerWeek === 16 && docsPerMonth === 20
                       ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-900 dark:text-indigo-200 font-bold shadow-2xs scale-[1.02]'
                       : 'bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
@@ -132,15 +126,15 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
                   type="button"
                   onClick={() => {
                     setHoursPerWeek(22);
-                    setCostPerDoc(200000);
+                    setDocsPerMonth(30);
                   }}
                   className={`p-2.5 rounded-xl border text-left text-xs transition-all duration-200 active:scale-95 ${
-                    hoursPerWeek === 22 && costPerDoc === 200000
+                    hoursPerWeek === 22 && docsPerMonth === 30
                       ? 'bg-indigo-50 dark:bg-indigo-950/70 border-indigo-300 dark:border-indigo-600 text-indigo-900 dark:text-indigo-200 font-bold shadow-2xs scale-[1.02]'
                       : 'bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <div className="font-bold">Bisnis / UKM</div>
+                  <div className="font-bold">Komunitas / UKM</div>
                   <div className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">22 Jam / Mgg</div>
                 </button>
               </div>
@@ -150,7 +144,7 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
-                  Waktu Manual Membuat Dokumen per Minggu
+                  Waktu Manual Menyusun Dokumen per Minggu
                 </label>
                 <span className="text-xs sm:text-sm font-extrabold text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-xl border border-indigo-200/80 dark:border-indigo-800 shadow-2xs">
                   {hoursPerWeek} Jam / Minggu
@@ -172,29 +166,29 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
               </div>
             </div>
 
-            {/* Slider 2: Freelance Cost Replacement */}
+            {/* Slider 2: Documents Per Month */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
-                  Perkiraan Biaya Jasa Ketik / Desain Manual
+                  Kebutuhan Berkas Dokumen per Bulan
                 </label>
                 <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-xl border border-slate-200/80 dark:border-slate-700 shadow-2xs">
-                  Rp {costPerDoc.toLocaleString('id-ID')} / Dokumen
+                  {docsPerMonth} Dokumen / Bulan
                 </span>
               </div>
               <input
                 type="range"
-                min="30000"
-                max="300000"
-                step="10000"
-                value={costPerDoc}
-                onChange={(e) => setCostPerDoc(Number(e.target.value))}
+                min="2"
+                max="50"
+                step="1"
+                value={docsPerMonth}
+                onChange={(e) => setDocsPerMonth(Number(e.target.value))}
                 className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-600"
               />
               <div className="flex justify-between text-[11px] text-slate-400 dark:text-slate-500 mt-1 font-medium">
-                <span>Rp 30.000</span>
-                <span>Rp 150.000</span>
-                <span>Rp 300.000</span>
+                <span>2 Dokumen</span>
+                <span>20 Dokumen</span>
+                <span>50 Dokumen</span>
               </div>
             </div>
 
@@ -206,17 +200,17 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
               </div>
               <div className="flex items-center gap-2 font-medium">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span>Token Berlaku Permanen</span>
+                <span>20 Kuota Gratis Harian</span>
               </div>
             </div>
 
           </div>
 
-          {/* Right Column: Dynamic Computed ROI Display (Apple Liquid Glass Card) */}
+          {/* Right Column: Computed Efficiency Display */}
           <div className="lg:col-span-5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-[0_20px_45px_-10px_rgba(15,23,42,0.06)] flex flex-col justify-between ring-1 ring-slate-900/[0.03] dark:ring-white/[0.03] transition-colors">
             <div>
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/70 dark:border-indigo-800 px-2.5 py-0.5 rounded-md shadow-2xs">
-                Estimasi Penghematan Anda
+                Hasil Efisiensi Waktu
               </span>
 
               {/* Total Hours Saved */}
@@ -226,16 +220,16 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
                   <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">/ Bulan</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 leading-relaxed font-normal">
-                  Setara dengan <strong>{(animatedHours / 8).toFixed(1)} hari kerja penuh</strong> yang dapat Anda alihkan untuk hal penting lainnya.
+                  Setara dengan <strong>{(rawHoursSaved / 8).toFixed(1)} hari kerja penuh</strong> yang dapat Anda alihkan untuk pengajaran, pendalaman materi, dan waktu berkualitas.
                 </p>
               </div>
 
-              {/* Financial Savings Box */}
+              {/* Efficiency Rate Box */}
               <div className="bg-slate-50/80 dark:bg-slate-800/60 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-700 mb-6 shadow-2xs">
                 <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 mb-2 font-semibold">
-                  <span>Nilai Penghematan:</span>
+                  <span>Tingkat Akselerasi:</span>
                   <span className="text-emerald-700 dark:text-emerald-400 font-extrabold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-full">
-                    {animatedPercent}% Hemat
+                    ~{animatedPercent}% Lebih Cepat
                   </span>
                 </div>
 
@@ -247,24 +241,24 @@ export function EfficiencyCalculator({ onOpenCashier }: EfficiencyCalculatorProp
                   />
                 </div>
 
-                <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tight tabular-nums">
-                  Rp {animatedSavings.toLocaleString('id-ID')}
+                <div className="text-lg font-black text-slate-900 dark:text-white tracking-tight">
+                  {animatedDocs} Dokumen Per Bulan Siap Pakai
                 </div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 font-medium">
-                  Biaya di BikinKilat hanya ~Rp {bikinkilatCost.toLocaleString('id-ID')} berbasis saldo token.
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium">
+                  Rata-rata pemrosesan sub-2 detik per dokumen dalam format resmi standar nasional.
                 </div>
               </div>
             </div>
 
             {/* Action */}
-            <button
-              type="button"
-              onClick={onOpenCashier}
-              className="w-full py-3.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center justify-center gap-2 ring-1 ring-slate-900/10 dark:ring-indigo-400/20 group"
+            <a
+              href="#layanan"
+              className="w-full py-3.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] active:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold text-sm shadow-xs transition-all duration-200 flex items-center justify-center gap-2 ring-1 ring-slate-900/10 dark:ring-indigo-400/20 group text-center"
             >
-              <PiggyBank className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span>Mulai Hemat Sekarang (Isi Token)</span>
-            </button>
+              <Layers className="w-4 h-4 text-indigo-400 dark:text-indigo-200 group-hover:scale-110 transition-transform" />
+              <span>Eksplorasi 9 Layanan Dokumen</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
 
           </div>
 

@@ -17,13 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
-      url: 'https://bikinkilat.web.id/beta',
-      lastModified: now,
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    {
-      url: 'https://bikinkilat.web.id/kasir',
+      url: 'https://bikinkilat.web.id/kapasitas',
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.9,
@@ -35,34 +29,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
-      url: 'https://bikinkilat.web.id/pembaruan',
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://bikinkilat.web.id/changelog',
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
       url: 'https://bikinkilat.web.id/auth',
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,
-    },
-    {
-      url: 'https://bikinkilat.web.id/topup',
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.75,
-    },
-    {
-      url: 'https://bikinkilat.web.id/bayar',
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.75,
     },
     {
       url: 'https://bikinkilat.web.id/dashboard',
@@ -83,12 +53,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     {
-      url: 'https://bikinkilat.web.id/kebijakan-pengembalian-dana',
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
       url: 'https://bikinkilat.web.id/etika-akademik',
       lastModified: now,
       changeFrequency: 'monthly',
@@ -98,7 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://bikinkilat.web.id/pengembang',
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.4,
+      priority: 0.5,
     },
   ];
 }

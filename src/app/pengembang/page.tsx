@@ -57,7 +57,7 @@ const DEVELOPER_FAQS = [
   {
     question: 'Apa saja portofolio dan karya teknologi buatan Aditya Arta Putra?',
     answer:
-      'Karya unggulan Aditya Arta Putra meliputi: (1) BikinKilat.web.id — platform micro-SaaS terpadu 9 otomasi cerdas dokumen dengan satu dompet token dan integrasi QRIS instan, (2) Portal Resmi Desa Ngawonggo (ngawonggo.web.id) hasil kemitraan resmi Pemdes Ngawonggo & SMK Muhammadiyah Bandongan, (3) Sistem Web Perizinan Online (E-Izin open source di GitHub @adityaarta085), (4) Linksku Software Suite (SSWEB, IQC Generator, Media Digital, AI Assistant), dan (5) Buku Tamu Digital SMK Muhammadiyah Bandongan.',
+      'Karya unggulan Aditya Arta Putra meliputi: (1) BikinKilat.web.id — ekosistem terpadu 9 sarana otomasi cerdas dokumen dengan sistem akun terpadu dan akses kuota harian terbuka, (2) Portal Resmi Desa Ngawonggo (ngawonggo.web.id) hasil kemitraan resmi Pemdes Ngawonggo & SMK Muhammadiyah Bandongan, (3) Sistem Web Perizinan Online (E-Izin open source di GitHub @adityaarta085), (4) Linksku Software Suite (SSWEB, IQC Generator, Media Digital, AI Assistant), dan (5) Buku Tamu Digital SMK Muhammadiyah Bandongan.',
   },
   {
     question: 'Di mana riwayat pendidikan formal Aditya Arta Putra?',
@@ -461,7 +461,7 @@ export default function DeveloperPage() {
                   Salah satu pencapaian membanggakan saya adalah dipercaya sebagai <strong>Project Leader & Lead Developer</strong> dalam perancangan dan rekayasa Website Resmi Portal Desa Ngawonggo (<a href="https://ngawonggo.web.id" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 underline font-semibold">ngawonggo.web.id</a>) yang merupakan kolaborasi resmi antara Pemerintah Desa Ngawonggo dan SMK Muhammadiyah Bandongan.
                 </p>
                 <p>
-                  Melalui ekosistem <strong>BikinKilat.web.id</strong>, saya mengimplementasikan seluruh pengetahuan tentang edge network, basis data cloud terpadu, antarmuka responsif ramah pengguna, dan sistem pembayaran QRIS instan agar dapat memberikan manfaat nyata bagi ribuan pengguna di seluruh Indonesia.
+                  Melalui ekosistem <strong>BikinKilat.web.id</strong>, saya mengimplementasikan seluruh pengetahuan tentang edge network, basis data cloud terpadu, antarmuka responsif ramah pengguna, dan pemrosesan dokumen sub-2 detik agar dapat memberikan manfaat nyata bagi ribuan pengguna di seluruh Indonesia.
                 </p>
               </div>
 
@@ -658,14 +658,14 @@ export default function DeveloperPage() {
                     BikinKilat.web.id — Ekosistem Otomasi Dokumen & Presentasi
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
-                    Platform ekosistem micro-SaaS terpadu Indonesia yang menyediakan 9 layanan otomasi cerdas: slide presentasi kilat, modul ajar Kurikulum Merdeka, CV ATS-Friendly, kalkulator RAB Excel standar SNI, surat bisnis, surat waris, proposal kegiatan, pasfoto AI, dan kasir pembayaran resmi QRIS.
+                    Platform ekosistem layanan publik dokumen terbuka Indonesia yang menyediakan 9 sarana otomasi cerdas: slide presentasi kilat, modul ajar Kurikulum Merdeka, CV ATS-Friendly, kalkulator RAB Excel standar SNI, surat bisnis, simulasi waris Islam, proposal kegiatan, pasfoto terstandar, dan panduan kapasitas kuota harian.
                   </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {[
                       '9 Subdomain Terintegrasi',
-                      '1 Dompet Token Universal',
-                      'Pembayaran QRIS Nasional Instan',
+                      '1 Akun Kuota Terpadu',
+                      'Pembaruan Kuota Harian Otomatis',
                       'Arsitektur Edge Cepat',
                       'UI/UX Standar Industri',
                     ].map((feature, idx) => (

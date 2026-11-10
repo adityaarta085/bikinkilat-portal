@@ -66,10 +66,10 @@ export async function POST(req: NextRequest) {
 
     if (tokenCost > 0 && currentTokens < tokenCost) {
       return NextResponse.json({
-        error: `Saldo token tidak mencukupi. Layanan ini membutuhkan ${tokenCost} Token, saldo Anda saat ini ${currentTokens} Token.`,
+        error: `Alokasi kuota harian tidak mencukupi untuk membuka layanan ini (${tokenCost} Kuota, sisa: ${currentTokens} Kuota). Alokasi 20 kuota dokumen otomatis diperbarui setiap malam pukul 00:00 WIB.`,
         requiredTokens: tokenCost,
         currentTokens,
-      }, { status: 402 });
+      }, { status: 429 });
     }
 
     // Deduct tokens if tokenCost > 0

@@ -202,60 +202,13 @@ export const ECOSYSTEM_APPS: EcosystemApp[] = [
   }
 ];
 
-export const TOKEN_PACKAGES = [
-  {
-    id: 'pkg-10',
-    tokens: 10,
-    price: 10500,
-    originalPrice: 15000,
-    discountPercent: 30,
-    discountBadge: 'Diskon 30%',
-    pricePerToken: 1050,
-    name: 'Paket Pelajar',
-    label: 'Paket Pelajar',
-    badge: 'Diskon 30%',
-    popular: false,
-    desc: 'Cukup untuk 5 tugas presentasi dan makalah lengkap (~Rp 1.050/token).'
-  },
-  {
-    id: 'pkg-25',
-    tokens: 25,
-    price: 17000,
-    originalPrice: 29000,
-    discountPercent: 41,
-    discountBadge: 'Diskon 41%',
-    pricePerToken: 680,
-    name: 'Paket Mahasiswa',
-    label: 'Paket Mahasiswa',
-    badge: 'Paling Populer',
-    popular: true,
-    desc: 'Cukup untuk tugas kelompok, proposal, dan resume kerja (~Rp 680/token).'
-  },
-  {
-    id: 'pkg-60',
-    tokens: 60,
-    price: 24500,
-    originalPrice: 49000,
-    discountPercent: 50,
-    discountBadge: 'Diskon 50%',
-    pricePerToken: 408,
-    name: 'Paket Profesional',
-    label: 'Paket Profesional',
-    badge: 'Diskon 50% 💎',
-    popular: false,
-    desc: 'Pilihan paling hemat untuk tim kerja, guru pengajar, dan konsultan (~Rp 408/token).'
-  }
-];
-
 export interface DocumentCostItem {
   id: string;
   name: string;
   subdomain: string;
   tokenCost: number;
   outputFormats: string[];
-  pelajarCost: number; // based on Rp1.050/token
-  mahasiswaCost: number; // based on Rp680/token
-  profesionalCost: number; // based on Rp408/token
+  costLabel: string;
   notes: string;
 }
 
@@ -266,9 +219,7 @@ export const DOCUMENT_COST_BREAKDOWN: DocumentCostItem[] = [
     subdomain: 'slide.bikinkilat.web.id',
     tokenCost: 2,
     outputFormats: ['.pptx', '.docx', '.md'],
-    pelajarCost: 2100,
-    mahasiswaCost: 1360,
-    profesionalCost: 816,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Termasuk file presentasi widescreen 16:9, speaker notes, dan naskah makalah.',
   },
   {
@@ -277,9 +228,7 @@ export const DOCUMENT_COST_BREAKDOWN: DocumentCostItem[] = [
     subdomain: 'modul.bikinkilat.web.id',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
-    pelajarCost: 2100,
-    mahasiswaCost: 1360,
-    profesionalCost: 816,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Rancangan RPP, modul ajar, rubrik asesmen diagnostik, dan kisi-kisi soal.',
   },
   {
@@ -288,20 +237,16 @@ export const DOCUMENT_COST_BREAKDOWN: DocumentCostItem[] = [
     subdomain: 'cv.bikinkilat.web.id',
     tokenCost: 1,
     outputFormats: ['.pdf', '.docx'],
-    pelajarCost: 1050,
-    mahasiswaCost: 680,
-    profesionalCost: 408,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Resume single-column ramah parser ATS beserta surat lamaran pengantar.',
   },
   {
     id: '05-rab',
     name: 'Kalkulator RAB Proyek Konstruksi/Renovasi',
     subdomain: 'rab.bikinkilat.web.id',
-    tokenCost: 3,
+    tokenCost: 2,
     outputFormats: ['.xlsx', '.pdf'],
-    pelajarCost: 3150,
-    mahasiswaCost: 2040,
-    profesionalCost: 1224,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Workbook Excel dengan formula hitung volume x analisa harga satuan aktif.',
   },
   {
@@ -310,137 +255,35 @@ export const DOCUMENT_COST_BREAKDOWN: DocumentCostItem[] = [
     subdomain: 'surat.bikinkilat.web.id',
     tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
-    pelajarCost: 2100,
-    mahasiswaCost: 1360,
-    profesionalCost: 816,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Draf kerangka perjanjian bisnis terstruktur siap telaah oleh penasihat hukum.',
   },
   {
     id: '07-waris',
     name: 'Simulasi Faraidh Waris & Silsilah',
     subdomain: 'waris.bikinkilat.web.id',
-    tokenCost: 2,
+    tokenCost: 1,
     outputFormats: ['.pdf', '.png'],
-    pelajarCost: 2100,
-    mahasiswaCost: 1360,
-    profesionalCost: 816,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Tabel simulasi bagian ahli waris berdasarkan Kompilasi Hukum Islam (KHI).',
   },
   {
     id: '08-proposal',
     name: 'Draf Proposal Usaha / KUR & Sponsor',
     subdomain: 'proposal.bikinkilat.web.id',
-    tokenCost: 3,
+    tokenCost: 2,
     outputFormats: ['.docx', '.pdf'],
-    pelajarCost: 3150,
-    mahasiswaCost: 2040,
-    profesionalCost: 1224,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Struktur proposal bisnis lengkap dengan simulasi proyeksi finansial.',
   },
   {
     id: '09-pasfoto',
     name: 'Studio Pas Foto Formal CPNS/Kedutaan',
     subdomain: 'pasfoto.bikinkilat.web.id',
-    tokenCost: 1,
+    tokenCost: 3,
     outputFormats: ['.png', '.jpg', '.pdf'],
-    pelajarCost: 1050,
-    mahasiswaCost: 680,
-    profesionalCost: 408,
+    costLabel: 'Gratis Rp 0 (Fair-Use)',
     notes: 'Foto formal pakaian kemeja jas dan opsi latar merah/biru ukuran resmi.',
   },
-  {
-    id: 'wm-slide',
-    name: 'Hapus Watermark PPT (slide.bikinkilat)',
-    subdomain: 'slide.bikinkilat.web.id',
-    tokenCost: 1,
-    outputFormats: ['.pptx'],
-    pelajarCost: 1050,
-    mahasiswaCost: 680,
-    profesionalCost: 408,
-    notes: 'Menghapus teks watermark bikinkilat.web.id dari seluruh slide dan file PPTX.',
-  },
 ];
 
-export interface CustomTokenCalculation {
-  amount: number;
-  baseTokens: number;
-  bonusTokens: number;
-  totalTokens: number;
-  bonusPercent: number;
-  tierLabel: string;
-  effectivePricePerToken: number;
-  nextTierAmount: number | null;
-  nextTierBonusPercent: number;
-  diffToNextTier: number;
-  isValid: boolean;
-  minAmount: number;
-}
-
-export const MIN_CUSTOM_TOPUP = 10000;
-
-export const CUSTOM_PRESETS = [
-  { amount: 10000, label: 'Rp 10.000', tokens: 10 },
-  { amount: 20000, label: 'Rp 20.000', tokens: 20 },
-  { amount: 25000, label: 'Rp 25.000', tokens: 26, badge: 'Bonus +1' },
-  { amount: 50000, label: 'Rp 50.000', tokens: 58, badge: 'Populer +8' },
-  { amount: 100000, label: 'Rp 100.000', tokens: 133, badge: 'Hemat +33' },
-  { amount: 250000, label: 'Rp 250.000', tokens: 375, badge: 'Sultan +125' },
-];
-
-export function calculateCustomTokens(rawAmount: number): CustomTokenCalculation {
-  const amount = Math.max(0, Math.floor(rawAmount || 0));
-  const isValid = amount >= MIN_CUSTOM_TOPUP;
-  const baseTokens = Math.floor(amount / 1000);
-
-  let bonusPercent = 0;
-  let tierLabel = 'Standar';
-  let nextTierAmount: number | null = null;
-  let nextTierBonusPercent = 0;
-
-  if (amount >= 250000) {
-    bonusPercent = 50;
-    tierLabel = 'Tier Sultan (+50% Bonus Token)';
-    nextTierAmount = null;
-    nextTierBonusPercent = 0;
-  } else if (amount >= 100000) {
-    bonusPercent = 33;
-    tierLabel = 'Tier Prioritas (+33% Bonus Token)';
-    nextTierAmount = 250000;
-    nextTierBonusPercent = 50;
-  } else if (amount >= 50000) {
-    bonusPercent = 16;
-    tierLabel = 'Tier Populer (+16% Bonus Token)';
-    nextTierAmount = 100000;
-    nextTierBonusPercent = 33;
-  } else if (amount >= 25000) {
-    bonusPercent = 5;
-    tierLabel = 'Tier Hemat (+5% Bonus Token)';
-    nextTierAmount = 50000;
-    nextTierBonusPercent = 16;
-  } else {
-    bonusPercent = 0;
-    tierLabel = 'Tier Standar (Rp 1.000 / Token)';
-    nextTierAmount = 25000;
-    nextTierBonusPercent = 5;
-  }
-
-  const bonusTokens = Math.floor((baseTokens * bonusPercent) / 100);
-  const totalTokens = baseTokens + bonusTokens;
-  const effectivePricePerToken = totalTokens > 0 ? Math.round(amount / totalTokens) : 1000;
-  const diffToNextTier = nextTierAmount ? Math.max(0, nextTierAmount - amount) : 0;
-
-  return {
-    amount,
-    baseTokens,
-    bonusTokens,
-    totalTokens,
-    bonusPercent,
-    tierLabel,
-    effectivePricePerToken,
-    nextTierAmount,
-    nextTierBonusPercent,
-    diffToNextTier,
-    isValid,
-    minAmount: MIN_CUSTOM_TOPUP,
-  };
-}

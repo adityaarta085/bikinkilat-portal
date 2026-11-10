@@ -5,16 +5,11 @@ import {
   History, 
   CheckCircle2, 
   RefreshCw, 
-  QrCode, 
   Trash2, 
   XCircle, 
   Clock, 
-  Copy, 
-  Check, 
-  X,
   Coins
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { useAuth } from '@/lib/auth-context';
 import { getOrCreateGuestId } from '@/lib/user-session';
 
@@ -37,13 +32,10 @@ interface TransactionHistoryProps {
 }
 
 export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
-  const { user, refreshTokens } = useAuth();
+  const { user } = useAuth();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingTxId, setCancellingTxId] = useState<string | null>(null);
-  const [activeQrisModal, setActiveQrisModal] = useState<Transaction | null>(null);
-  const [modalCountdown, setModalCountdown] = useState<number>(900);
-  const [hasCopiedModalAmount, setHasCopiedModalAmount] = useState<boolean>(false);
   const [actionNotice, setActionNotice] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
@@ -66,45 +58,7 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
     fetchTransactions();
   }, [lastUpdated, user?.id]);
 
-  // Polling for QRIS modal if opened
-  useEffect(() => {
-    if (!activeQrisModal || !user?.id) return;
 
-    setModalCountdown(900);
-    const timer = setInterval(() => {
-      setModalCountdown((prev) => (prev > 1 ? prev - 1 : 0));
-    }, 1000);
-
-    const qrisIdToCheck = activeQrisModal.qris_id;
-    let pollInterval: any = null;
-
-    if (qrisIdToCheck) {
-      pollInterval = setInterval(async () => {
-        try {
-          const endpoint = `/api/payment/qris/${qrisIdToCheck}/status?userId=${encodeURIComponent(user.id)}&txId=${activeQrisModal.id}`;
-          const res = await fetch(endpoint);
-          if (!res.ok) return;
-          const result = await res.json();
-          if (result.status === 'success' && result.data?.payment_status === 'paid') {
-            clearInterval(pollInterval);
-            confetti({
-              particleCount: 100,
-              spread: 80,
-              origin: { y: 0.6 },
-            });
-            await refreshTokens();
-            await fetchTransactions();
-            setActiveQrisModal(null);
-          }
-        } catch (e) {}
-      }, 3000);
-    }
-
-    return () => {
-      clearInterval(timer);
-      if (pollInterval) clearInterval(pollInterval);
-    };
-  }, [activeQrisModal, user?.id]);
 
   const handleCancelOrDelete = async (txId: string, action: 'cancel' | 'delete') => {
     if (!user?.id) return;
@@ -131,9 +85,6 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
         setActionNotice(data.message || (action === 'delete' ? 'Transaksi berhasil dihapus.' : 'Transaksi berhasil dibatalkan.'));
         setTimeout(() => setActionNotice(null), 5000);
         await fetchTransactions();
-        if (activeQrisModal?.id === txId) {
-          setActiveQrisModal(null);
-        }
       } else {
         alert(data.error || 'Gagal memproses transaksi.');
       }
@@ -142,18 +93,6 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
     } finally {
       setCancellingTxId(null);
     }
-  };
-
-  const copyModalAmount = (amount: number | string) => {
-    navigator.clipboard.writeText(amount.toString());
-    setHasCopiedModalAmount(true);
-    setTimeout(() => setHasCopiedModalAmount(false), 2000);
-  };
-
-  const formatTimer = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -188,7 +127,7 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
 
       {transactions.length === 0 ? (
         <div className="py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
-          {loading ? 'Memuat data transaksi...' : 'Belum ada transaksi. Silakan coba isi token melalui kasir di atas.'}
+          {loading ? 'Memuat data alokasi...' : 'Belum ada riwayat transaksi. Seluruh layanan kini bebas biaya (Rp 0) dengan 20 kuota gratis harian.'}
         </div>
       ) : (
         <div className="overflow-x-auto">
@@ -254,16 +193,6 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
                       <div className="inline-flex items-center gap-1.5 justify-end">
                         <button
                           type="button"
-                          onClick={() => setActiveQrisModal(tx)}
-                          className="px-2.5 py-1 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] shadow-xs transition flex items-center gap-1 min-h-[30px]"
-                          title="Buka / Tampilkan QRIS"
-                        >
-                          <QrCode className="w-3.5 h-3.5" />
-                          <span>Buka QRIS</span>
-                        </button>
-
-                        <button
-                          type="button"
                           disabled={cancellingTxId === tx.id}
                           onClick={() => handleCancelOrDelete(tx.id, 'cancel')}
                           className="px-2 py-1 rounded-xl bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-bold text-[11px] transition flex items-center gap-1 min-h-[30px] disabled:opacity-50"
@@ -304,103 +233,6 @@ export function TransactionHistory({ lastUpdated }: TransactionHistoryProps) {
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {/* Active QRIS Display Modal */}
-      {activeQrisModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col p-6 sm:p-7 space-y-5 animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Pembayaran QRIS Resmi
-                </span>
-                <h3 className="text-base font-black text-slate-900 dark:text-white">
-                  {activeQrisModal.package_name || 'Isi Ulang Token'}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveQrisModal(null)}
-                className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* QRIS Image Frame */}
-            <div className="flex flex-col items-center justify-center p-5 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
-              {activeQrisModal.qris_image_url || activeQrisModal.qris_id ? (
-                <div className="p-3 bg-white rounded-2xl shadow-sm border border-slate-200 max-w-[240px]">
-                  <img
-                    src={activeQrisModal.qris_image_url || `https://api.qrispy.id/api/public/qris/${activeQrisModal.qris_id}/image`}
-                    alt="Kode QRIS Pembayaran"
-                    className="w-full h-auto object-contain rounded-lg"
-                  />
-                </div>
-              ) : (
-                <div className="w-48 h-48 rounded-2xl bg-white flex flex-col items-center justify-center border border-slate-200 p-4 text-center">
-                  <QrCode className="w-24 h-24 text-slate-800 mb-2" />
-                  <span className="text-[10px] text-slate-500 font-semibold">QRIS Dinamis Terdaftar</span>
-                </div>
-              )}
-
-              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-amber-600 bg-amber-50 dark:bg-amber-950 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800">
-                <Clock className="w-3.5 h-3.5" />
-                <span>Sisa Waktu: {formatTimer(modalCountdown)}</span>
-              </div>
-            </div>
-
-            {/* Nominal Card */}
-            <div className="p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                  Nominal Transfer Persis:
-                </span>
-                <span className="text-xl font-black text-indigo-700 dark:text-indigo-300 font-mono">
-                  Rp {(activeQrisModal.amount_idr || 0).toLocaleString('id-ID')}
-                </span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => copyModalAmount(activeQrisModal.amount_idr || 0)}
-                className="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-800 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5 transition hover:bg-indigo-50"
-              >
-                {hasCopiedModalAmount ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{hasCopiedModalAmount ? 'Tersalin' : 'Salin'}</span>
-              </button>
-            </div>
-
-            {/* Polling live feedback */}
-            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 py-1">
-              <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-600" />
-              <span>Mengecek pembayaran otomatis setiap 3 detik...</span>
-            </div>
-
-            {/* Action buttons inside modal */}
-            <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <button
-                type="button"
-                disabled={cancellingTxId === activeQrisModal.id}
-                onClick={() => handleCancelOrDelete(activeQrisModal.id, 'cancel')}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition disabled:opacity-50 flex items-center gap-1.5 min-h-[40px]"
-              >
-                <XCircle className="w-4 h-4" />
-                <span>Batalkan Transaksi Ini</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveQrisModal(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs transition min-h-[40px]"
-              >
-                Tutup
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

@@ -83,9 +83,9 @@ const MARQUEE_ITEMS: MarqueeItem[] = [
     tag: 'Kedinasan'
   },
   {
-    label: '1 Dompet Token Terpadu',
+    label: '1 Akun & Kuota Terpadu',
     sub: 'Sinkronisasi Otomatis 9 Subdomain',
-    href: '/kasir',
+    href: '/kapasitas',
     icon: Coins,
     tag: 'Sistem Terpusat'
   }

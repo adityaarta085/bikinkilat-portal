@@ -7,12 +7,13 @@ import {
   Sparkles, 
   Coins, 
   Clock, 
-  Heart,
   Presentation,
   BookOpen,
   FileText,
   ArrowRight,
-  User as UserIcon
+  User as UserIcon,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 
@@ -44,7 +45,7 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="cashier-modal-title"
+        aria-labelledby="quota-modal-title"
         className="relative w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col transition-colors"
       >
         {/* Header */}
@@ -54,10 +55,10 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h2 id="cashier-modal-title" className="text-sm font-bold">
-                Kuota &amp; Dukungan Server
+              <h2 id="quota-modal-title" className="text-sm font-bold">
+                Alokasi Kuota Akses Dokumen
               </h2>
-              <p className="text-[10px] text-indigo-200">Akses Publik Tanpa Biaya</p>
+              <p className="text-[10px] text-indigo-200">Layanan Publik 100% Bebas Biaya (Rp 0)</p>
             </div>
           </div>
           <button
@@ -80,10 +81,10 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
 
               <div className="space-y-1">
                 <h3 className="text-base font-black text-slate-900 dark:text-white">
-                  20 Alokasi Kuota Harian
+                  20 Alokasi Kuota Harian Gratis
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
-                  Masuk dengan akun Google untuk mengaktifkan 20 kuota harian Anda.
+                  Masuk dengan akun Google untuk mengaktifkan alokasi 20 kuota dokumen gratis Anda hari ini.
                 </p>
               </div>
 
@@ -110,8 +111,9 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate block max-w-[160px]">
                       {user.email}
                     </span>
-                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                      Akun Aktif
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" />
+                      <span>Akun Aktif</span>
                     </span>
                   </div>
                 </div>
@@ -125,9 +127,9 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
               </div>
 
               {/* Reset notice */}
-              <div className="p-3 rounded-xl bg-slate-100/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-300">
-                <Clock className="w-4 h-4 text-indigo-500 shrink-0" />
-                <span>Reset otomatis 20 kuota setiap 00:00 WIB</span>
+              <div className="p-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800 flex items-center gap-2.5 text-xs text-indigo-900 dark:text-indigo-200">
+                <Clock className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <span>Otomatis terisi ulang ke 20 kuota setiap pukul 00:00 WIB</span>
               </div>
 
               {/* Quick links */}
@@ -158,14 +160,14 @@ export function CashierModal({ isOpen, onClose }: CashierModalProps) {
                 </a>
               </div>
 
-              {/* Donation Link */}
+              {/* Capacity Guide Link */}
               <Link
-                href="/kasir"
+                href="/kapasitas"
                 onClick={onClose}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"
+                className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"
               >
-                <Heart className="w-4 h-4 fill-white" />
-                <span>Traktir Kopi / Dukung Server</span>
+                <span>Lihat Panduan Kapasitas Lengkap</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           )}

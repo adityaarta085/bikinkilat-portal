@@ -85,18 +85,17 @@ async function handleVerify(request: Request) {
     const currentTokens = Number(user.tokens) || 0;
     const shouldDeduct = url.searchParams.get('deduct') !== 'false';
 
-    // Periksa apakah saldo token mencukupi (minimal 1 token)
+    // Periksa apakah kuota harian mencukupi (minimal 1 kuota)
     if (shouldDeduct && currentTokens < 1) {
       return NextResponse.json(
         {
           success: false,
           valid: false,
           error:
-            'Saldo token akun Anda tidak mencukupi (Sisa: 0 Token). Setiap sesi akses memerlukan 1 saldo token. Silakan isi ulang di Kasir Resmi BikinKilat (https://bikinkilat.web.id/kasir).',
+            'Alokasi kuota harian akun Anda telah mencapai batas wajar (Sisa: 0 Kuota). Alokasi 20 kuota dokumen otomatis diperbarui setiap malam pukul 00:00 WIB.',
           tokens: 0,
-          topupUrl: 'https://bikinkilat.web.id/kasir',
         },
-        { status: 402, headers: CORS_HEADERS }
+        { status: 429, headers: CORS_HEADERS }
       );
     }
 

@@ -12,13 +12,13 @@ export function InteractiveComparison() {
     {
       metric: 'Waktu Penyelesaian',
       manual: '2 s/d 5 Jam per berkas (lelah & menyita fokus)',
-      bikinkilat: '30 s/d 60 Detik (langsung terkompilasi rapi)',
+      bikinkilat: 'Sub-2 Detik (langsung terkompilasi rapi)',
       highlight: true
     },
     {
-      metric: 'Biaya Pengeluaran',
-      manual: 'Rp 50.000 s/d Rp 250.000 per pesanan jasa ketik/desain',
-      bikinkilat: 'Cukup 1-2 Token (~Rp 2.500) per dokumen lengkap',
+      metric: 'Akses & Biaya Layanan',
+      manual: 'Tarif jasa komersial mahal atau langganan software berbayar',
+      bikinkilat: '100% Bebas Biaya Layanan (Inisiatif Publik 20 Kuota/Hari)',
       highlight: true
     },
     {
@@ -176,7 +176,7 @@ export function InteractiveComparison() {
 
             <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <span className="text-xs text-indigo-700 dark:text-indigo-400 font-bold">
-                Hemat hingga 90% waktu & pengeluaran Anda.
+                Hemat hingga 90% waktu penyusunan dokumen Anda.
               </span>
               <a
                 href="#live-preview"

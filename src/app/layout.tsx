@@ -80,7 +80,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
     description:
-      'Akses 9 layanan otomasi cerdas dokumen & presentasi berstandar nasional. Ekspor file asli .pptx, .docx, .xlsx dalam sub-2 detik dengan 1 saldo token terpadu.',
+      'Akses 9 layanan otomasi cerdas dokumen & presentasi berstandar nasional. Ekspor file asli .pptx, .docx, .xlsx dalam sub-2 detik dengan alokasi 20 kuota dokumen gratis harian.',
     url: 'https://bikinkilat.web.id',
     siteName: 'BikinKilat.web.id',
     locale: 'id_ID',
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'BikinKilat.web.id - Solusi Otomasi Dokumen & Presentasi Kilat Indonesia',
     description:
-      'Akses 9 layanan otomasi cerdas dokumen & presentasi berstandar nasional. Ekspor file asli .pptx, .docx, .xlsx dalam sub-2 detik dengan 1 saldo token terpadu.',
+      'Akses 9 layanan otomasi cerdas dokumen & presentasi berstandar nasional. Ekspor file asli .pptx, .docx, .xlsx dalam sub-2 detik dengan alokasi 20 kuota dokumen gratis harian.',
     creator: '@bikinkilat',
     images: ['https://bikinkilat.web.id/og-image.png'],
   },
@@ -227,10 +227,10 @@ export default function RootLayout({
           },
           {
             '@type': 'Question',
-            name: 'Apakah token yang saya beli bisa dipakai di semua layanan subdomain?',
+            name: 'Apakah kuota dokumen harian bisa dipakai di semua layanan subdomain?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Ya, sistem BikinKilat menggunakan satu dompet token terpadu. Saldo token yang Anda miliki otomatis tersinkronisasi langsung ke seluruh 9 subdomain layanan tanpa perlu registrasi ulang.',
+              text: 'Ya, sistem BikinKilat menggunakan satu akun terpadu. Alokasi 20 kuota dokumen gratis otomatis tersinkronisasi langsung ke seluruh 9 subdomain layanan tanpa perlu registrasi ulang.',
             },
           },
           {
@@ -238,15 +238,15 @@ export default function RootLayout({
             name: 'Berapa kuota yang saya dapatkan setiap hari?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Setiap pengguna yang masuk ke akun BikinKilat otomatis mendapatkan 20 kuota harian untuk menyusun dokumen langsung.',
+              text: 'Setiap pengguna yang masuk ke akun resmi BikinKilat otomatis mendapatkan 20 kuota gratis harian yang terisi ulang penuh setiap pukul 00:00 WIB.',
             },
           },
           {
             '@type': 'Question',
-            name: 'Bagaimana metode pembayaran untuk top up token?',
+            name: 'Berapa biaya layanan untuk menggunakan BikinKilat?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Top up token diproses secara instan melalui QRIS Nasional resmi di halaman kasir resmi (/kasir), kompatibel dengan seluruh aplikasi perbankan (BCA, Mandiri, BRI, BNI) dan dompet digital (GoPay, OVO, Dana, ShopeePay).',
+              text: 'Seluruh 9 layanan dokumen BikinKilat disediakan 100% tanpa biaya layanan (Rp 0). Tidak ada pungutan biaya, biaya berlangganan, atau penjualan paket berbayar.',
             },
           },
         ],
@@ -264,24 +264,18 @@ export default function RootLayout({
           {
             '@type': 'ListItem',
             position: 2,
-            name: 'Pratinjau Beta',
-            item: 'https://bikinkilat.web.id/beta',
+            name: 'Panduan Kapasitas & Kuota',
+            item: 'https://bikinkilat.web.id/kapasitas',
           },
           {
             '@type': 'ListItem',
             position: 3,
-            name: 'Kasir Resmi & Token',
-            item: 'https://bikinkilat.web.id/kasir',
-          },
-          {
-            '@type': 'ListItem',
-            position: 4,
             name: 'Catatan Rilis & Pembaruan',
             item: 'https://bikinkilat.web.id/catatan-rilis',
           },
           {
             '@type': 'ListItem',
-            position: 5,
+            position: 4,
             name: 'Pusat Transparansi Layanan',
             item: 'https://bikinkilat.web.id/transparansi',
           },

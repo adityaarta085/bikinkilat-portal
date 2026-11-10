@@ -106,7 +106,7 @@ export const RELEASES: ReleaseNote[] = [
     summary:
       'Penambahan fitur isi ulang nominal bebas fleksibel mulai Rp 10.000 dengan kalkulator bonus transparan bertingkat hingga +50% ekstra token, terintegrasi ke kasir terpusat dan seluruh subdomain.',
     impactedServices: [
-      { name: 'Portal Ekosistem & Kasir', subdomain: 'portal', url: 'https://bikinkilat.web.id/kasir' },
+      { name: 'Portal Ekosistem & Kasir', subdomain: 'portal', url: 'https://bikinkilat.web.id/kapasitas' },
       { name: 'Seluruh 9 Subdomain', subdomain: 'portal', url: 'https://bikinkilat.web.id/#layanan' },
     ],
     categories: ['Kasir & Top-Up', 'Mobile UX', 'Ekosistem'],

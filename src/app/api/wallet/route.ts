@@ -126,7 +126,9 @@ export async function POST(request: Request) {
     }
 
     const updatePayload: Record<string, any> = {};
-    if (typeof tokens === 'number') updatePayload.tokens = tokens;
+    if (typeof tokens === 'number' && !isNaN(tokens) && isFinite(tokens)) {
+      updatePayload.tokens = Math.max(0, Math.floor(tokens));
+    }
     if (email) updatePayload.email = email;
     if (name) updatePayload.name = name;
 
@@ -134,7 +136,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      tokens: typeof tokens === 'number' ? tokens : user.tokens,
+      tokens: updatePayload.tokens !== undefined ? updatePayload.tokens : user.tokens,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

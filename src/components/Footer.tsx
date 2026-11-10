@@ -57,7 +57,7 @@ export function Footer() {
               <BrandLogo variant="horizontal" size="md" href="/" />
             </div>
             <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm leading-relaxed font-normal">
-              Ekosistem otomasi cerdas dokumen, makalah akademik, presentasi, dan instrumen legal Indonesia dengan 1 dompet token terintegrasi.
+              Ekosistem otomasi cerdas dokumen, presentasi, dan instrumen legal Indonesia sebagai fasilitas layanan publik terbuka tanpa biaya.
             </p>
             <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400 font-medium pt-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -131,6 +131,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/kapasitas" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  Panduan Kapasitas &amp; Kuota
+                </Link>
+              </li>
+              <li>
                 <Link href="/syarat-ketentuan" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Syarat &amp; Ketentuan Layanan
                 </Link>
@@ -138,11 +143,6 @@ export function Footer() {
               <li>
                 <Link href="/kebijakan-privasi" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   Kebijakan Privasi (UU PDP)
-                </Link>
-              </li>
-              <li>
-                <Link href="/kebijakan-pengembalian-dana" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  Kebijakan Pengembalian Dana
                 </Link>
               </li>
               <li>
@@ -217,7 +217,7 @@ export function Footer() {
         </div>
 
         <div className="pt-6 border-t border-slate-200/80 dark:border-slate-800 text-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} BikinKilat.web.id. Inisiatif teknologi digital mandiri oleh Aditya Arta Putra (Magelang, Jawa Tengah).</p>
+          <p className="text-slate-600 dark:text-slate-400">© {new Date().getFullYear()} BikinKilat.web.id. Inisiatif publik layanan dokumen terbuka oleh Aditya Arta Putra (Magelang, Jawa Tengah).</p>
           <div className="flex flex-wrap items-center gap-3 text-slate-600 dark:text-slate-400 font-medium">
             <span>WhatsApp CS: <a href="https://wa.me/6285136436577" target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">+62 851-3643-6577</a></span>
             <span>•</span>

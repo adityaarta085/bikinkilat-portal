@@ -1,9 +1,10 @@
 // Legal Content & Policy Definitions for Ekosistem BikinKilat.web.id
 // Sesuai Regulasi Hukum Indonesia (UU ITE No. 1/2024, UU PDP No. 27/2022, PP PSTE No. 71/2019)
+// Inisiatif Publik Layanan Dokumen Terbuka (Non-Profit Public Service Utility)
 
 export const LEGAL_COMPANY_INFO = {
-  name: "BikinKilat.web.id",
-  entityStatus: "Inisiatif Produk Teknologi Digital Independen",
+  name: "BikinKilat Indonesia",
+  entityStatus: "Inisiatif Publik Layanan Dokumen Terbuka",
   founder: "Aditya Arta Putra",
   brand: "BikinKilat.web.id",
   email: "support@bikinkilat.web.id",
@@ -14,11 +15,11 @@ export const LEGAL_COMPANY_INFO = {
   operatingHours: "Senin - Sabtu, 08.00 - 20.00 WIB",
   complaintSla: "Maksimal 1x24 jam kerja",
   domain: "bikinkilat.web.id",
-  updatedDate: "26 Oktober 2026",
+  updatedDate: "6 November 2026",
 };
 
 export const TERMS_OF_SERVICE = {
-  title: "Syarat dan Ketentuan Layanan",
+  title: "Syarat dan Ketentuan Layanan Publik",
   lastUpdated: LEGAL_COMPANY_INFO.updatedDate,
   sections: [
     {
@@ -26,90 +27,90 @@ export const TERMS_OF_SERVICE = {
       title: "1. Ketentuan Umum & Definisi",
       content: [
         "Selamat datang di BikinKilat.web.id. Dengan mengakses, mendaftar, atau menggunakan salah satu maupun seluruh layanan dalam ekosistem BikinKilat.web.id (termasuk portal utama dan seluruh subdomain layanan seperti slide, modul ajar, CV ATS, RAB, surat resmi, waris, proposal, dan pasfoto), Anda menyatakan telah membaca, memahami, dan menyetujui untuk terikat secara hukum oleh Syarat dan Ketentuan ini.",
-        "\"Platform\" merujuk pada seluruh situs web, aplikasi web, antarmuka pengguna, API, dan infrastruktur komputasi jaringan edge milik ekosistem BikinKilat.web.id yang didirikan dan dikelola oleh Aditya Arta Putra berdomisili di Magelang, Jawa Tengah.",
-        "\"Pengguna\" merujuk pada individu, pelajar, pendidik, profesional, atau perwakilan entitas bisnis yang mengakses dan memanfaatkan generator dokumen BikinKilat.web.id.",
-        "\"Saldo Token\" merujuk pada satuan kredit mikro digital terpusat yang digunakan sebagai alat penukaran sah di dalam ekosistem BikinKilat.web.id untuk membuka kunci dan mengunduh berkas dokumen.",
+        "\"Platform\" merujuk pada seluruh situs web, aplikasi web, antarmuka pengguna, API, dan infrastruktur komputasi jaringan edge milik ekosistem BikinKilat.web.id yang diselenggarakan sebagai Inisiatif Publik Layanan Dokumen Terbuka oleh Aditya Arta Putra berdomisili di Magelang, Jawa Tengah.",
+        "\"Pengguna\" merujuk pada individu, pelajar, pendidik, profesional, atau perwakilan masyarakat yang mengakses dan memanfaatkan generator dokumen BikinKilat.web.id.",
+        "\"Alokasi Kuota Akses\" merujuk pada batas kuota dokumen harian tanpa biaya yang diberikan kepada setiap pengguna terdaftar guna menyusun dan mengunduh berkas dokumen.",
       ],
     },
     {
       id: "posisi-produk",
-      title: "2. Posisi Produk: Draf Kerja & Alat Akselerasi Terstruktur",
+      title: "2. Posisi Layanan: Draf Kerja & Akselerasi Terstruktur",
       content: [
         "Seluruh keluaran dokumen yang diproduksi oleh generator BikinKilat.web.id (termasuk presentasi PPTX, naskah makalah DOCX, lembar kerja RAB Excel, draf surat kontrak, kalkulasi waris faraidh, resume CV, modul ajar, dan proposal) diposisikan secara tegas sebagai DRAF KERJA AWAL, REKAN AKSELERATOR RISET, DAN TEMPLATE STRUKTURAL.",
         "Generator kami TIDAK menggantikan penasihat hukum resmi (advokat/notaris), konsultan teknik konstruksi bersertifikasi (ahli struktur/estimator lapangan), lembaga amil zakat/pengadilan agama resmi, maupun dewan penguji sidang akademik.",
-        "Pengguna memiliki tanggung jawab penuh untuk memeriksa, memverifikasi fakta, menyesuaikan klausul hukum, menghitung ulang estimasi biaya berdasarkan harga lokal aktual, dan membaca ulang setiap rujukan pustaka sebelum dokumen digunakan dalam konteks resmi, komersial, atau hukum.",
+        "Pengguna memiliki tanggung jawab penuh untuk memeriksa, memverifikasi fakta, menyesuaikan klausul hukum, menghitung ulang estimasi biaya berdasarkan harga lokal aktual, dan membaca ulang setiap rujukan pustaka sebelum dokumen digunakan dalam konteks resmi atau hukum.",
       ],
     },
     {
       id: "akun",
-      title: "3. Akun & Otentikasi Terpadu",
+      title: "3. Akun Pengguna & Kebijakan Akses",
       content: [
-        "Pengguna dapat mendaftar dan masuk ke Platform menggunakan akun Google (Google OAuth) atau alamat email yang valid melalui sistem otentikasi akun terpusat BikinKilat yang aman dan terenkripsi.",
-        "Satu akun pengguna memiliki satu dompet Saldo Token yang tersinkronisasi secara otomatis di seluruh subdomain ekosistem BikinKilat.web.id.",
-        "Pengguna bertanggung jawab penuh untuk menjaga keamanan dan kerahasiaan kredensial akun miliknya. Segala aktivitas yang terjadi melalui akun Pengguna dianggap sah dilakukan oleh Pengguna yang bersangkutan.",
-        "Pengguna menyatakan bahwa data profil yang diberikan saat pendaftaran adalah data yang benar, akurat, dan dapat dipertanggungjawabkan.",
+        "Pengguna dapat mendaftar dan masuk ke Platform menggunakan akun Google (Google OAuth) melalui sistem akun terenkripsi BikinKilat.",
+        "Satu akun pengguna memiliki alokasi 20 Kuota Harian yang tersinkronisasi secara otomatis di seluruh subdomain ekosistem BikinKilat.web.id.",
+        "Untuk mencegah serangan bot otomatis dan pemborosan sumber daya peladen, pengunjung tamu (belum masuk akun) memiliki saldo 0 kuota dan diarahkan untuk masuk menggunakan akun resmi guna mengaktifkan 20 kuota harian gratis.",
+        "Pengguna bertanggung jawab penuh untuk menjaga keamanan akun masing-masing. Segala aktivitas yang terjadi melalui akun Pengguna dianggap sah dilakukan oleh Pengguna yang bersangkutan.",
       ],
     },
     {
-      id: "token",
-      title: "4. Ketentuan Pembelian & Penggunaan Saldo Token",
+      id: "kuota-fairuse",
+      title: "4. Alokasi Akses Harian & Kebijakan Pemanfaatan Wajar (Fair-Use Policy)",
       content: [
-        "BikinKilat.web.id menerapkan model pembayaran mikro fleksibel (Pay-As-You-Go) berbasis token tanpa kewajiban biaya langganan bulanan berkala.",
-        "Setiap pengguna baru yang berhasil mendaftar berhak menerima kuota selamat datang sebesar 20 Kuota Harian.",
-        "Pengisian ulang (Top-Up) token dapat dilakukan melalui saluran pembayaran QRIS resmi yang mendukung seluruh bank dan dompet digital berizin Bank Indonesia.",
-        "Saldo Token yang telah dibeli tidak memiliki masa kedaluwarsa (tidak akan hangus) dan dapat digunakan kapan saja di seluruh lini layanan BikinKilat.web.id.",
-        "Nilai token tertera secara transparan pada kasir resmi: Paket Pelajar (Rp1.050/token), Paket Mahasiswa (Rp680/token), dan Paket Profesional (Rp408/token). Biaya token per generator tertera jelas sebelum pengguna memutuskan membuka kunci berkas.",
+        "Ekosistem BikinKilat.web.id diselenggarakan 100% bebas biaya layanan (Rp 0) tanpa biaya berlangganan, tagihan tersembunyi, atau penjualan token berbayar.",
+        "Setiap pengguna yang masuk ke akun resmi otomatis menerima 20 kuota dokumen gratis setiap hari.",
+        "Alokasi kuota harian otomatis terisi penuh kembali menjadi 20 kuota setiap pukul 00:00 WIB (Tengah Malam) melalui pemeliharaan terjadwal sistem cloud.",
+        "Pengguna dilarang keras menggunakan script otomatisasi, scraper, atau bot crawling massal yang dapat membebani kapasitas peladen bersama.",
       ],
     },
     {
-      id: "garansi-token",
-      title: "5. Garansi Penggantian Token Bebas Risiko (Zero-Loss Guarantee)",
+      id: "garansi-layanan",
+      title: "5. Jaminan Keandalan Layanan & Perlindungan Akses",
       content: [
         "BikinKilat.web.id berkomitmen bahwa Pengguna tidak boleh dirugikan akibat kendala teknis sistem.",
-        "Apabila terjadi pemotongan token namun dokumen gagal ter-render, berkas unduhan korup, atau peladen mengalami anomali jaringan, Pengguna berhak atas penggantian saldo token 100% seketika.",
-        "Pengguna dapat melaporkan kegagalan proses melalui WhatsApp layanan pelanggan resmi (+62 851-3643-6577) atau email support@bikinkilat.web.id dengan melampirkan email akun dan stempel waktu transaksi.",
+        "Apabila terjadi pemotongan kuota namun dokumen gagal ter-render, berkas unduhan korup, atau peladen mengalami anomali jaringan, Pengguna berhak atas pemulihan kuota seketika.",
+        "Pengguna dapat melaporkan kendala teknis melalui saluran bantuan resmi: WhatsApp (+62 851-3643-6577) atau email support@bikinkilat.web.id.",
       ],
     },
     {
       id: "hak-cipta",
-      title: "6. Kepemilikan Dokumen & Hak Cipta",
+      title: "6. Kepemilikan Dokumen & Format Asli Bebas Watermark",
       content: [
         "Seluruh berkas luaran yang dihasilkan melalui platform BikinKilat.web.id (berupa berkas .pptx, .docx, .xlsx, .pdf, atau teks markdown) adalah hak milik mutlak dari Pengguna.",
-        "BikinKilat.web.id tidak mengklaim hak kepemilikan cipta atas isi materi, presentasi, atau dokumen yang Anda buat menggunakan platform ini.",
-        "Pengguna memberikan lisensi terbatas kepada sistem BikinKilat.web.id semata-mata untuk tujuan teknis pemrosesan, rendering, dan penyimpanan berkas sementara yang Anda minta.",
+        "BikinKilat.web.id tidak mengklaim hak kepemilikan cipta atas isi materi, presentasi, atau dokumen yang Anda susun menggunakan platform ini.",
+        "Seluruh berkas dokumen yang diunduh adalah format bersih siap pakai tanpa tanda air (watermark) berbayar.",
       ],
     },
     {
       id: "etika-akademik",
       title: "7. Batasan Pemanfaatan AI & Integritas Akademik",
       content: [
-        "Layanan pembuatan presentasi dan makalah pada slide.bikinkilat.web.id dirancang sebagai asisten riset awal, akselerator penyusunan kerangka kerja, dan alat bantu perancangan visual profesional.",
-        "Pengguna dilarang keras menyalahgunakan layanan ini untuk tujuan penipuan akademik, fabrikasi data, plagiarisme murni, atau tindakan yang mencederai etika ilmiah institusi pendidikan masing-masing.",
-        "Pengguna memiliki kewajiban etis untuk meninjau, menyempurnakan, memverifikasi rujukan pustaka, dan memastikan bahwa naskah akhir memenuhi standar kejujuran ilmiah sekolah atau perguruan tinggi terkait.",
+        "Layanan pembuatan presentasi dan modul ajar dirancang sebagai asisten riset awal, akselerator kerangka kerja, dan alat bantu perancangan visual profesional.",
+        "Pengguna dilarang keras menyalahgunakan layanan ini untuk penipuan akademik, fabrikasi data, plagiarisme murni, atau tindakan yang mencederai etika ilmiah institusi pendidikan masing-masing.",
+        "Pengguna memiliki kewajiban etis untuk meninjau, menyempurnakan, memverifikasi rujukan pustaka, dan memastikan bahwa naskah akhir memenuhi standar kejujuran ilmiah institusi terkait.",
       ],
     },
     {
       id: "larangan",
       title: "8. Larangan Penggunaan Platform",
       content: [
-        "Pengguna dilarang menggunakan platform untuk memproduksi atau mendistribusikan konten yang mengandung pornografi, perjudian ilegal, ujaran kebencian, pencemaran nama baik, penipuan finansial, atau materi yang melanggar hukum Negara Kesatuan Republik Indonesia.",
-        "Pengguna dilarang melakukan tindakan peretasan, rekayasa balik (reverse engineering), eksploitasi API tanpa izin, atau upaya melumpuhkan infrastruktur server BikinKilat.web.id.",
+        "Pengguna dilarang menggunakan platform untuk memproduksi atau menyebarkan konten yang melanggar hukum Negara Kesatuan Republik Indonesia, termasuk pornografi, perjudian, ujaran kebencian, pencemaran nama baik, atau penipuan.",
+        "Pengguna dilarang melakukan tindakan peretasan, rekayasa balik (reverse engineering), eksploitasi celah keamanan, atau upaya melumpuhkan infrastruktur peladen BikinKilat.web.id.",
       ],
     },
     {
       id: "tanggung-jawab",
-      title: "9. Batasan Tanggung Jawab & Jaminan Layanan",
+      title: "9. Batasan Tanggung Jawab & Layanan Publik",
       content: [
-        "Platform disediakan dengan prinsip kelayakan usaha terbaik (best effort). BikinKilat.web.id tidak bertanggung jawab atas kerugian material, kegagalan akademis, penolakan izin usaha, atau kerugian perselisihan perdata akibat kelalaian Pengguna dalam memeriksa draf dokumen yang diproduksi.",
-        "BikinKilat.web.id berhak melakukan pemeliharaan rutin infrastruktur server dan edge network dengan pemberitahuan wajar.",
+        "Platform disediakan dengan prinsip kelayakan usaha terbaik (best effort) sebagai sarana pelayanan publik digital terbuka.",
+        "BikinKilat.web.id tidak bertanggung jawab atas kerugian material, penolakan izin usaha, atau sengketa perdata akibat kelalaian Pengguna dalam memeriksa draf dokumen yang diproduksi.",
+        "BikinKilat.web.id berhak melakukan pemeliharaan rutin infrastruktur peladen untuk menjaga performa optimal tanpa dipungut biaya apa pun dari masyarakat.",
       ],
     },
     {
       id: "hukum",
-      title: "10. Hukum yang Berlaku & Penyelesaian Sengketa",
+      title: "10. Hukum yang Berlaku & Musyawarah",
       content: [
         "Syarat dan Ketentuan ini diatur dan ditafsirkan sesuai dengan hukum Negara Republik Indonesia, khususnya Undang-Undang Informasi dan Transaksi Elektronik (UU ITE) dan Undang-Undang Perlindungan Data Pribadi (UU PDP).",
-        "Segala perselisihan yang timbul akan diupayakan diselesaikan secara musyawarah mufakat melalui saluran pengaduan resmi pengembang. Apabila tidak tercapai mufakat, perselisihan akan diselesaikan melalui yurisdiksi pengadilan negeri berwenang di Indonesia.",
+        "Segala kendala atau masukan diselesaikan secara musyawarah mufakat melalui saluran pengaduan resmi pengembang.",
       ],
     },
   ],
@@ -130,22 +131,21 @@ export const PRIVACY_POLICY = {
     },
     {
       id: "data-dikumpulkan",
-      title: "2. Klasifikasi Data Pribadi yang Kami Kumpulkan",
+      title: "2. Klasifikasi Data Pribadi yang Kami Kelola",
       content: [
-        "Data Identitas Akun: Saat Anda masuk menggunakan Google OAuth atau Email terdaftar, kami hanya menerima informasi profil publik dasar: Nama Lengkap, Alamat Email, dan tautan Foto Profil untuk keperluan identifikasi akun.",
-        "Data Transaksi Finansial: Saat melakukan top-up token melalui QRIS, sistem mencatat ID transaksi unik, nominal pembayaran, status berhasil/gagal, dan stempel waktu transaksi. Kami TIDAK PERNAH mengumpulkan, melihat, atau menyimpan nomor rekening bank, nomor kartu debit/kredit, atau PIN dompet digital Anda karena transaksi diproses langsung di jaringan perbankan berizin Bank Indonesia.",
-        "Data Konten Input Generator: Teks topik, rincian judul, naskah makalah, angka estimasi, atau dokumen referensi yang Anda unggah untuk kebutuhan penyusunan berkas.",
-        "Data Teknis & Jejak Log: Alamat IP sementara, tipe peramban, resolusi layar, dan cookie sesi terenkripsi untuk menjaga keamanan otentikasi login.",
+        "Data Identitas Akun: Saat Anda masuk menggunakan Google OAuth atau Email terdaftar, kami hanya menerima informasi profil publik dasar: Nama Lengkap, Alamat Email, dan tautan Foto Profil untuk keperluan identifikasi akun dan sinkronisasi kuota.",
+        "Data Keuangan & Pembayaran: Layanan ini disediakan 100% bebas biaya (Rp 0), sehingga kami TIDAK PERNAH meminta, mengumpulkan, atau menyimpan nomor rekening bank, kartu kredit/debit, atau data perbankan apa pun.",
+        "Data Konten Input Generator: Teks topik, rincian judul, naskah makalah, angka estimasi, atau dokumen referensi yang Anda masukkan untuk kebutuhan penyusunan berkas.",
+        "Data Teknis & Jejak Log: Cookie sesi terenkripsi untuk menjaga keamanan otentikasi login.",
       ],
     },
     {
       id: "siklus-retensi",
       title: "3. Matriks Siklus Hidup & Retensi Penyimpanan Data",
       content: [
-        "Data Akun & Saldo Token: Disimpan secara aman di basis data terenkripsi selama akun Anda berstatus aktif. Data ini langsung dihapus permanen apabila Anda mengajukan permohonan penutupan akun.",
-        "Data Riwayat Transaksi Finansial: Disimpan maksimal 5 (lima) tahun sesuai dengan kewajiban undang-undang pembukuan keuangan dan audit transaksi perbankan Indonesia.",
-        "Data Teks Naskah & Dokumen Pengguna: Kami menerapkan arsitektur Ephemeral Memory (penyimpanan memori sementara). Naskah yang Anda masukkan ke generator diproses dalam memori RAM server semata-mata untuk merender berkas unduhan (.pptx, .docx, .xlsx), dan otomatis dibersihkan dari memori pemrosesan aktif dalam waktu 1 jam.",
-        "Data Berkas Unggahan & Pasfoto: Berkas PDF/DOCX referensi dan foto wajah yang diunggah ke studio pasfoto diproses di memori terisolasi dan dihapus secara otomatis dari peladen segera setelah berkas luaran berhasil diunduh, atau maksimal 24 jam.",
+        "Data Akun Pengguna: Disimpan secara aman di basis data cloud terenkripsi selama akun Anda berstatus aktif. Data ini langsung dihapus permanen apabila Anda mengajukan permohonan penutupan akun.",
+        "Data Teks Naskah & Dokumen Pengguna: Kami menerapkan arsitektur Ephemeral Memory (penyimpanan memori sementara). Naskah yang Anda masukkan ke generator diproses dalam memori RAM peladen semata-mata untuk merender berkas unduhan (.pptx, .docx, .xlsx), dan otomatis dibersihkan dari memori pemrosesan aktif segera setelah proses selesai.",
+        "Data Berkas Unggahan & Pasfoto: Berkas PDF/DOCX referensi dan foto wajah yang diunggah ke studio pasfoto diproses di ruang terisolasi dan dihapus secara otomatis dari peladen segera setelah berkas luaran berhasil diunduh.",
       ],
     },
     {
@@ -153,8 +153,8 @@ export const PRIVACY_POLICY = {
       title: "4. Kemitraan Pemrosesan AI & Kebijakan Zero-Training",
       content: [
         "Dalam memproses perumusan teks dan struktur dokumen, BikinKilat.web.id memanfaatkan antarmuka pemrograman aplikasi (Enterprise API) dari penyedia infrastruktur komputasi kecerdasan buatan terkemuka.",
-        "Jaminan Tanpa Pelatihan (No-Training Policy): Seluruh pertukaran data teks melalui API model bahasa tunduk pada perjanjian layanan korporat khusus di mana data input dokumen pengguna TIDAK PERNAH digunakan untuk melatih, menyempurnakan, atau melatih ulang model AI publik apa pun.",
-        "Kerahasiaan Dokumen Terjamin: Naskah makalah, rancangan slide, resume, atau kalkulasi anggaran Anda tidak akan pernah bocor menjadi bagian dari dataset pembelajaran mesin pihak ketiga.",
+        "Jaminan Tanpa Pelatihan (No-Training Policy): Seluruh pertukaran data teks melalui model bahasa tunduk pada kebijakan ketat di mana data input dokumen pengguna TIDAK PERNAH digunakan untuk melatih, menyempurnakan, atau melatih ulang model AI publik apa pun.",
+        "Kerahasiaan Dokumen Terjamin: Naskah makalah, rancangan slide, resume, atau kalkulasi anggaran Anda tidak akan pernah bocor menjadi bagian dari dataset pembelajaran mesin publik.",
       ],
     },
     {
@@ -162,7 +162,7 @@ export const PRIVACY_POLICY = {
       title: "5. Keamanan & Enkripsi Data",
       content: [
         "Enkripsi Dalam Transit: Seluruh pertukaran data antara browser pengguna dan peladen kami dilindungi protokol Transport Layer Security versi terbaru (TLS 1.3) dengan sertifikat SSL 256-bit modern.",
-        "Enkripsi Saat Istirahat (At-Rest): Kredensial akun dan catatan saldo token di basis data terpusat dilindungi enkripsi AES-256 dan pembatasan akses bertingkat dengan pemisahan kredensial.",
+        "Enkripsi Saat Istirahat (At-Rest): Kredensial akun di basis data cloud terpadu dilindungi enkripsi standar industri dan pembatasan akses bertingkat.",
         "Isolasi Sesi: Setiap proses perakitan dokumen berjalan di ruang eksekusi terisolasi yang tidak dapat diakses oleh sesi pengguna lain.",
       ],
     },
@@ -186,47 +186,23 @@ export const PRIVACY_POLICY = {
 };
 
 export const REFUND_POLICY = {
-  title: "Kebijakan Pengembalian Dana & Garansi Token (Refund Policy)",
+  title: "Kebijakan Akses Bebas Biaya & Keandalan Layanan",
   lastUpdated: LEGAL_COMPANY_INFO.updatedDate,
   sections: [
     {
       id: "prinsip-dasar",
-      title: "1. Prinsip Transaksi Digital QRIS",
+      title: "1. Layanan Publik 100% Bebas Biaya (Rp 0)",
       content: [
-        "Seluruh transaksi pengisian saldo token di BikinKilat.web.id diproses secara real-time menggunakan QRIS Dinamis Standar Nasional (ASPI) yang divalidasi seketika oleh jaringan perbankan Indonesia.",
-        "Mengingat token digital langsung dikreditkan ke dompet akun Anda dan dapat segera digunakan untuk membuka dokumen, pembelian token yang telah berhasil dikreditkan bersifat final dan tidak dapat diuangkan kembali menjadi uang tunai (non-refundable), kecuali pada kondisi khusus kegagalan sistem.",
+        "Seluruh layanan di ekosistem BikinKilat.web.id diselenggarakan sebagai fasilitas publik digital terbuka tanpa dipungut biaya apa pun dari pengguna.",
+        "Mengingat tidak ada transaksi komersial, pembelian token, atau pungutan finansial, ketentuan pengembalian dana (refund) perbankan komersial tidak berlaku pada platform ini.",
       ],
     },
     {
-      id: "garansi-token-gagal",
-      title: "2. Garansi Token Bebas Risiko (Zero-Loss Token Guarantee)",
+      id: "jaminan-keandalan",
+      title: "2. Jaminan Pemulihan Kuota Akses",
       content: [
-        "Pengguna dijamin tidak akan kehilangan token jika proses pembuatan dokumen mengalami kegagalan teknis.",
-        "Kondisi penggantian saldo token instan meliputi:",
-        "1. Token terpotong namun sistem gagal menghasilkan berkas dokumen.",
-        "2. Terjadi eror peladen (server error 500) saat proses unduh berkas .pptx, .docx, atau .xlsx.",
-        "3. Berkas yang diunduh mengalami kerusakan struktur biner (corrupted file) dan tidak dapat dibuka pada aplikasi perkantoran standar.",
-      ],
-    },
-    {
-      id: "kondisi-klaim-qris",
-      title: "3. Penanganan Khusus Transaksi Pembayaran QRIS",
-      content: [
-        "Pengguna berhak mengajukan peninjauan dan rekonsiliasi manual apabila:",
-        "1. Saldo rekening bank atau dompet digital Pengguna telah terpotong, namun saldo token belum bertambah dalam waktu 15 menit akibat kendala antrean jaringan pembayaran.",
-        "2. Terjadi pemotongan ganda (double-charge) untuk satu transaksi yang sama akibat anomali koneksi gateway pembayaran.",
-        "3. Terjadi gangguan sistemik peladen yang mengakibatkan platform tidak dapat diakses sama sekali setelah pembayaran sukses.",
-      ],
-    },
-    {
-      id: "prosedur-klaim",
-      title: "4. Prosedur Pengajuan Bantuan & Kanal Cepat",
-      content: [
-        "Pengguna dapat memilih salah satu kanal pengaduan resmi:",
-        "Kanal WhatsApp Cepat: Kirim pesan ke +62 851-3643-6577 dengan menyertakan alamat email akun dan tangkapan layar bukti transfer QRIS.",
-        "Kanal Email: Kirim email ke support@bikinkilat.web.id dengan subjek: [KLAIM QRIS] - (Email Akun Anda).",
-        "Waktu Penanganan (SLA): Tim kami akan memverifikasi catatan mutasi kliring dalam waktu maksimal 1x24 jam kerja.",
-        "Solusi yang Disediakan: 1) Pengisian token seketika disertai bonus kompensasi kuota, atau 2) Pengembalian dana penuh via transfer bank/dompet digital pengirim.",
+        "Pengguna dijamin tidak akan kehilangan alokasi kuota harian jika proses pembuatan dokumen mengalami kegagalan teknis.",
+        "Apabila sistem mengalami gangguan atau berkas unduhan korup, kuota harian akun Anda akan dipulihkan seketika.",
       ],
     },
   ],
@@ -240,7 +216,7 @@ export const ACADEMIC_INTEGRITY_POLICY = {
       id: "filosofi",
       title: "1. Filosofi Co-Pilot Pembelajaran",
       content: [
-        "BikinKilat.web.id didirikan dengan misi memberdayakan pelajar, mahasiswa, dan guru di Indonesia melalui efisiensi teknologi modern. Kami percaya bahwa teknologi harus berperan sebagai rekan akselerator (*co-pilot*), bukan pengganti proses berpikir kritis dan penalaran manusia.",
+        "BikinKilat.web.id didirikan dengan misi memberdayakan pelajar, mahasiswa, dan guru di Indonesia melalui efisiensi teknologi modern. Kami percaya bahwa teknologi harus berperan sebagai rekan akselerator (co-pilot), bukan pengganti proses berpikir kritis dan penalaran manusia.",
         "Modul Slide dan Makalah kami dirancang untuk membantu menyusun draf awal yang terstruktur, rapi, dan estetis, sehingga Anda dapat menghemat waktu teknis penataan format dan memfokuskan energi pada pemahaman substansi materi.",
       ],
     },

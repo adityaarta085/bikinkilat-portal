@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
-const QRISPY_API_KEY = process.env.QRISPY_API_KEY || 'cki_7QZM25O5O0KeI4S4tpSGjymeBodBNnQNpqF3iBWWXaynCscQ';
+const QRISPY_API_KEY = process.env.QRISPY_API_KEY || '';
 
 // Helper to cancel upstream QRIS on Qrispy if ID is known
 async function tryCancelQrispy(qrisId: string) {
   try {
-    if (!qrisId) return;
+    if (!qrisId || !QRISPY_API_KEY) return;
     await fetch(`https://api.qrispy.id/api/payment/qris/${qrisId}/cancel`, {
       method: 'POST',
       headers: {

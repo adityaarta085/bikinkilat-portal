@@ -47,7 +47,7 @@ interface SupportTicket {
 }
 
 const CATEGORIES = [
-  'Kendala Saldo & Top-up QRIS',
+  'Bantuan Kuota Harian & Akses Dokumen',
   'Pertanyaan Layanan & Fitur',
   'Kendala Teknis / Bug Dokumen',
   'Bantuan Akun & Akses Masuk',
@@ -456,7 +456,7 @@ export function SupportChatWidget() {
                         type="text"
                         value={subject}
                         onChange={(e) => setSubject(e.target.value)}
-                        placeholder="Contoh: Konfirmasi Saldo Token Top-Up QRIS"
+                        placeholder="Contoh: Pertanyaan kuota harian atau format dokumen"
                         className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:ring-1 focus:ring-indigo-500 focus:outline-none"
                       />
                     </div>

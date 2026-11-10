@@ -122,12 +122,12 @@ const TRANSPARENCY_FAQS = [
     a: 'Model AI prediktif terkadang dapat memunculkan rujukan pustaka yang kurang tepat atau angka estimasi yang tidak sesuai wilayah Anda. Inilah mengapa BikinKilat menyediakan kanvas edit interaktif di browser: Anda dapat membaca, memeriksa, dan memperbaiki seluruh butir poin, naskah makalah, dan tabel sebelum mengunduh berkas finalnya.',
   },
   {
-    q: '6. Kapan token saya dipotong dan bagaimana garansi penggantiannya?',
-    a: 'Saldo token Anda HANYA dipotong saat Anda memutuskan untuk membuka kunci dan mengunduh berkas utuh (.pptx, .docx, .xlsx, .pdf). Pratinjau di layar selalu dapat diakses langsung tanpa biaya. Jika terjadi eror server (misal error 500) atau file yang diunduh rusak, kami memberikan Garansi Saldo Token Bebas Risiko (Zero-Loss Guarantee) di mana saldo token Anda akan dikembalikan 100%.',
+    q: '6. Kapan kuota saya dipotong dan bagaimana jika terjadi kendala unduhan?',
+    a: 'Alokasi kuota harian Anda HANYA dipotong saat Anda memutuskan untuk memproses dokumen dan mengunduh berkas utuh (.pptx, .docx, .xlsx, .pdf). Pratinjau di layar selalu dapat diakses langsung tanpa biaya. Jika terjadi kendala sistem atau berkas yang diunduh bermasalah, alokasi kuota harian Anda akan dipulihkan secara otomatis tanpa pengurangan.',
   },
   {
-    q: '7. Bagaimana saya bisa berbicara dengan manusia jika mengalami kendala transaksi?',
-    a: 'Kami tidak menyembunyikan kontak di balik chatbot AI. Anda dapat langsung terhubung dengan pendiri dan tim operasional kami melalui nomor WhatsApp resmi di +62 851-3643-6577 (Senin - Sabtu, 08.00 - 20.00 WIB) atau email di support@bikinkilat.web.id. Seluruh pengaduan transaksi diverifikasi dalam waktu maksimal 1x24 jam kerja.',
+    q: '7. Bagaimana saya bisa berbicara dengan manusia jika mengalami kendala layanan?',
+    a: 'Kami tidak menyembunyikan kontak di balik chatbot AI. Anda dapat langsung terhubung dengan pendiri dan tim operasional kami melalui nomor WhatsApp resmi di +62 851-3643-6577 (Senin - Sabtu, 08.00 - 20.00 WIB) atau email di support@bikinkilat.web.id. Seluruh pengaduan diverifikasi dalam waktu maksimal 1x24 jam kerja.',
   },
 ];
 
@@ -335,13 +335,13 @@ export default function TransparencyPage() {
         <section className="space-y-6">
           <div className="space-y-1">
             <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-              Struktur Tarif Jujur
+              Kapasitas Akses Layanan Publik
             </span>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white">
-              Tabel Biaya Riil Rupiah Per Dokumen
+              Tabel Alokasi Kuota Dokumen
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Berikut rincian konversi biaya rupiah untuk setiap layanan berdasarkan paket token yang Anda beli di halaman kasir:
+              Berikut rincian alokasi pemanfaatan wajar (fair-use) untuk setiap layanan. Seluruh layanan dapat diakses 100% bebas biaya dengan 20 kuota harian gratis:
             </p>
           </div>
 
@@ -350,11 +350,10 @@ export default function TransparencyPage() {
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[10px]">
                   <th className="py-3 px-3 font-extrabold">Nama Layanan</th>
-                  <th className="py-3 px-3 font-extrabold text-center">Token</th>
-                  <th className="py-3 px-3 font-extrabold text-right">Paket Pelajar (Rp1.050)</th>
-                  <th className="py-3 px-3 font-extrabold text-right text-indigo-600 dark:text-indigo-400">Paket Mhs (Rp680)</th>
-                  <th className="py-3 px-3 font-extrabold text-right text-emerald-600 dark:text-emerald-400">Paket Pro (Rp408)</th>
-                  <th className="py-3 px-3 font-extrabold">Catatan Format</th>
+                  <th className="py-3 px-3 font-extrabold text-center">Kuota Per Dokumen</th>
+                  <th className="py-3 px-3 font-extrabold">Format Keluaran</th>
+                  <th className="py-3 px-3 font-extrabold text-emerald-600 dark:text-emerald-400">Biaya Layanan</th>
+                  <th className="py-3 px-3 font-extrabold">Catatan &amp; Spesifikasi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300 font-medium">
@@ -365,18 +364,15 @@ export default function TransparencyPage() {
                       <span className="text-[10px] text-slate-400 font-mono">{doc.subdomain}</span>
                     </td>
                     <td className="py-3 px-3 text-center">
-                      <span className="font-black px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-mono text-[11px]">
-                        {doc.tokenCost}
+                      <span className="font-black px-2.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 font-mono text-[11px]">
+                        {doc.tokenCost} Kuota
                       </span>
                     </td>
-                    <td className="py-3 px-3 text-right font-mono text-slate-600 dark:text-slate-400">
-                      Rp {doc.pelajarCost.toLocaleString('id-ID')}
+                    <td className="py-3 px-3 font-mono text-[11px] text-slate-600 dark:text-slate-400">
+                      {doc.outputFormats.join(', ')}
                     </td>
-                    <td className="py-3 px-3 text-right font-mono font-bold text-indigo-700 dark:text-indigo-300">
-                      Rp {doc.mahasiswaCost.toLocaleString('id-ID')}
-                    </td>
-                    <td className="py-3 px-3 text-right font-mono font-bold text-emerald-700 dark:text-emerald-300">
-                      Rp {doc.profesionalCost.toLocaleString('id-ID')}
+                    <td className="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                      {doc.costLabel}
                     </td>
                     <td className="py-3 px-3 text-[11px] text-slate-500 dark:text-slate-400">
                       {doc.notes}

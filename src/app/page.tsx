@@ -93,8 +93,8 @@ export default function PortalHomePage() {
 
     const cost = Number(service.token_cost) || 0;
     if (tokens < cost) {
-      alert(`Alokasi kuota harian akun Anda (${tokens} Kuota) tidak mencukupi untuk membuka layanan ini (${cost} Kuota). Kuota akan otomatis diperbarui kembali menjadi 20 Kuota setiap malam pukul 00:00 WIB, atau Anda dapat mendukung operasional server di menu Kasir.`);
-      window.location.href = '/kasir';
+      alert(`Alokasi kuota harian akun Anda (${tokens} Kuota) telah mencapai batas wajar untuk membuka layanan ini (${cost} Kuota). Kuota otomatis terisi penuh kembali menjadi 20 Kuota setiap malam pukul 00:00 WIB.`);
+      window.location.href = '/kapasitas';
       return;
     }
 
@@ -180,7 +180,7 @@ export default function PortalHomePage() {
     },
     {
       q: 'Apa yang terjadi jika 20 kuota harian saya habis sebelum hari berakhir?',
-      a: 'Alokasi kuota Anda akan diperbarui kembali menjadi 20 kuota secara otomatis setiap tengah malam tepat pukul 00:00 WIB tanpa pungutan biaya apapun. Bagi pengguna profesional dengan kebutuhan volume dokumen intensif yang mendesak, Anda dapat mendukung kelangsungan infrastruktur server melalui kontribusi sukarela di halaman Kasir untuk memperoleh kuota cadangan instan.',
+      a: 'Alokasi kuota Anda akan diperbarui kembali menjadi 20 kuota secara otomatis setiap tengah malam tepat pukul 00:00 WIB tanpa pungutan biaya apapun. Seluruh layanan dapat dimanfaatkan sepenuhnya secara gratis setiap harinya untuk mendukung kebutuhan administrasi dan produktivitas Anda.',
     },
   ];
 
@@ -910,20 +910,20 @@ export default function PortalHomePage() {
                 <span>Reset Otomatis 00:00 WIB</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                20 Kuota Harian &amp; Dukungan Server
+                20 Kuota Harian Layanan Publik
               </h3>
               <p className="text-xs sm:text-sm text-indigo-200 max-w-xl leading-relaxed">
-                Nikmati akses seluruh 9 layanan harian tanpa biaya. Dukung keberlangsungan server melalui opsi traktir kopi sukarela di halaman Kasir.
+                Nikmati akses seluruh 9 sarana otomasi dokumen secara terbuka tanpa pungutan biaya. Kuota diperbarui otomatis setiap pergantian hari pukul 00:00 WIB.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
               <Link
-                href="/kasir"
-                className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition flex items-center gap-2 min-h-[44px]"
+                href="/kapasitas"
+                className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition flex items-center gap-2 min-h-[44px]"
               >
-                <Heart className="w-4 h-4 fill-slate-950" />
-                <span>Status Kuota &amp; Traktir Server</span>
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span>Panduan Kapasitas &amp; Kuota</span>
                 <ArrowRight className="w-4 h-4 text-slate-950" />
               </Link>
             </div>
